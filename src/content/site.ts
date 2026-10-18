@@ -214,24 +214,13 @@ export const footer = `© 2026 ${profile.fullName} · ${profile.location}`;
 export const contact = {
   badge: "Available now",
   title: "Let's talk",
-  intro: "Open to cloud, platform and backend engineering roles. Email is the fastest way to reach me.",
-  email: {
-    label: "Email",
-    note: "Best for roles, projects and anything that needs a real reply.",
-  },
+  intro: "Open to cloud, platform and backend engineering roles. Send a message or email me directly.",
+  formTitle: "Send a message",
+  formIntro: "It goes straight to my inbox, and I'll reply by email.",
   channels: [
-    { label: "LinkedIn", handle: "in/shyamenk", href: "https://www.linkedin.com/in/shyamenk", note: "Experience and professional updates" },
-    { label: "X", handle: "@shyamenk07", href: "https://x.com/shyamenk07", note: "Short posts on Linux, Kubernetes and AWS" },
-    { label: "GitHub", handle: "shyamenk", href: "https://github.com/shyamenk", note: "Code behind the projects" },
-    { label: "Blog", handle: "shyamenk.space/blog", href: "/blog", note: "Long-form backend and system design" },
+    { label: "LinkedIn", handle: "in/shyamenk", href: "https://www.linkedin.com/in/shyamenk" },
+    { label: "X", handle: "@shyamenk07", href: "https://x.com/shyamenk07" },
+    { label: "GitHub", handle: "shyamenk", href: "https://github.com/shyamenk" },
+    { label: "Blog", handle: "shyamenk.space/blog", href: "/blog" },
   ],
-  include: {
-    title: "A good first message",
-    items: [
-      "The role or team, and what it owns",
-      "The problem: migration, cost, reliability or a new build",
-      "Your stack and where it runs today",
-      "Timeline, and whether it's full-time or a short engagement",
-    ],
-  },
 };
