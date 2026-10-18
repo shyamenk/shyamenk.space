@@ -86,7 +86,7 @@ export const about = {
     { label: "Based in", value: "Kochi, India (IST)" },
     { label: "Focus", value: "AWS, platform, backend" },
     { label: "Writing about", value: "Linux, Kubernetes, AWS, system design" },
-    { label: "Education", value: "Bachelor's, Computer Science" },
+    { label: "Education", value: "B.Tech, Computer Science" },
   ],
 };
 
