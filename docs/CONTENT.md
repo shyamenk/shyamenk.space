@@ -1,6 +1,8 @@
 # shyamenk.space — Site content (v1 draft)
 
-Sources: LinkedIn `Profile.pdf` (Oct 2026) and the old portfolio (`~/Desktop/workfolio`). Profile.pdf wins where they disagree. Items marked **[CHECK]** need your confirmation.
+> **Superseded.** This was the first content draft. The live copy is `src/content/site.ts`; posts and projects are in `content/`.
+
+Sources: LinkedIn `Profile.pdf` (Oct 2026) and the old portfolio (`~/Desktop/workfolio`). Profile.pdf wins where they disagree.
 
 ---
 
@@ -54,7 +56,7 @@ I started in web development and moved steadily down the stack: from React front
 
 At CyberSapient I architected a HIPAA-compliant EHR platform for 1,000+ healthcare providers, handling 40,000+ patient records a day without a security incident. Today, at Amdrodd Technologies, I'm leading a multi-tenant SaaS platform's migration from GCP to AWS: landing zone, Terraform, CI/CD and security, end to end.
 
-I learn by doing and write down what breaks. Those notes become posts on Backend Almanac and a free hands-on Kubernetes course, Kube by Kube.
+I learn by doing and write down what breaks. Those notes become posts on the blog and a free hands-on Kubernetes course, Kube by Kube.
 
 ---
 
@@ -135,14 +137,14 @@ B.Tech, Computer Science & Engineering · Mangalam College of Engineering · 200
 
 ## 8. Writing
 
-**Intro:** I write at Backend Almanac about Linux, Kubernetes, AWS and system design. Each post is one real problem, the bottleneck behind it, and the fix.
+**Intro:** I write on the blog about Linux, Kubernetes, AWS and system design. Each post is one real problem, the bottleneck behind it, and the fix.
 
-From the old site (real posts, update links **[CHECK: URLs]**):
+Posts (now in `content/blog`):
 - Mastering API Design: "Most developers know how to build APIs, but only a few know how to design them." · Dec 2024
 - System Design: "Every successful tech system shares a hidden pattern." · Dec 2024
 - Optimizing Database Design: scalable, high-performance databases. · Nov 2024
 
-CTA: Read Backend Almanac → https://backendalmanac.in
+CTA: All posts → /blog
 
 ---
 
@@ -164,7 +166,7 @@ CTA: Read Backend Almanac → https://backendalmanac.in
 - **Heading:** Have a system that needs to cost less or break less?
 - **Body:** I'm open to cloud, platform and backend roles. Email is fastest.
 - **Email:** shyamenk@gmail.com
-- **Links:** linkedin.com/in/shyamenk · x.com/shyamenk07 · github.com/shyamenk · backendalmanac.in · shyamenk.in **[CHECK: keep old personal domain?]**
+- **Links:** linkedin.com/in/shyamenk · x.com/shyamenk07 · github.com/shyamenk · www.shyamenk.space/blog
 - **Phone:** not shown publicly (recommended).
 
 ## 11. Footer
