@@ -1,6 +1,6 @@
 "use server";
 
-import { topics, type ContactState, type ContactValues } from "@/lib/contact";
+import { emailSubject, topics, type ContactState, type ContactValues } from "@/lib/contact";
 import { contactEmail } from "@/lib/contact-email";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -44,7 +44,7 @@ export async function sendMessage(_prev: ContactState, formData: FormData): Prom
       from: process.env.CONTACT_FROM ?? "shyamenk.space <onboarding@resend.dev>",
       to: [process.env.CONTACT_TO ?? "shyamenk@gmail.com"],
       reply_to: email,
-      subject: `[shyamenk.space] ${topic}: ${name}`,
+      subject: emailSubject(name, topic),
       ...contactEmail(values),
     }),
   });
