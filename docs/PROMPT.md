@@ -8,7 +8,7 @@ Build a personal portfolio site for **Shyam Kumar V M**, a Cloud & Backend Engin
 
 **Stack:** Next.js 15 (App Router, TypeScript), Tailwind CSS, Framer Motion for motion, MDX for posts/case studies, deployed on Vercel. Static where possible; no CMS.
 
-**Audience and goal:** hiring managers and founders arriving from X or LinkedIn on a laptop, deciding in under 30 seconds whether he ships. Secondary: engineers who follow his Linux / Kubernetes / AWS / system design posts. Primary action: email. Secondary: read the writing at backendalmanac.in.
+**Audience and goal:** hiring managers and founders arriving from X or LinkedIn on a laptop, deciding in under 30 seconds whether he ships. Secondary: engineers who follow his Linux / Kubernetes / AWS / system design posts. Primary action: email. Secondary: read the blog at /blog.
 
 **Positioning (use verbatim):** "Turning production outages into short, practical lessons." Every story uses the same shape: **problem, bottleneck, fix.**
 
@@ -22,7 +22,7 @@ Build a personal portfolio site for **Shyam Kumar V M**, a Cloud & Backend Engin
 **Pages:**
 - `/` home: hero, proof (experience as rollouts with numbers), 3-4 projects, writing teaser, contact.
 - `/work/[slug]` MDX case studies in problem / bottleneck / fix format.
-- `/notes` links out to backendalmanac.in posts (fetch RSS at build time if available).
+- `/blog`, `/blog/[slug]`, `/blog/tags/[tag]` render Markdown posts from `content/blog`.
 - `/about` short bio, timeline, photo, resume PDF.
 
 **Content (only these facts; no invented numbers):**
@@ -30,7 +30,7 @@ Build a personal portfolio site for **Shyam Kumar V M**, a Cloud & Backend Engin
 - CyberSapient, Senior Full Stack Engineer, Feb 2024 to Feb 2026: HIPAA EHR for 1,000+ providers, 40,000+ records/day, zero security incidents; serverless image transcoding <100 ms at the CDN; DrChrono webhooks cut manual entry 75%; PostgreSQL 40% faster.
 - Ethernex IT Solutions, Abu Dhabi, Web Developer, 2022-2024.
 - Projects: CostPulse (Slack /cost for AWS spend; Lambda + SAM; github.com/shyamenk/costpulse), Kube by Kube (free hands-on Kubernetes course), Kubernetes Notes app, serverless image transcoding.
-- Links: shyamenk@gmail.com · linkedin.com/in/shyamenk · x.com/shyamenk07 · github.com/shyamenk · backendalmanac.in.
+- Links: shyamenk@gmail.com · linkedin.com/in/shyamenk · x.com/shyamenk07 · github.com/shyamenk · www.shyamenk.space/blog.
 
 **Motion:** one orchestrated page-load (staggered reveal of the hero), scroll-triggered reveals below the fold, ease-out-expo curves, no bounce. Animate only transform and opacity. Respect `prefers-reduced-motion` everywhere.
 
