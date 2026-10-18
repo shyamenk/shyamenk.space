@@ -11,14 +11,14 @@ const orbitron = Orbitron({ variable: "--font-orbitron", subsets: ["latin"] });
 const permanentMarker = Permanent_Marker({ variable: "--font-permanent-marker", weight: "400", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://shyamenk.space"),
+  metadataBase: new URL("https://www.shyamenk.space"),
   title: { default: "Shyam Kumar · Cloud & Backend Engineer", template: "%s · Shyam Kumar" },
   description:
     "Cloud and backend engineer in Kochi. Turning production outages into practical lessons on AWS, Linux, Kubernetes and system design.",
   openGraph: {
     title: "Shyam Kumar · Cloud & Backend Engineer",
     description: "Turning production outages into practical lessons.",
-    url: "https://shyamenk.space",
+    url: "https://www.shyamenk.space",
     images: ["/images/me.jpeg"],
   },
 };

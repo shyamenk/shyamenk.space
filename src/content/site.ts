@@ -11,7 +11,6 @@ export const profile = {
     { label: "linkedin", href: "https://www.linkedin.com/in/shyamenk" },
     { label: "x", href: "https://x.com/shyamenk07" },
     { label: "github", href: "https://github.com/shyamenk" },
-    { label: "blog", href: "https://backendalmanac.in" },
   ],
 };
 
@@ -76,7 +75,7 @@ export const about = {
   paragraphs: [
     "I started in web development in Abu Dhabi and moved steadily down the stack: from React front ends, to APIs and databases, to the cloud infrastructure underneath them.",
     "Before Amdrodd, I spent two years at CyberSapient architecting a HIPAA-compliant EHR used by 1,000+ healthcare providers, with zero security incidents.",
-    "I learn by doing and write down what breaks. Those notes become posts here and on Backend Almanac.",
+    "I learn by doing and write down what breaks. Those notes become the posts on my blog.",
   ],
   journey: [
     { period: "2026 to now", role: "AWS Cloud Engineer", company: "Amdrodd Technologies", note: "GCP to AWS migration, landing zone, cost and security" },
@@ -203,7 +202,7 @@ export const faq = {
     { q: "Do you work with Kubernetes?", a: "Yes, with kind clusters and GitOps through Argo CD. I'm also writing Kube by Kube, a free hands-on Kubernetes course." },
     { q: "Can you still write application code?", a: "Every day. Node.js, Python and FastAPI on the backend, PostgreSQL and MongoDB for data, Next.js when a UI is needed." },
     { q: "Where are you based?", a: "Kochi, Kerala, India (IST). I've worked with teams in India and the UAE." },
-    { q: "Where can I read your work?", a: "At backendalmanac.in: Linux, Kubernetes, AWS and system design, one real problem per post.", link: { label: "backendalmanac.in", href: "https://backendalmanac.in" } },
+    { q: "Where can I read your work?", a: "On the blog: Linux, Kubernetes, AWS and system design, one real problem per post.", link: { label: "the blog", href: "/blog" } },
   ],
 };
 
@@ -221,7 +220,7 @@ export const contact = {
     { label: "LinkedIn", handle: "in/shyamenk", href: "https://www.linkedin.com/in/shyamenk", note: "Experience and professional updates" },
     { label: "X", handle: "@shyamenk07", href: "https://x.com/shyamenk07", note: "Short posts on Linux, Kubernetes and AWS" },
     { label: "GitHub", handle: "shyamenk", href: "https://github.com/shyamenk", note: "Code behind the projects" },
-    { label: "Blog", handle: "backendalmanac.in", href: "https://backendalmanac.in", note: "Long-form backend and system design" },
+    { label: "Blog", handle: "shyamenk.space/blog", href: "/blog", note: "Long-form backend and system design" },
   ],
   include: {
     title: "A good first message",
