@@ -1,6 +1,7 @@
 "use server";
 
 import { topics, type ContactState, type ContactValues } from "@/lib/contact";
+import { contactEmail } from "@/lib/contact-email";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 // Humans take longer than this to fill in the form; most bots don't.
@@ -44,7 +45,7 @@ export async function sendMessage(_prev: ContactState, formData: FormData): Prom
       to: [process.env.CONTACT_TO ?? "shyamenk@gmail.com"],
       reply_to: email,
       subject: `[shyamenk.space] ${topic}: ${name}`,
-      text: `From: ${name} <${email}>\nTopic: ${topic}\n\n${message}`,
+      ...contactEmail(values),
     }),
   });
 
