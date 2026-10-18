@@ -70,7 +70,7 @@ export const about = {
     company: "Amdrodd Technologies",
     period: "Feb 2026 to now · Kochi",
     summary:
-      "Leading a multi-tenant SaaS migration from GCP to AWS: a multi-account landing zone, Terraform across every environment, OIDC-based CI/CD and a full security clean-up.",
+      "Leading a multi-tenant SaaS migration from GCP to AWS: a multi-account landing zone, Terraform across every environment, OIDC-based CI/CD with auto-rollback, monitoring and alerting, and a full security clean-up.",
   },
   paragraphs: [
     "I started in web development in Abu Dhabi and moved steadily down the stack: from React front ends, to APIs and databases, to the cloud infrastructure underneath them.",
@@ -166,8 +166,11 @@ export const timeline = {
       highlightStep: 1,
       steps: [
         { title: "Migrating a multi-tenant SaaS from GCP to AWS", body: "9 microservices, multi-account landing zone, Control Tower, SSO." },
-        { title: "Cutting cost without cutting safety", body: "Compute ~51% cheaper on Graviton, staging ~70% cheaper, savings moved into a hardened prod VPC." },
-        { title: "Locking down secrets and access", body: "34 secrets audited, 532 duplicates found, 158+ keys off .env, OIDC instead of SSH keys." },
+        { title: "Cutting cost without cutting safety", body: "Compute ~51% cheaper on Graviton, staging ~70% cheaper with Fargate Spot and graceful SIGTERM handling, savings moved into a hardened prod VPC." },
+        { title: "Infrastructure as code", body: "Reusable Terraform modules for VPC, security groups, ALB, ECS and IAM with cross-account roles, so dev, staging and prod are built the same way." },
+        { title: "Deploys that roll themselves back", body: "Bitbucket to ECR to ECS over OIDC with no static credentials, rolling deploys with circuit-breaker auto-rollback, builds cut to 8-12 minutes." },
+        { title: "Observability and event-driven integrations", body: "CloudWatch alarms with SNS and Slack alerts, uptime checks, and EventBridge to SQS routes with dead-letter queues between products." },
+        { title: "Locking down secrets and access", body: "34 secrets audited, 532 duplicates found, 158+ keys off .env, container CVEs fixed, WAF at the edge, VPN and hardened developer servers." },
       ],
     },
     {

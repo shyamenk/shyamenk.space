@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import { timeline } from "@/content/site";
 
-const numerals = ["I", "II", "III", "IV", "V"];
+const numerals = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
 
 export function Timeline() {
   return (
