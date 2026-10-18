@@ -1,0 +1,228 @@
+---
+slug: serverless-image-transcoding
+title: Serverless Image Transcoding Pipeline – AWS Event-Driven Architecture
+description: Event-driven serverless image processing pipeline on AWS that automatically generates optimized image formats and delivers them globally via CloudFront.
+date: '2025-01-15'
+image: /projects/image-transcoding.png
+technologies:
+  - AWS Lambda
+  - Amazon S3
+  - CloudFront CDN
+  - DynamoDB
+  - Sharp (Node.js)
+  - AWS CloudFormation
+  - AWS IAM
+  - Origin Access Control
+  - Docker
+githubUrl: https://github.com/shyamenk/image-transcoding-pipeline
+featured: true
+---
+
+# Serverless Image Transcoding Pipeline
+
+## TL;DR
+
+- **What**: Event-driven serverless image processing pipeline on AWS  
+- **Why**: Optimize image delivery performance while minimizing infrastructure cost  
+- **Scale**: Handles ~1,000 requests/second with 2–5s processing time  
+- **Impact**: ~75% image size reduction and &lt;100ms global delivery  
+- **Cost**: Runs within AWS Free Tier for typical workloads ($0/month)
+
+This project demonstrates **production-grade serverless architecture**, cost-aware engineering, and secure global content delivery using managed AWS services.
+
+---
+
+## Problem Statement
+
+Modern web applications face recurring challenges with image delivery at scale:
+
+- Large images degrade page load times and user experience
+- Different browsers require different image formats for optimal performance
+- Manual image processing does not scale with traffic growth
+- Global users expect low-latency access regardless of region
+- Traditional solutions increase compute and storage costs
+
+The goal was to design a system that **automatically processes images on upload**, generates optimized variants, and delivers them globally — without managing servers.
+
+---
+
+## Solution Overview
+
+The solution follows an **event-driven, serverless architecture** where image uploads trigger automatic processing and global distribution.
+
+### Key Design Goals
+- Zero manual intervention
+- Horizontal scalability
+- Minimal operational overhead
+- Secure, private storage
+- Cost-efficient execution
+
+---
+
+## Architecture
+
+### Event-Driven Workflow
+
+```
+┌─────────────┐    ┌──────────────┐    ┌─────────────┐
+│ Image Upload│───▶│   S3 Event   │───▶│   Lambda    │
+│ (Raw Bucket)│    │ Notification │    │ Processing │
+└─────────────┘    └──────────────┘    └─────────────┘
+                                              │
+                                              ▼
+                                    ┌─────────────────┐
+                                    │    DynamoDB     │
+                                    │   (Metadata)   │
+                                    └─────────────────┘
+                                              │
+                                              ▼
+                                    ┌─────────────────┐
+                                    │   CloudFront    │
+                                    │     (CDN)       │
+                                    └─────────────────┘
+```
+
+### Processing Pipeline
+
+1. Image uploaded to **S3 Raw Bucket**
+2. **S3 ObjectCreated** event triggers Lambda
+3. Lambda processes image using **Sharp**
+4. Multiple optimized variants generated in parallel
+5. Metadata stored in **DynamoDB**
+6. Images delivered globally via **CloudFront CDN**
+
+---
+
+## Key Capabilities
+
+### Image Processing
+- Event-driven Lambda execution
+- Parallel generation of WebP and JPEG formats
+- Intelligent resizing with aspect ratio preservation
+- Multiple size variants (thumbnail, medium, original)
+
+### Performance & Delivery
+- CloudFront CDN with global edge locations
+- Optimized caching (1 day default, 1 year max TTL)
+- Edge delivery under 100ms for cached assets
+- Average 75% image size reduction with WebP
+
+### Security
+- No public S3 buckets (OAC-only access)
+- Least-privilege IAM roles
+- Encrypted storage (AES-256)
+- HTTPS-only delivery
+- Full audit logging via CloudTrail
+
+---
+
+## Results & Impact
+
+### Performance Metrics
+
+| Metric | Result |
+|------|-------|
+| Image Processing Time | 2–5 seconds |
+| Compression Reduction | ~75% |
+| CDN Response Time | &lt;100ms |
+| Concurrent Requests | ~1,000/sec |
+| Availability | 99.9% |
+
+### Cost Optimization
+
+The entire system operates within **AWS Free Tier limits** for typical usage:
+
+```
+Lambda        : $0.00
+S3 Storage    : $0.00
+DynamoDB      : $0.00
+CloudFront   : $0.00
+----------------------
+Total         : $0.00 / month
+```
+
+---
+
+## Technical Implementation (Optional Deep Dive)
+
+<details>
+<summary><strong>Core Lambda Processing Logic</strong></summary>
+
+```js
+exports.handler = async (event) => {
+  for (const record of event.Records) {
+    const imageBuffer = await downloadImage(
+      record.s3.bucket.name,
+      record.s3.object.key
+    );
+
+    const [webp, thumb, medium] = await Promise.all([
+      sharp(imageBuffer).webp({ quality: 80 }).toBuffer(),
+      sharp(imageBuffer)
+        .resize(300, 300, { fit: 'inside' })
+        .jpeg({ quality: 80 })
+        .toBuffer(),
+      sharp(imageBuffer)
+        .resize(800, 600, { fit: 'inside' })
+        .jpeg({ quality: 85 })
+        .toBuffer()
+    ]);
+
+    await uploadVariants({ webp, thumb, medium });
+    await saveMetadata();
+  }
+};
+```
+
+</details>
+
+<details>
+<summary><strong>Infrastructure as Code</strong></summary>
+
+- CloudFormation-managed stack
+- Parameterized environments
+- Automated resource dependency ordering
+- Docker-built Lambda layer for Sharp binaries
+
+</details>
+
+---
+
+## Challenges & Solutions
+
+### Sharp Binary Compatibility
+**Problem**: Native Sharp binaries incompatible between macOS and Lambda Linux  
+**Solution**: Docker-based Lambda layer builds  
+**Impact**: Reliable cross-platform deployments
+
+### CloudFront Access Control
+**Problem**: 403 errors with private S3 origins  
+**Solution**: Origin Access Control (OAC)  
+**Impact**: Secure CDN access without public buckets
+
+### Lambda Performance
+**Problem**: Sequential processing caused timeouts  
+**Solution**: Parallel processing with Promise.all  
+**Impact**: ~60% reduction in execution time
+
+---
+
+## Future Improvements
+
+- AVIF and next-gen image format support
+- API Gateway for programmatic uploads
+- Admin dashboard for monitoring and analytics
+- Step Functions for advanced workflows
+- SQS-based decoupling for higher throughput
+
+---
+
+## Why This Project Matters
+
+This project demonstrates my ability to:
+
+- Design **production-grade serverless systems**
+- Optimize for **performance and cost simultaneously**
+- Apply **security-first cloud architecture**
+- Own systems end-to-end — from design to deployment
+

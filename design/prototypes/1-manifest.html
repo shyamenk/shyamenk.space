@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Shyam Kumar · Manifest</title>
+<meta name="description" content="Shyam Kumar V M, Cloud and Backend Engineer. Turning production outages into short, practical lessons." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+        },
+        colors: {
+          paper: 'oklch(0.965 0.012 75)',
+          paper2: 'oklch(0.93 0.016 75)',
+          ink: 'oklch(0.22 0.02 60)',
+          ink2: 'oklch(0.45 0.02 60)',
+          ember: 'oklch(0.64 0.2 40)',
+          emberdeep: 'oklch(0.5 0.17 38)',
+          leaf: 'oklch(0.58 0.13 150)',
+        },
+      },
+    },
+  };
+</script>
+<style>
+  :root { color-scheme: light; }
+  body { background: oklch(0.965 0.012 75); }
+  .ease-quart { transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1); }
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .9s cubic-bezier(0.25,1,0.5,1), transform .9s cubic-bezier(0.25,1,0.5,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  .yaml-line { opacity: 0; transform: translateX(-8px); animation: line .5s cubic-bezier(0.25,1,0.5,1) forwards; }
+  @keyframes line { to { opacity: 1; transform: none; } }
+  .caret::after { content: ''; display: inline-block; width: .55ch; height: 1.1em; vertical-align: -0.2em; background: currentColor; margin-left: 2px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .grain { background-image: radial-gradient(oklch(0.22 0.02 60 / .06) 1px, transparent 1px); background-size: 4px 4px; }
+  .bar { transform-origin: left; transform: scaleX(0); transition: transform 1.4s cubic-bezier(0.16,1,0.3,1); }
+  .in .bar { transform: scaleX(1); }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .yaml-line, .bar { opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important; }
+    .caret::after { animation: none; }
+  }
+</style>
+</head>
+<body class="font-display text-ink antialiased selection:bg-ember selection:text-paper">
+
+<header class="sticky top-0 z-20 border-b border-ink/10 bg-paper/90 backdrop-blur-sm">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-8">
+    <a href="#" class="font-mono text-sm font-semibold">shyamenk<span class="text-ember">.space</span></a>
+    <ul class="hidden gap-8 text-sm text-ink2 sm:flex">
+      <li><a class="hover:text-ink" href="#rollouts">Rollouts</a></li>
+      <li><a class="hover:text-ink" href="#workloads">Workloads</a></li>
+      <li><a class="hover:text-ink" href="#writing">Writing</a></li>
+    </ul>
+    <a href="mailto:shyamenk@gmail.com" class="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper transition hover:bg-ember ease-quart">Say hello</a>
+  </nav>
+</header>
+
+<main>
+  <!-- Hero: the person as a manifest -->
+  <section class="mx-auto grid max-w-6xl gap-12 px-4 pb-20 pt-14 sm:px-8 lg:grid-cols-[1.1fr_1fr] lg:pt-24">
+    <div class="reveal">
+      <p class="mb-6 inline-flex items-center gap-2 rounded-full border border-ink/15 px-3 py-1 font-mono text-xs text-ink2">
+        <span class="relative flex h-2 w-2"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-leaf opacity-60"></span><span class="relative inline-flex h-2 w-2 rounded-full bg-leaf"></span></span>
+        status: Running · Kochi, India
+      </p>
+      <h1 class="text-[clamp(2.75rem,7vw,5.5rem)] font-extrabold leading-[0.95] tracking-[-0.035em]">
+        I keep production <span class="text-ember">boring.</span>
+      </h1>
+      <p class="mt-8 max-w-[52ch] text-lg leading-relaxed text-ink2">
+        Shyam Kumar, Cloud &amp; Backend Engineer. Six years of shipping on AWS, Linux and containers, and turning the outages into short, practical lessons: the problem, the bottleneck, the fix.
+      </p>
+      <div class="mt-10 flex flex-wrap gap-3">
+        <a href="#rollouts" class="rounded-full bg-ember px-6 py-3 font-semibold text-paper transition ease-quart hover:bg-emberdeep">See the rollout history</a>
+        <a href="https://backendalmanac.in" class="rounded-full border border-ink/20 px-6 py-3 font-semibold transition ease-quart hover:border-ink">Read the notes</a>
+      </div>
+    </div>
+
+    <figure class="reveal relative" style="transition-delay:.15s">
+      <div class="grain absolute -inset-3 -z-10 rounded-[28px] bg-paper2"></div>
+      <div class="overflow-hidden rounded-2xl bg-ink text-[13px] leading-6 text-paper shadow-[0_30px_60px_-30px_oklch(0.22_0.02_60/.6)]">
+        <div class="flex items-center justify-between border-b border-paper/10 px-4 py-2 font-mono text-xs text-paper/60">
+          <span>shyam.yaml</span><span>kubectl apply -f</span>
+        </div>
+        <pre id="yaml" class="min-h-[22rem] overflow-x-auto px-5 py-4 font-mono" aria-label="Profile written as a Kubernetes manifest"></pre>
+      </div>
+      <figcaption class="mt-4 font-mono text-xs text-ink2" id="applied">&nbsp;</figcaption>
+    </figure>
+  </section>
+
+  <!-- Rollout history = experience -->
+  <section id="rollouts" class="border-y border-ink/10 bg-paper2/60">
+    <div class="mx-auto max-w-6xl px-4 py-20 sm:px-8">
+      <div class="reveal flex flex-wrap items-end justify-between gap-4">
+        <h2 class="text-[clamp(2rem,4vw,3rem)] font-extrabold tracking-[-0.03em]">Rollout history</h2>
+        <code class="font-mono text-sm text-ink2">$ kubectl rollout history deploy/shyam</code>
+      </div>
+
+      <ol class="mt-12 space-y-4">
+        <li class="reveal grid gap-4 rounded-2xl bg-paper p-6 sm:grid-cols-[7rem_1fr] sm:p-8">
+          <div class="font-mono text-sm"><span class="text-ember">REV 4</span><br><span class="text-ink2">2026 to now</span></div>
+          <div>
+            <h3 class="text-2xl font-semibold">AWS Cloud Engineer · Amdrodd Technologies</h3>
+            <p class="mt-3 max-w-[68ch] leading-relaxed text-ink2">Moving a multi-tenant SaaS from GCP to AWS: 9 microservices, a multi-account landing zone, ECS Fargate on Graviton with Terraform.</p>
+            <dl class="mt-6 grid gap-x-8 gap-y-5 sm:grid-cols-2">
+              <div><dt class="font-mono text-xs text-ink2">compute vs x86</dt><dd class="mt-1 flex items-center gap-3"><span class="font-semibold">51% cheaper</span><span class="h-1.5 flex-1 overflow-hidden rounded bg-ink/10"><span class="bar block h-full w-[51%] rounded bg-ember"></span></span></dd></div>
+              <div><dt class="font-mono text-xs text-ink2">staging cost</dt><dd class="mt-1 flex items-center gap-3"><span class="font-semibold">70% lower</span><span class="h-1.5 flex-1 overflow-hidden rounded bg-ink/10"><span class="bar block h-full w-[70%] rounded bg-ember"></span></span></dd></div>
+              <div><dt class="font-mono text-xs text-ink2">build time</dt><dd class="mt-1 font-semibold">35-40 min to 8-12 min</dd></div>
+              <div><dt class="font-mono text-xs text-ink2">secrets audit</dt><dd class="mt-1 font-semibold">532 duplicates, 33 weak, all fixed</dd></div>
+            </dl>
+          </div>
+        </li>
+        <li class="reveal grid gap-4 rounded-2xl bg-paper p-6 sm:grid-cols-[7rem_1fr] sm:p-8">
+          <div class="font-mono text-sm"><span class="text-ink">REV 3</span><br><span class="text-ink2">2024 to 2026</span></div>
+          <div>
+            <h3 class="text-2xl font-semibold">Senior Full Stack Engineer · CyberSapient</h3>
+            <p class="mt-3 max-w-[68ch] leading-relaxed text-ink2">A HIPAA-compliant EHR for 1,000+ providers, 40,000+ patient records a day, zero security incidents. Serverless image transcoding under 100 ms at the edge.</p>
+          </div>
+        </li>
+        <li class="reveal grid gap-4 rounded-2xl bg-paper p-6 sm:grid-cols-[7rem_1fr] sm:p-8">
+          <div class="font-mono text-sm"><span class="text-ink">REV 2</span><br><span class="text-ink2">2022 to 2024</span></div>
+          <div>
+            <h3 class="text-2xl font-semibold">Web Developer · Ethernex IT Solutions, Abu Dhabi</h3>
+            <p class="mt-3 max-w-[68ch] leading-relaxed text-ink2">Healthcare web apps, Stripe billing and Twilio reminders that patients actually received.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Workloads = projects -->
+  <section id="workloads" class="mx-auto max-w-6xl px-4 py-20 sm:px-8">
+    <div class="reveal flex flex-wrap items-end justify-between gap-4">
+      <h2 class="text-[clamp(2rem,4vw,3rem)] font-extrabold tracking-[-0.03em]">Workloads</h2>
+      <code class="font-mono text-sm text-ink2">$ kubectl get workloads -o wide</code>
+    </div>
+    <div class="reveal mt-10 overflow-x-auto">
+      <table class="w-full min-w-[640px] border-collapse text-left">
+        <thead class="font-mono text-xs uppercase tracking-wider text-ink2">
+          <tr class="border-b border-ink/15"><th class="py-3 pr-6 font-normal">Name</th><th class="py-3 pr-6 font-normal">Ready</th><th class="py-3 pr-6 font-normal">What it does</th><th class="py-3 font-normal">Stack</th></tr>
+        </thead>
+        <tbody class="text-[15px]">
+          <tr class="group border-b border-ink/10 transition hover:bg-paper2">
+            <td class="py-5 pr-6 font-semibold"><a href="https://github.com/shyamenk/costpulse" class="group-hover:text-ember">costpulse</a></td>
+            <td class="py-5 pr-6 font-mono text-sm text-leaf">1/1</td>
+            <td class="py-5 pr-6 text-ink2">Slack <code class="font-mono">/cost</code> shows AWS spend by service. One scope, one IAM action.</td>
+            <td class="py-5 font-mono text-xs text-ink2">Lambda · SAM · Python</td>
+          </tr>
+          <tr class="group border-b border-ink/10 transition hover:bg-paper2">
+            <td class="py-5 pr-6 font-semibold"><a href="#" class="group-hover:text-ember">kube-by-kube</a></td>
+            <td class="py-5 pr-6 font-mono text-sm text-ember">rolling</td>
+            <td class="py-5 pr-6 text-ink2">Free hands-on Kubernetes course. Troubleshooting first, production on AWS last.</td>
+            <td class="py-5 font-mono text-xs text-ink2">Kubernetes · Argo CD</td>
+          </tr>
+          <tr class="group border-b border-ink/10 transition hover:bg-paper2">
+            <td class="py-5 pr-6 font-semibold"><a href="#" class="group-hover:text-ember">image-transcoder</a></td>
+            <td class="py-5 pr-6 font-mono text-sm text-leaf">1/1</td>
+            <td class="py-5 pr-6 text-ink2">Event-driven image formats on upload, served under 100 ms from the edge.</td>
+            <td class="py-5 font-mono text-xs text-ink2">Lambda · S3 · CloudFront</td>
+          </tr>
+          <tr class="group border-b border-ink/10 transition hover:bg-paper2">
+            <td class="py-5 pr-6 font-semibold"><a href="#" class="group-hover:text-ember">k8s-notes</a></td>
+            <td class="py-5 pr-6 font-mono text-sm text-leaf">1/1</td>
+            <td class="py-5 pr-6 text-ink2">Searchable viewer for my Kubernetes study notes.</td>
+            <td class="py-5 font-mono text-xs text-ink2">React · Vite</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Writing -->
+  <section id="writing" class="bg-ink text-paper">
+    <div class="mx-auto grid max-w-6xl gap-10 px-4 py-24 sm:px-8 lg:grid-cols-[1fr_1.2fr]">
+      <h2 class="reveal text-[clamp(2.25rem,5vw,4rem)] font-extrabold leading-[0.95] tracking-[-0.035em]">Outages in,<br><span class="text-ember">lessons out.</span></h2>
+      <div class="reveal" style="transition-delay:.1s">
+        <p class="max-w-[60ch] text-lg leading-relaxed text-paper/75">I write about Linux, Kubernetes, AWS and system design at Backend Almanac. Every post is one real problem, the bottleneck behind it, and the fix that held.</p>
+        <ul class="mt-8 divide-y divide-paper/10 border-y border-paper/10">
+          <li class="flex items-baseline justify-between gap-6 py-4"><span>Why your pod restarts and the logs are empty</span><span class="font-mono text-xs text-paper/50">kubernetes</span></li>
+          <li class="flex items-baseline justify-between gap-6 py-4"><span>The NAT Gateway line on your bill nobody questioned</span><span class="font-mono text-xs text-paper/50">aws</span></li>
+          <li class="flex items-baseline justify-between gap-6 py-4"><span>532 duplicated secrets: an audit, step by step</span><span class="font-mono text-xs text-paper/50">security</span></li>
+        </ul>
+        <a href="https://backendalmanac.in" class="mt-8 inline-block font-semibold text-ember underline decoration-2 underline-offset-4 hover:text-paper">backendalmanac.in</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="mx-auto max-w-6xl px-4 py-16 sm:px-8">
+    <p class="reveal font-mono text-sm text-ink2">$ kubectl exec -it shyam -- say hello</p>
+    <a href="mailto:shyamenk@gmail.com" class="reveal mt-3 block text-[clamp(2rem,6vw,4.5rem)] font-extrabold tracking-[-0.035em] transition ease-quart hover:text-ember">shyamenk@gmail.com</a>
+    <div class="mt-10 flex flex-wrap gap-6 text-sm text-ink2">
+      <a class="hover:text-ink" href="https://github.com/shyamenk">GitHub</a>
+      <a class="hover:text-ink" href="https://www.linkedin.com/in/shyamenk">LinkedIn</a>
+      <a class="hover:text-ink" href="https://x.com/shyamenk07">X</a>
+    </div>
+  </footer>
+</main>
+
+<script>
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+  const k = (t) => `<span style="color:oklch(0.78 0.14 45)">${t}</span>`;
+  const s = (t) => `<span style="color:oklch(0.85 0.1 140)">${t}</span>`;
+  const c = (t) => `<span style="color:oklch(0.65 0.02 60)">${t}</span>`;
+  const lines = [
+    `${k('apiVersion')}: people/v1`,
+    `${k('kind')}: Engineer`,
+    `${k('metadata')}:`,
+    `  ${k('name')}: ${s('shyam-kumar')}`,
+    `  ${k('labels')}:`,
+    `    ${k('role')}: ${s('cloud-backend')}`,
+    `    ${k('region')}: ${s('kochi-in')}`,
+    `${k('spec')}:`,
+    `  ${k('replicas')}: 1  ${c('# no autoscaling, just coffee')}`,
+    `  ${k('experience')}: ${s('6y')}`,
+    `  ${k('stack')}: [linux, kubernetes, aws, terraform]`,
+    `  ${k('writes')}: ${s('backendalmanac.in')}`,
+    `${k('status')}:`,
+    `  ${k('phase')}: ${s('Running')}`,
+    `  ${k('openTo')}: ${s('cloud + platform roles')}`,
+  ];
+  const pre = document.getElementById('yaml');
+  lines.forEach((l, i) => {
+    const row = document.createElement('div');
+    row.className = 'yaml-line';
+    row.style.animationDelay = reduce ? '0s' : `${0.35 + i * 0.09}s`;
+    row.innerHTML = l || '&nbsp;';
+    pre.appendChild(row);
+  });
+  const caret = document.createElement('div');
+  caret.className = 'caret yaml-line';
+  caret.style.animationDelay = reduce ? '0s' : `${0.35 + lines.length * 0.09}s`;
+  pre.appendChild(caret);
+  setTimeout(() => {
+    document.getElementById('applied').innerHTML = 'engineer/shyam-kumar <span class="text-leaf">configured</span>';
+  }, reduce ? 0 : (0.6 + lines.length * 0.09) * 1000);
+</script>
+</body>
+</html>

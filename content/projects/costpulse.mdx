@@ -1,0 +1,54 @@
+---
+slug: costpulse
+title: CostPulse – AWS Spend in Slack
+description: A Slack slash command that shows AWS spend for today, the last 7 days or month to date, broken down by service. One Slack scope, one IAM action, cost guardrails built in.
+date: '2026-10-18'
+image: /projects/costpulse.png
+technologies:
+  - Python 3.14
+  - Slack Bolt
+  - AWS Lambda
+  - AWS SAM
+  - Cost Explorer
+  - SSM Parameter Store
+  - CloudWatch
+  - GitHub Actions
+githubUrl: https://github.com/shyamenk/costpulse
+featured: true
+---
+
+## The problem
+
+AWS spend is invisible until the monthly bill arrives, and checking it means giving people console billing access most of the team shouldn't have.
+
+## What it does
+
+Type `/cost` in an allowed Slack channel and CostPulse replies with spend by service:
+
+- `/cost` or `/cost month`: month to date (on the 1st, the full previous month)
+- `/cost today`: today so far, in UTC
+- `/cost week`: the last 7 days
+
+The reply lists the top 5 services plus an "Other" row, and the total always equals the sum of the displayed rows.
+
+## Architecture
+
+- **One Lambda behind a Function URL**, deployed with AWS SAM to `us-east-1`.
+- **Bolt lazy listeners** acknowledge Slack inside its 3-second limit, then the function re-invokes itself asynchronously to query Cost Explorer and post the in-channel reply through `response_url`.
+- **Secrets** (signing secret, bot token) live in SSM Parameter Store as `SecureString`, read once per cold start.
+- **In-memory cache** per date range for one hour, so repeated commands don't pay for repeated Cost Explorer calls.
+
+## Least privilege, on both sides
+
+- **Slack:** exactly one bot scope, `commands`. Replies go back through `response_url`, so the app needs no permission to post, read messages or see users.
+- **AWS:** an explicit IAM role with five actions: `ce:GetCostAndUsage`, `ssm:GetParameter` on two parameters, a self-invoke for the lazy listener, and writes to its own log group. Tests fail if the policy ever widens.
+- **Channel allowlist:** commands from any other channel get a private hint, and an empty allowlist rejects everything.
+
+## Cost guardrails
+
+A public Function URL has no rate limiting, and Lambda bills even rejected requests. So the stack adds a $5 monthly account budget with email alerts, a CloudWatch alarm on more than 1,000 invocations in 5 minutes, and a documented kill switch (reserved concurrency 0) that was tested live.
+
+## Results
+
+- 55 tests, including signed-request tests that drive Bolt's real Lambda adapter and replay the self-invocation.
+- Warm acknowledgements in about 120 ms; a cold start of about 3 seconds on the server, which is the next thing to tune.

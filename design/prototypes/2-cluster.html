@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Shyam Kumar · Cluster</title>
+<meta name="description" content="Shyam Kumar V M, Cloud and Backend Engineer. Linux, Kubernetes, AWS and system design, from real incidents." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['"Schibsted Grotesk"', 'system-ui', 'sans-serif'],
+          mono: ['"Geist Mono"', 'ui-monospace', 'monospace'],
+        },
+        colors: {
+          void: 'oklch(0.17 0.018 165)',
+          slab: 'oklch(0.22 0.02 165)',
+          line: 'oklch(0.32 0.02 165)',
+          fog: 'oklch(0.72 0.02 165)',
+          chalk: 'oklch(0.95 0.01 165)',
+          run: 'oklch(0.8 0.17 150)',
+          pend: 'oklch(0.84 0.15 85)',
+          fail: 'oklch(0.7 0.17 25)',
+          info: 'oklch(0.8 0.1 210)',
+        },
+      },
+    },
+  };
+</script>
+<style>
+  :root { color-scheme: dark; }
+  body { background: oklch(0.17 0.018 165); }
+  .gridbg { background-image: linear-gradient(oklch(0.32 0.02 165 / .35) 1px, transparent 1px), linear-gradient(90deg, oklch(0.32 0.02 165 / .35) 1px, transparent 1px); background-size: 48px 48px; mask-image: radial-gradient(ellipse at 70% 40%, black 20%, transparent 70%); }
+  .rise { opacity: 0; transform: translateY(18px); animation: rise .9s cubic-bezier(0.16,1,0.3,1) forwards; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity .8s cubic-bezier(0.25,1,0.5,1), transform .8s cubic-bezier(0.25,1,0.5,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  .pod { transition: transform .9s cubic-bezier(0.16,1,0.3,1), opacity .5s ease-out, fill .4s ease-out; }
+  .event { animation: rise .6s cubic-bezier(0.16,1,0.3,1) both; }
+  @media (prefers-reduced-motion: reduce) {
+    .rise, .reveal, .event { opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important; }
+    .pod { transition: none; }
+  }
+</style>
+</head>
+<body class="font-sans text-chalk antialiased selection:bg-run selection:text-void">
+
+<header class="relative z-20">
+  <nav class="mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-8">
+    <a href="#" class="font-mono text-sm text-fog"><span class="text-run">●</span> ctx: shyamenk.space</a>
+    <ul class="hidden gap-8 font-mono text-sm text-fog md:flex">
+      <li><a class="hover:text-chalk" href="#nodes">nodes</a></li>
+      <li><a class="hover:text-chalk" href="#events">events</a></li>
+      <li><a class="hover:text-chalk" href="#contact">contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="relative overflow-hidden">
+    <div class="gridbg pointer-events-none absolute inset-0"></div>
+    <div class="relative mx-auto grid max-w-7xl items-center gap-10 px-4 pb-24 pt-10 sm:px-8 lg:grid-cols-[1fr_1.15fr] lg:pt-20">
+      <div>
+        <p class="rise font-mono text-sm text-run" style="animation-delay:.05s">Shyam Kumar · Cloud &amp; Backend Engineer</p>
+        <h1 class="rise mt-5 text-[clamp(2.6rem,6.5vw,5.25rem)] font-black leading-[0.98] tracking-[-0.04em]" style="animation-delay:.15s">
+          Production breaks.<br>I write down<br>how it got fixed.
+        </h1>
+        <p class="rise mt-7 max-w-[50ch] text-lg leading-relaxed text-fog" style="animation-delay:.3s">
+          Six years on Linux, containers and AWS, from HIPAA healthcare to a 9-service cloud migration. Each lesson is one problem, its bottleneck, and the fix that held.
+        </p>
+        <div class="rise mt-9 flex flex-wrap items-center gap-4" style="animation-delay:.45s">
+          <a href="#events" class="rounded-md bg-run px-5 py-3 font-semibold text-void transition hover:bg-chalk">kubectl get events</a>
+          <a href="https://backendalmanac.in" class="rounded-md border border-line px-5 py-3 font-semibold transition hover:border-fog">Backend Almanac</a>
+        </div>
+      </div>
+
+      <!-- Animated cluster: pods get scheduled onto nodes -->
+      <figure class="rise relative" style="animation-delay:.25s">
+        <svg id="cluster" viewBox="0 0 560 420" class="h-auto w-full" role="img" aria-label="Animated diagram of a cluster: pods representing projects are scheduled onto three nodes named linux, kubernetes and aws.">
+          <defs>
+            <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <g id="nodes"></g>
+          <g id="pods"></g>
+        </svg>
+        <figcaption id="sched" class="mt-2 h-5 font-mono text-xs text-fog"></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Nodes = topics -->
+  <section id="nodes" class="border-t border-line">
+    <div class="mx-auto max-w-7xl px-4 py-20 sm:px-8">
+      <div class="reveal flex flex-wrap items-baseline justify-between gap-4">
+        <h2 class="text-[clamp(1.9rem,4vw,3rem)] font-black tracking-[-0.03em]">What I post about</h2>
+        <code class="font-mono text-sm text-fog">kubectl get nodes</code>
+      </div>
+      <div class="mt-12 grid gap-px overflow-hidden rounded-xl border border-line bg-line md:grid-cols-[1.4fr_1fr_1fr]">
+        <article class="reveal bg-slab p-8 md:row-span-2">
+          <p class="font-mono text-xs text-run">node/kubernetes · Ready</p>
+          <h3 class="mt-4 text-3xl font-bold tracking-tight">Kubernetes, from the failure side</h3>
+          <p class="mt-4 max-w-[46ch] leading-relaxed text-fog">CrashLoopBackOff, OOMKilled, Pending forever. I learn the platform by breaking it on purpose, then write the shortest path back to Running. The long version lives in Kube by Kube, a free hands-on course.</p>
+          <pre class="mt-8 overflow-x-auto rounded-lg bg-void p-4 font-mono text-[13px] leading-6 text-fog"><span class="text-chalk">$ kubectl logs api-7d9f -p</span>
+<span class="text-fail">Error: OOMKilled (exit 137)</span>
+<span class="text-chalk">$ kubectl describe pod api-7d9f</span>
+  Limits:  memory: <span class="text-pend">128Mi</span>   <span class="text-fog"># the bottleneck</span></pre>
+        </article>
+        <article class="reveal bg-slab p-8">
+          <p class="font-mono text-xs text-info">node/aws · Ready</p>
+          <h3 class="mt-4 text-2xl font-bold tracking-tight">AWS, with the bill open</h3>
+          <p class="mt-3 leading-relaxed text-fog">Landing zones, Fargate on Graviton, and the NAT Gateway line nobody questioned.</p>
+        </article>
+        <article class="reveal bg-slab p-8">
+          <p class="font-mono text-xs text-pend">node/linux · Ready</p>
+          <h3 class="mt-4 text-2xl font-bold tracking-tight">Linux underneath it all</h3>
+          <p class="mt-3 leading-relaxed text-fog">cgroups, file descriptors, DNS. What your container actually is.</p>
+        </article>
+        <article class="reveal bg-slab p-8 md:col-span-2">
+          <p class="font-mono text-xs text-fail">node/system-design · Ready</p>
+          <h3 class="mt-4 text-2xl font-bold tracking-tight">System design without the whiteboard theatre</h3>
+          <p class="mt-3 max-w-[60ch] leading-relaxed text-fog">Trade-offs I have actually paid for: queues vs. webhooks, one database vs. many, and when not to add Kubernetes at all.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Events = achievements -->
+  <section id="events" class="border-t border-line bg-slab/40">
+    <div class="mx-auto max-w-7xl px-4 py-20 sm:px-8">
+      <div class="reveal flex flex-wrap items-baseline justify-between gap-4">
+        <h2 class="text-[clamp(1.9rem,4vw,3rem)] font-black tracking-[-0.03em]">Events</h2>
+        <code class="font-mono text-sm text-fog">kubectl get events --sort-by=.lastTimestamp</code>
+      </div>
+      <div class="reveal mt-10 overflow-x-auto rounded-xl border border-line bg-void">
+        <table class="w-full min-w-[720px] text-left font-mono text-[13px]">
+          <thead class="text-fog"><tr class="border-b border-line"><th class="px-5 py-3 font-normal">AGE</th><th class="px-5 py-3 font-normal">TYPE</th><th class="px-5 py-3 font-normal">REASON</th><th class="px-5 py-3 font-normal">OBJECT</th><th class="px-5 py-3 font-normal">MESSAGE</th></tr></thead>
+          <tbody id="eventRows" class="text-chalk/90"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="border-t border-line">
+    <div class="mx-auto max-w-7xl px-4 py-24 sm:px-8">
+      <p class="reveal font-mono text-sm text-fog">$ kubectl port-forward svc/shyam 443:inbox</p>
+      <h2 class="reveal mt-4 max-w-[16ch] text-[clamp(2.4rem,6vw,4.75rem)] font-black leading-[0.98] tracking-[-0.04em]">Got a cluster that won't stay up?</h2>
+      <div class="reveal mt-10 flex flex-wrap gap-4">
+        <a href="mailto:shyamenk@gmail.com" class="rounded-md bg-run px-6 py-3 font-semibold text-void transition hover:bg-chalk">shyamenk@gmail.com</a>
+        <a href="https://x.com/shyamenk07" class="rounded-md border border-line px-6 py-3 font-semibold transition hover:border-fog">@shyamenk07</a>
+        <a href="https://www.linkedin.com/in/shyamenk" class="rounded-md border border-line px-6 py-3 font-semibold transition hover:border-fog">LinkedIn</a>
+        <a href="https://github.com/shyamenk" class="rounded-md border border-line px-6 py-3 font-semibold transition hover:border-fog">GitHub</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const NS = 'http://www.w3.org/2000/svg';
+  const C = { run: 'oklch(0.8 0.17 150)', pend: 'oklch(0.84 0.15 85)', line: 'oklch(0.32 0.02 165)', slab: 'oklch(0.22 0.02 165)', fog: 'oklch(0.72 0.02 165)' };
+
+  const nodes = [
+    { name: 'node/linux', x: 20, y: 150 },
+    { name: 'node/kubernetes', x: 200, y: 150 },
+    { name: 'node/aws', x: 380, y: 150 },
+  ];
+  const pods = [
+    { name: 'costpulse', node: 2 }, { name: 'landing-zone', node: 2 }, { name: 'transcoder', node: 2 },
+    { name: 'kube-by-kube', node: 1 }, { name: 'k8s-notes', node: 1 }, { name: 'argocd-lab', node: 1 },
+    { name: 'cgroups', node: 0 }, { name: 'systemd', node: 0 }, { name: 'dns-debug', node: 0 },
+  ];
+
+  const nodeG = document.getElementById('nodes');
+  nodes.forEach((n) => {
+    const g = document.createElementNS(NS, 'g');
+    g.innerHTML = `<rect x="${n.x}" y="${n.y}" width="160" height="230" rx="12" fill="${C.slab}" stroke="${C.line}"/>
+      <text x="${n.x + 14}" y="${n.y + 26}" fill="${C.fog}" font-family="Geist Mono" font-size="12">${n.name}</text>`;
+    nodeG.appendChild(g);
+  });
+  const sched = document.createElementNS(NS, 'g');
+  sched.innerHTML = `<rect x="200" y="20" width="160" height="56" rx="10" fill="none" stroke="${C.run}" stroke-dasharray="4 4"/>
+    <text x="280" y="53" text-anchor="middle" fill="${C.run}" font-family="Geist Mono" font-size="12">kube-scheduler</text>`;
+  nodeG.appendChild(sched);
+
+  const podG = document.getElementById('pods');
+  const slotCount = [0, 0, 0];
+  const caption = document.getElementById('sched');
+
+  function place(p, i) {
+    const n = nodes[p.node];
+    const slot = slotCount[p.node]++;
+    const tx = n.x + 12, ty = n.y + 44 + slot * 60;
+    const g = document.createElementNS(NS, 'g');
+    g.classList.add('pod');
+    g.style.transform = reduce ? `translate(${tx}px, ${ty}px)` : `translate(${n.x === 200 ? 212 : 212}px, 34px) scale(.6)`;
+    g.style.opacity = reduce ? 1 : 0;
+    g.innerHTML = `<rect width="136" height="46" rx="8" fill="oklch(0.17 0.018 165)" stroke="${C.pend}"/>
+      <circle cx="16" cy="23" r="5" fill="${C.pend}"/>
+      <text x="30" y="27" fill="oklch(0.95 0.01 165)" font-family="Geist Mono" font-size="12">${p.name}</text>`;
+    podG.appendChild(g);
+    const rect = g.querySelector('rect'), dot = g.querySelector('circle');
+    if (reduce) { rect.setAttribute('stroke', C.line); dot.setAttribute('fill', C.run); return; }
+    requestAnimationFrame(() => {
+      g.style.opacity = 1;
+      requestAnimationFrame(() => { g.style.transform = `translate(${tx}px, ${ty}px)`; });
+    });
+    caption.textContent = `Scheduled pod/${p.name} to ${n.name}`;
+    setTimeout(() => { rect.setAttribute('stroke', C.line); dot.setAttribute('fill', C.run); dot.setAttribute('filter', 'url(#glow)'); }, 900);
+  }
+  pods.forEach((p, i) => reduce ? place(p, i) : setTimeout(() => place(p, i), 700 + i * 420));
+  if (!reduce) setTimeout(() => { caption.textContent = '9/9 pods Running'; }, 700 + pods.length * 420 + 900);
+
+  const events = [
+    ['2026', 'Normal', 'Migrated', 'deploy/saas-platform', '9 microservices moved from GCP to AWS'],
+    ['2026', 'Normal', 'Optimized', 'nodepool/graviton', 'Compute 51% cheaper than x86 on Fargate ARM64'],
+    ['2026', 'Normal', 'Scaled', 'env/staging', 'Staging cost down 70% with Fargate Spot, NAT removed'],
+    ['2026', 'Warning', 'SecretsAudit', 'secretsmanager/*', '532 duplicated values, 33 weak credentials found and fixed'],
+    ['2026', 'Normal', 'Accelerated', 'pipeline/ci', 'Builds from 35-40 min to 8-12 min on a self-hosted ARM64 runner'],
+    ['2025', 'Normal', 'Compliant', 'app/ehr', '1,000+ providers, 40,000+ records a day, zero security incidents'],
+    ['2025', 'Normal', 'Served', 'fn/transcoder', 'Images under 100 ms from the CDN edge'],
+  ];
+  const rows = document.getElementById('eventRows');
+  const io2 = new IntersectionObserver((entries) => {
+    if (!entries[0].isIntersecting) return;
+    io2.disconnect();
+    events.forEach((e, i) => {
+      const tr = document.createElement('tr');
+      tr.className = 'event border-b border-line/60 last:border-0';
+      tr.style.animationDelay = reduce ? '0s' : `${i * 0.12}s`;
+      const color = e[1] === 'Warning' ? 'text-pend' : 'text-run';
+      tr.innerHTML = `<td class="px-5 py-3 text-fog">${e[0]}</td><td class="px-5 py-3 ${color}">${e[1]}</td><td class="px-5 py-3">${e[2]}</td><td class="px-5 py-3 text-info">${e[3]}</td><td class="px-5 py-3 text-fog">${e[4]}</td>`;
+      rows.appendChild(tr);
+    });
+  }, { threshold: 0.2 });
+  io2.observe(rows);
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+</script>
+</body>
+</html>

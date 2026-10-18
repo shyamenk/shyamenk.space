@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Shyam Kumar · Sync</title>
+<meta name="description" content="Shyam Kumar V M, Cloud & Backend Engineer. Turning production outages into practical lessons." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..900&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { sans: ['Archivo', 'system-ui', 'sans-serif'] },
+        colors: { char: '#1d1d1d', panel: '#262626', mint: '#7be38c', fogw: '#a3a3a3' },
+      },
+    },
+  };
+</script>
+<style>
+  body { background: #141414; }
+  .wide { font-stretch: 125%; }
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .9s cubic-bezier(0.16,1,0.3,1), transform .9s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  .line { display: block; overflow: hidden; }
+  .line > span { display: block; transform: translateY(105%); animation: up 1s cubic-bezier(0.16,1,0.3,1) forwards; }
+  @keyframes up { to { transform: none; } }
+  .tile { transition: transform .6s cubic-bezier(0.16,1,0.3,1), opacity .4s ease-out; }
+  .tile.hide { opacity: 0; transform: scale(.92); pointer-events: none; position: absolute; }
+  .count { font-variant-numeric: tabular-nums; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .line > span { opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body class="font-sans text-white antialiased selection:bg-mint selection:text-char">
+
+<div class="mx-auto max-w-6xl px-3 py-3 sm:px-6 sm:py-6">
+  <div class="rounded-[22px] border border-white/15 bg-char">
+
+    <!-- NAV -->
+    <header class="flex items-center justify-between px-6 py-5 sm:px-12">
+      <a href="#" class="text-xl font-semibold"><span class="text-mint">//</span> Shyam</a>
+      <button id="menuBtn" class="flex flex-col gap-1.5 p-2" aria-label="Open menu" aria-expanded="false"><span class="block h-px w-6 bg-white"></span><span class="block h-px w-6 bg-white"></span></button>
+      <a href="mailto:shyamenk@gmail.com" class="hidden bg-mint px-4 py-2 text-sm font-semibold text-char transition hover:bg-white sm:inline-block">Let's Collaborate</a>
+    </header>
+    <nav id="menu" class="hidden border-y border-white/10 px-6 py-4 text-sm sm:px-12" aria-label="Sections">
+      <div class="flex flex-wrap gap-6 text-fogw"><a href="#work" class="hover:text-white">/ Work</a><a href="#story" class="hover:text-white">/ Story</a><a href="#skills" class="hover:text-white">/ Skills</a><a href="#notes" class="hover:text-white">/ Notes</a><a href="#contact" class="hover:text-white">/ Contact</a></div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="grid gap-10 px-6 pb-14 pt-10 sm:px-12 lg:grid-cols-[1.6fr_1fr]">
+      <div>
+        <p class="reveal text-sm text-mint">&lt;6+ Years in Production&gt;</p>
+        <h1 class="wide mt-4 text-[clamp(2.4rem,6.2vw,4.6rem)] font-extrabold uppercase leading-[1.02]">
+          <span class="line"><span style="animation-delay:.1s">Turning production</span></span>
+          <span class="line"><span style="animation-delay:.2s">outages into</span></span>
+          <span class="line"><span style="animation-delay:.3s">practical lessons</span></span>
+        </h1>
+        <div class="reveal mt-8 flex flex-wrap gap-5 text-sm text-fogw">
+          <a href="https://www.linkedin.com/in/shyamenk" class="hover:text-mint">/ LinkedIn</a>
+          <a href="https://x.com/shyamenk07" class="hover:text-mint">/ Twitter (X)</a>
+          <a href="https://github.com/shyamenk" class="hover:text-mint">/ GitHub</a>
+          <a href="https://backendalmanac.in" class="hover:text-mint">/ Blog</a>
+        </div>
+      </div>
+      <div class="reveal flex flex-col justify-between gap-8">
+        <figure class="w-40 self-start lg:self-end">
+          <img src="../assets/me.jpeg" alt="Shyam Kumar, black and white portrait" class="aspect-square w-full object-cover grayscale" />
+          <figcaption class="mt-2 text-xs text-fogw">// Shyam Kumar V M</figcaption>
+        </figure>
+        <div>
+          <p class="text-sm text-mint">&lt;About&gt;</p>
+          <p class="mt-2 max-w-[34ch] text-sm leading-relaxed text-fogw">I'm a cloud &amp; backend engineer in Kochi. I migrate, secure and cut the cost of AWS systems, then write about what broke.</p>
+        </div>
+      </div>
+
+      <div class="lg:col-span-2">
+        <p class="reveal text-sm text-mint">&lt;Results &amp; Achievements&gt;</p>
+        <dl class="reveal mt-4 grid grid-cols-2 gap-6 sm:grid-cols-4">
+          <div><dt class="sr-only">Microservices migrated</dt><dd class="count wide text-4xl font-bold" data-to="9">9</dd><p class="mt-1 text-sm text-fogw">Microservices<br>Migrated to AWS</p></div>
+          <div><dt class="sr-only">Compute cost cut</dt><dd class="wide text-4xl font-bold"><span class="count" data-to="51">51</span>%</dd><p class="mt-1 text-sm text-fogw">Lower Compute<br>Cost on ARM64</p></div>
+          <div><dt class="sr-only">Healthcare providers</dt><dd class="wide text-4xl font-bold"><span class="count" data-to="1000">1,000</span>+</dd><p class="mt-1 text-sm text-fogw">Healthcare<br>Providers Served</p></div>
+          <div><dt class="sr-only">Daily records</dt><dd class="wide text-4xl font-bold"><span class="count" data-to="40000">40,000</span>+</dd><p class="mt-1 text-sm text-fogw">Patient Records<br>a Day, 0 Incidents</p></div>
+        </dl>
+      </div>
+    </section>
+  </div>
+
+  <!-- WORK -->
+  <section id="work" class="mt-6 rounded-[22px] border border-white/15 bg-char px-6 py-14 sm:px-12">
+    <div class="reveal flex flex-wrap items-end justify-between gap-6">
+      <div><p class="text-sm text-mint">&lt;Selected Work&gt;</p><h2 class="wide mt-2 text-3xl font-bold leading-tight">A Showcase of My<br>Latest Projects</h2></div>
+      <div class="flex gap-2 text-sm" role="tablist" aria-label="Filter by year">
+        <button class="yr rounded-full bg-mint px-4 py-1.5 font-semibold text-char" data-year="all" role="tab" aria-selected="true">All</button>
+        <button class="yr rounded-full border border-white/20 px-4 py-1.5 text-fogw" data-year="2026" role="tab" aria-selected="false">2026</button>
+        <button class="yr rounded-full border border-white/20 px-4 py-1.5 text-fogw" data-year="2025" role="tab" aria-selected="false">2025</button>
+        <button class="yr rounded-full border border-white/20 px-4 py-1.5 text-fogw" data-year="2024" role="tab" aria-selected="false">2024</button>
+      </div>
+    </div>
+    <div id="tiles" class="relative mt-12 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+      <a href="https://github.com/shyamenk/costpulse" class="tile reveal group block" data-year="2026"><img src="../assets/proj-costpulse.png" alt="CostPulse cover" class="aspect-[4/3] w-full object-cover transition duration-700 group-hover:scale-[1.03]" /><p class="mt-3 text-sm text-fogw">// CostPulse · Slack + AWS</p></a>
+      <a href="https://github.com/shyamenk/tech-blog-ai" class="tile reveal group block lg:mt-16" data-year="2026"><img src="../assets/proj-techblog.png" alt="Tech Blog AI interface" class="aspect-[4/3] w-full object-cover transition duration-700 group-hover:scale-[1.03]" /><p class="mt-3 text-sm text-fogw">// Tech Blog AI · LangGraph</p></a>
+      <a href="https://github.com/shyamenk/image-transcoding-pipeline" class="tile reveal group block" data-year="2025"><img src="../assets/proj-transcoding.png" alt="Image transcoding pipeline diagram" class="aspect-[4/3] w-full object-cover transition duration-700 group-hover:scale-[1.03]" /><p class="mt-3 text-sm text-fogw">// Image Transcoding · Serverless</p></a>
+      <a href="#" class="tile reveal group block lg:-mt-8" data-year="2025"><img src="../assets/proj-aeghis.png" alt="AeghisCorp shipping dashboard" class="aspect-[4/3] w-full object-cover transition duration-700 group-hover:scale-[1.03]" /><p class="mt-3 text-sm text-fogw">// AeghisCorp · Shipping Ops</p></a>
+      <a href="https://github.com/shyamenk/fundcy" class="tile reveal group block lg:mt-10" data-year="2025"><img src="../assets/proj-fundcy.png" alt="Fundcy finance tracker" class="aspect-[4/3] w-full object-cover transition duration-700 group-hover:scale-[1.03]" /><p class="mt-3 text-sm text-fogw">// Fundcy · Finance Tracker</p></a>
+      <a href="#" class="tile reveal group block" data-year="2024"><img src="../assets/proj-gemcaps.png" alt="Gemcaps healthcare revenue cycle platform" class="aspect-[4/3] w-full object-cover object-left transition duration-700 group-hover:scale-[1.03]" /><p class="mt-3 text-sm text-fogw">// Gemcaps · Healthcare RCM</p></a>
+    </div>
+  </section>
+
+  <!-- STORY -->
+  <section id="story" class="mt-6 grid items-center gap-10 rounded-[22px] border border-white/15 bg-char px-6 py-14 sm:px-12 lg:grid-cols-[1fr_1.3fr]">
+    <img src="../assets/me.jpeg" alt="" class="reveal mx-auto aspect-square w-full max-w-sm object-cover grayscale" />
+    <div class="reveal">
+      <p class="text-sm text-mint">&lt;My Story&gt;</p>
+      <p class="mt-3 text-lg font-semibold">From front ends to the cloud underneath them, one layer at a time.</p>
+      <p class="mt-4 leading-relaxed text-fogw">I started in web development in Abu Dhabi, moved into healthcare backends at CyberSapient, and now run AWS infrastructure at Amdrodd Technologies.</p>
+      <p class="mt-4 leading-relaxed text-fogw">I architected a HIPAA-compliant EHR for 1,000+ providers, and I'm now migrating a multi-tenant SaaS from GCP to AWS with Terraform, OIDC-based CI/CD and a hardened landing zone.</p>
+      <p class="mt-4 leading-relaxed text-fogw">I learn by doing, and I write it all down at Backend Almanac and in Kube by Kube, a free Kubernetes course.</p>
+      <a href="mailto:shyamenk@gmail.com" class="mt-8 inline-block bg-mint px-5 py-2.5 text-sm font-semibold text-char transition hover:bg-white">Let's build something together!</a>
+    </div>
+  </section>
+
+  <!-- SKILLS + NOTES -->
+  <div class="mt-6 grid gap-6 lg:grid-cols-[1fr_1.4fr]">
+    <section id="skills" class="rounded-[22px] border border-white/15 bg-char px-6 py-12 sm:px-10">
+      <p class="reveal text-sm text-mint">&lt;Toolbox&gt;</p>
+      <h2 class="reveal wide mt-2 text-2xl font-bold">Skills and Technologies</h2>
+      <div class="mt-8 space-y-6 text-sm">
+        <div class="reveal"><p class="text-mint">/ Cloud &amp; Infra</p><p class="mt-2 leading-7 text-fogw">AWS · ECS Fargate · Lambda · S3 · RDS · DynamoDB · CloudFront · Terraform · Docker · Kubernetes · Argo CD</p></div>
+        <div class="reveal"><p class="text-mint">/ Backend</p><p class="mt-2 leading-7 text-fogw">Node.js · Python · FastAPI · Express · REST · event-driven design</p></div>
+        <div class="reveal"><p class="text-mint">/ Data</p><p class="mt-2 leading-7 text-fogw">PostgreSQL · MongoDB · DynamoDB · Redis · Drizzle</p></div>
+        <div class="reveal"><p class="text-mint">/ Delivery &amp; Security</p><p class="mt-2 leading-7 text-fogw">GitHub Actions · Bitbucket Pipelines · OIDC · Secrets Manager · IAM Identity Center</p></div>
+      </div>
+    </section>
+
+    <section id="notes" class="rounded-[22px] border border-white/15 bg-char px-6 py-12 sm:px-10">
+      <p class="reveal text-sm text-mint">&lt;Blogs&gt;</p>
+      <h2 class="reveal wide mt-2 text-2xl font-bold">Insights from<br>Production</h2>
+      <div class="mt-8 grid gap-6 sm:grid-cols-3">
+        <a href="https://backendalmanac.in/blog/api-design" class="reveal group block"><img src="../assets/blog1.webp" alt="" class="aspect-[4/3] w-full object-cover transition group-hover:opacity-80" /><p class="mt-3 text-xs text-fogw">Dec 2024 · API</p><p class="mt-1 text-sm font-semibold">Mastering API Design</p></a>
+        <a href="https://backendalmanac.in/blog/system-design" class="reveal group block sm:mt-8"><img src="../assets/blog2.webp" alt="" class="aspect-[4/3] w-full object-cover transition group-hover:opacity-80" /><p class="mt-3 text-xs text-fogw">Dec 2024 · Architecture</p><p class="mt-1 text-sm font-semibold">System Design</p></a>
+        <a href="https://backendalmanac.in/blog/database-design" class="reveal group block"><img src="../assets/blog3.webp" alt="" class="aspect-[4/3] w-full object-cover transition group-hover:opacity-80" /><p class="mt-3 text-xs text-fogw">Nov 2024 · Databases</p><p class="mt-1 text-sm font-semibold">Optimizing Database Design</p></a>
+      </div>
+    </section>
+  </div>
+
+  <!-- TESTIMONIAL + CONTACT -->
+  <section id="contact" class="mt-6 grid gap-10 rounded-[22px] border border-white/15 bg-char px-6 py-14 sm:px-12 lg:grid-cols-[1.4fr_1fr]">
+    <div class="reveal">
+      <p class="text-sm text-mint">&lt;What People Say&gt;</p>
+      <p class="wide mt-4 text-[clamp(1.4rem,2.6vw,2rem)] font-bold leading-snug">"Working with Shyam was a pleasure. He not only met our technical requirements but also provided valuable insights that improved our product."</p>
+      <p class="mt-4 text-sm text-fogw">// Jasim Al-Mubarck, Full Stack Developer, CyberSapient</p>
+    </div>
+    <div class="reveal self-end">
+      <p class="text-sm text-mint">&lt;Contact&gt;</p>
+      <p class="mt-3 text-fogw">Open to cloud, platform and backend roles.</p>
+      <a href="mailto:shyamenk@gmail.com" class="wide mt-3 block text-2xl font-bold hover:text-mint">shyamenk@gmail.com</a>
+      <a href="mailto:shyamenk@gmail.com" class="mt-6 inline-block bg-mint px-5 py-2.5 text-sm font-semibold text-char transition hover:bg-white">Let's Collaborate</a>
+    </div>
+  </section>
+
+  <footer class="flex flex-wrap items-center justify-between gap-4 px-2 py-8 text-sm text-fogw">
+    <p><span class="text-mint">//</span> Shyam Kumar V M · Kochi, India</p>
+    <p>© 2026</p>
+  </footer>
+</div>
+
+<script>
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const menuBtn = document.getElementById('menuBtn'), menu = document.getElementById('menu');
+  menuBtn.addEventListener('click', () => {
+    const open = menu.classList.toggle('hidden') === false;
+    menuBtn.setAttribute('aria-expanded', String(open));
+  });
+
+  document.querySelectorAll('.yr').forEach((btn) => btn.addEventListener('click', () => {
+    const year = btn.dataset.year;
+    document.querySelectorAll('.yr').forEach((b) => {
+      const on = b === btn;
+      b.setAttribute('aria-selected', String(on));
+      b.className = 'yr rounded-full px-4 py-1.5 ' + (on ? 'bg-mint font-semibold text-char' : 'border border-white/20 text-fogw');
+    });
+    document.querySelectorAll('.tile').forEach((t) => {
+      const show = year === 'all' || t.dataset.year === year;
+      t.classList.toggle('hidden', !show);
+    });
+  }));
+
+  function countUp(el) {
+    const to = Number(el.dataset.to);
+    if (reduce) { el.textContent = to.toLocaleString('en-US'); return; }
+    const start = performance.now(), dur = 1400;
+    const tick = (t) => {
+      const p = Math.min(1, (t - start) / dur), eased = 1 - Math.pow(1 - p, 4);
+      el.textContent = Math.round(to * eased).toLocaleString('en-US');
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      e.target.querySelectorAll('[data-to]').forEach(countUp);
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+</script>
+</body>
+</html>

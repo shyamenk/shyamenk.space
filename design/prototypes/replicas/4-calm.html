@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Shyam Kumar · Calm</title>
+<meta name="description" content="Shyam Kumar V M, Cloud & Backend Engineer. Turning production outages into practical lessons." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { sans: ['Manrope', 'system-ui', 'sans-serif'], mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'] },
+        colors: { bg: 'var(--bg)', surface: 'var(--surface)', text: 'var(--text)', muted: 'var(--muted)', hair: 'var(--hair)' },
+      },
+    },
+  };
+</script>
+<style>
+  :root, [data-theme="dark"] { --bg: #141414; --surface: #1b1b1b; --text: #ececec; --muted: #8f8f8f; --hair: #2a2a2a; color-scheme: dark; }
+  [data-theme="light"] { --bg: #f6f5f2; --surface: #ffffff; --text: #171717; --muted: #6b6b6b; --hair: #e3e1dc; color-scheme: light; }
+  body { background: var(--bg); transition: background .4s ease, color .4s ease; }
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .8s cubic-bezier(0.25,1,0.5,1), transform .8s cubic-bezier(0.25,1,0.5,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  .ul { background-image: linear-gradient(currentColor, currentColor); background-size: 100% 1px; background-position: 0 100%; background-repeat: no-repeat; transition: background-size .4s cubic-bezier(0.25,1,0.5,1); }
+  .ul:hover { background-size: 0 1px; }
+  .navlink[aria-current="true"] { border-color: var(--muted); color: var(--text); }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1 !important; transform: none !important; transition: none !important; } }
+</style>
+</head>
+<body class="font-sans text-text antialiased">
+
+<!-- Floating pill nav -->
+<header class="sticky top-3 z-30 px-3">
+  <nav class="mx-auto flex max-w-4xl items-center justify-between rounded-2xl border border-hair bg-surface px-4 py-2.5 backdrop-blur">
+    <a href="#top" class="font-semibold">Shyam Kumar</a>
+    <ul class="hidden items-center gap-1 text-xs text-muted md:flex">
+      <li><a class="navlink rounded-full border border-transparent px-3 py-1 hover:text-text" href="#about">About</a></li>
+      <li><a class="navlink rounded-full border border-transparent px-3 py-1 hover:text-text" href="#work">Work</a></li>
+      <li><a class="navlink rounded-full border border-transparent px-3 py-1 hover:text-text" href="#building">Building</a></li>
+      <li><a class="navlink rounded-full border border-transparent px-3 py-1 hover:text-text" href="#kind-words">Kind words</a></li>
+      <li><a class="navlink rounded-full border border-transparent px-3 py-1 hover:text-text" href="#writing">Writing</a></li>
+      <li><a class="navlink rounded-full border border-transparent px-3 py-1 hover:text-text" href="#contact">Contact</a></li>
+    </ul>
+    <button id="theme" type="button" class="relative h-6 w-11 rounded-full border border-hair bg-bg" aria-label="Toggle light and dark theme" aria-pressed="false">
+      <span id="knob" class="absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-text transition-transform duration-300"></span>
+    </button>
+  </nav>
+</header>
+
+<main id="top" class="mx-auto max-w-4xl px-5">
+  <!-- Hero -->
+  <section class="grid items-center gap-10 pb-16 pt-20 md:grid-cols-[1.5fr_1fr]">
+    <div class="reveal">
+      <p class="text-lg text-muted">Namaskaram</p>
+      <h1 class="mt-3 text-[clamp(1.9rem,4vw,2.6rem)] font-medium leading-[1.2] tracking-[-0.02em]">
+        I'm a cloud engineer turning <a href="#work" class="ul">production outages</a> into <a href="#writing" class="ul">practical lessons</a> for teams that ship.
+      </h1>
+    </div>
+    <figure class="reveal flex flex-col items-center">
+      <img src="../assets/me.jpeg" alt="Shyam Kumar with arms crossed, black and white portrait" class="h-48 w-48 rounded-full object-cover" />
+      <figcaption id="clock" class="mt-4 font-mono text-[11px] tracking-wider text-muted">KOCHI, IN · IST --:-- --</figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal border-b border-hair pb-14">
+    <p class="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">Previously with</p>
+    <div class="mt-6 grid grid-cols-2 gap-6 text-lg font-semibold text-muted sm:grid-cols-4">
+      <span>Amdrodd</span><span>CyberSapient</span><span>Ethernex</span><span>Codelynks</span>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="border-b border-hair py-20">
+    <div class="reveal flex items-baseline justify-between gap-4"><h2 class="text-4xl font-semibold tracking-tight">About</h2><a href="https://www.linkedin.com/in/shyamenk" class="font-mono text-xs text-muted hover:text-text">View Experience →</a></div>
+    <p class="reveal mt-8 max-w-[62ch] text-lg leading-relaxed text-text">I'm a cloud and backend engineer with six years of production systems behind me. I built a HIPAA-compliant EHR used by 1,000+ healthcare providers, and I'm now leading a multi-tenant SaaS migration from GCP to AWS. I care about what systems cost, how they fail, and who has to fix them at 2 AM.</p>
+    <dl class="reveal mt-10 grid grid-cols-2 gap-8 sm:grid-cols-4">
+      <div><dt class="text-2xl font-semibold">6+ Yrs</dt><dd class="mt-1 text-xs text-muted">Production Engineering</dd></div>
+      <div><dt class="text-2xl font-semibold">9</dt><dd class="mt-1 text-xs text-muted">Services Moved GCP to AWS</dd></div>
+      <div><dt class="text-2xl font-semibold">~51%</dt><dd class="mt-1 text-xs text-muted">Lower Compute Cost</dd></div>
+      <div><dt class="text-2xl font-semibold">0</dt><dd class="mt-1 text-xs text-muted">Security Incidents, HIPAA</dd></div>
+    </dl>
+  </section>
+
+  <!-- Work -->
+  <section id="work" class="border-b border-hair py-20">
+    <div class="reveal flex items-baseline justify-between gap-4"><h2 class="text-4xl font-semibold tracking-tight">Work</h2><a href="https://github.com/shyamenk" class="font-mono text-xs text-muted hover:text-text">View all ↗</a></div>
+    <div class="mt-10 grid gap-6 sm:grid-cols-2">
+      <a href="https://github.com/shyamenk/image-transcoding-pipeline" class="reveal group block">
+        <div class="overflow-hidden rounded-2xl border border-hair"><img src="../assets/proj-transcoding.png" alt="Serverless image transcoding architecture" class="aspect-[16/10] w-full object-cover transition duration-700 group-hover:scale-[1.04]" /></div>
+        <h3 class="mt-4 text-lg font-semibold">Serverless Image Transcoding</h3>
+        <p class="mt-1 text-muted">Every upload becomes optimised formats, served globally through CloudFront in under 100 ms.</p>
+      </a>
+      <a href="#" class="reveal group block">
+        <div class="overflow-hidden rounded-2xl border border-hair"><img src="../assets/proj-gemcaps.png" alt="Gemcaps healthcare revenue cycle platform" class="aspect-[16/10] w-full object-cover object-left transition duration-700 group-hover:scale-[1.04]" /></div>
+        <h3 class="mt-4 text-lg font-semibold">Gemcaps Healthcare RCM</h3>
+        <p class="mt-1 text-muted">Billing, coding and patient services with automated pipelines on ECS, Lambda and SES.</p>
+      </a>
+    </div>
+    <div class="reveal mt-8 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-hair p-5">
+      <div><p class="font-semibold">Want the migration story: landing zone, cost cuts and the secrets audit?</p><p class="text-sm text-muted">Happy to walk you through it.</p></div>
+      <a href="mailto:shyamenk@gmail.com" class="rounded-lg border border-hair px-4 py-2 text-sm hover:border-muted">Get in touch</a>
+    </div>
+  </section>
+
+  <!-- Building -->
+  <section id="building" class="border-b border-hair py-20">
+    <div class="reveal flex items-baseline justify-between gap-4"><div><h2 class="text-4xl font-semibold tracking-tight">Building</h2><p class="mt-2 text-muted">Side projects I ship in public</p></div><a href="https://github.com/shyamenk" class="font-mono text-xs text-muted hover:text-text">View all ↗</a></div>
+    <div class="mt-10 grid gap-6 sm:grid-cols-2">
+      <div class="reveal">
+        <div class="overflow-hidden rounded-2xl border border-hair"><img src="../assets/proj-costpulse.png" alt="CostPulse cover" class="aspect-[16/10] w-full object-cover" /></div>
+        <h3 class="mt-4 text-lg font-semibold">CostPulse</h3>
+        <p class="mt-1 text-muted">Type /cost in Slack and see AWS spend by service.</p>
+        <a href="https://github.com/shyamenk/costpulse" class="mt-3 inline-block rounded-lg border border-hair px-3 py-1.5 text-xs hover:border-muted">View code ↗</a>
+      </div>
+      <div class="reveal">
+        <div class="overflow-hidden rounded-2xl border border-hair"><img src="../assets/proj-techblog.png" alt="Tech Blog AI interface" class="aspect-[16/10] w-full object-cover" /></div>
+        <h3 class="mt-4 text-lg font-semibold">Tech Blog AI</h3>
+        <p class="mt-1 text-muted">An AI research and writing assistant for technical posts, built on LangGraph.</p>
+        <a href="https://github.com/shyamenk/tech-blog-ai" class="mt-3 inline-block rounded-lg border border-hair px-3 py-1.5 text-xs hover:border-muted">View code ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Kind words (replaces Speaking) -->
+  <section id="kind-words" class="border-b border-hair py-20">
+    <h2 class="reveal text-4xl font-semibold tracking-tight">Kind words</h2>
+    <p class="reveal mt-4 max-w-[60ch] text-lg text-muted">From people I've shipped with.</p>
+    <div class="mt-10 grid gap-5 md:grid-cols-3">
+      <figure class="reveal rounded-2xl border border-hair bg-surface p-6"><blockquote class="leading-relaxed">"Shyam is an exceptional developer who consistently delivers high-quality work. His attention to detail and problem-solving skills are outstanding."</blockquote><figcaption class="mt-5 text-sm"><span class="font-semibold">Krishna Prasad</span><br><span class="text-muted">Senior Product Manager, CyberSapient</span></figcaption></figure>
+      <figure class="reveal rounded-2xl border border-hair bg-surface p-6"><blockquote class="leading-relaxed">"Working with Shyam was a pleasure. He not only met our technical requirements but also provided valuable insights that improved our product."</blockquote><figcaption class="mt-5 text-sm"><span class="font-semibold">Jasim Al-Mubarck</span><br><span class="text-muted">Full Stack Developer, CyberSapient</span></figcaption></figure>
+      <figure class="reveal rounded-2xl border border-hair bg-surface p-6"><blockquote class="leading-relaxed">"Shyam&apos;s expertise in full-stack development and his ability to quickly adapt to new technologies made him an invaluable team member."</blockquote><figcaption class="mt-5 text-sm"><span class="font-semibold">Nitin O V</span><br><span class="text-muted">Team Lead CMS, Evolve</span></figcaption></figure>
+    </div>
+  </section>
+
+  <!-- Writing -->
+  <section id="writing" class="border-b border-hair py-20">
+    <div class="reveal flex items-baseline justify-between gap-4"><h2 class="text-4xl font-semibold tracking-tight">Writings</h2><a href="https://backendalmanac.in" class="font-mono text-xs text-muted hover:text-text">View all ↗</a></div>
+    <div class="mt-10 grid gap-5 sm:grid-cols-2">
+      <a href="https://backendalmanac.in/blog/api-design" class="reveal group flex flex-col rounded-2xl border border-hair bg-surface p-5 transition hover:border-muted">
+        <div class="flex gap-4"><img src="../assets/blog1.webp" alt="" class="h-20 w-20 rounded-lg object-cover" /><div><span class="rounded border border-hair px-1.5 py-0.5 font-mono text-[10px] text-muted">API</span><h3 class="mt-2 font-semibold">Mastering API Design</h3></div></div>
+        <p class="mt-4 text-sm text-muted">Most developers know how to build APIs, but only a few know how to design them.</p>
+        <div class="mt-5 flex justify-between border-t border-hair pt-4 font-mono text-[11px] text-muted"><span>Dec 2024</span><span class="group-hover:text-text">Explore article ↗</span></div>
+      </a>
+      <a href="https://backendalmanac.in/blog/system-design" class="reveal group flex flex-col rounded-2xl border border-hair bg-surface p-5 transition hover:border-muted">
+        <div class="flex gap-4"><img src="../assets/blog2.webp" alt="" class="h-20 w-20 rounded-lg object-cover" /><div><span class="rounded border border-hair px-1.5 py-0.5 font-mono text-[10px] text-muted">Architecture</span><h3 class="mt-2 font-semibold">System Design</h3></div></div>
+        <p class="mt-4 text-sm text-muted">Every successful tech system shares a hidden pattern.</p>
+        <div class="mt-5 flex justify-between border-t border-hair pt-4 font-mono text-[11px] text-muted"><span>Dec 2024</span><span class="group-hover:text-text">Explore article ↗</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Certifications (replaces Patents) -->
+  <section class="border-b border-hair py-20">
+    <h2 class="reveal text-4xl font-semibold tracking-tight">Certifications</h2>
+    <div class="mt-10 grid gap-5 sm:grid-cols-2">
+      <div class="reveal rounded-2xl border border-hair bg-surface p-6"><div class="flex justify-between font-mono text-[11px] text-muted"><span>BADGE 01</span><span class="rounded border border-hair px-1.5">Earned</span></div><h3 class="mt-4 text-lg font-semibold">Getting Started with Networking</h3><p class="mt-2 text-sm text-muted">AWS Educate training badge.</p></div>
+      <div class="reveal rounded-2xl border border-hair bg-surface p-6"><div class="flex justify-between font-mono text-[11px] text-muted"><span>BADGE 02</span><span class="rounded border border-hair px-1.5">Earned</span></div><h3 class="mt-4 text-lg font-semibold">Introduction to Generative AI</h3><p class="mt-2 text-sm text-muted">AWS Educate training badge.</p></div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="py-20">
+    <h2 class="reveal text-4xl font-semibold tracking-tight">Contact</h2>
+    <p class="reveal mt-4 text-lg text-muted">Available for cloud, platform and backend engineering roles.</p>
+    <div class="reveal mt-6 flex items-center gap-3">
+      <a href="mailto:shyamenk@gmail.com" class="ul font-mono text-xl">shyamenk@gmail.com</a>
+      <button id="copy" type="button" class="rounded border border-hair px-2 py-1 font-mono text-[11px] text-muted hover:text-text" aria-live="polite">Copy</button>
+    </div>
+    <p class="reveal mt-10 font-mono text-[11px] uppercase tracking-[0.2em] text-muted">Explore more</p>
+    <div class="reveal mt-4 flex flex-wrap gap-6"><a class="ul" href="https://www.linkedin.com/in/shyamenk">LinkedIn</a><a class="ul" href="https://x.com/shyamenk07">X</a><a class="ul" href="https://github.com/shyamenk">GitHub</a><a class="ul" href="https://backendalmanac.in">Backend Almanac</a></div>
+    <div class="mt-16 flex items-center justify-between border-t border-hair pt-6 font-mono text-[11px] text-muted">
+      <span>© 2026 Shyam Kumar · All rights reserved.</span>
+      <a href="#top" class="rounded-lg border border-hair px-3 py-1.5 hover:text-text">Back to top ↑</a>
+    </div>
+  </section>
+</main>
+
+<script>
+  const root = document.documentElement, btn = document.getElementById('theme'), knob = document.getElementById('knob');
+  function setTheme(t) {
+    root.dataset.theme = t;
+    btn.setAttribute('aria-pressed', String(t === 'light'));
+    knob.style.transform = t === 'light' ? 'translateX(20px)' : 'none';
+    try { localStorage.setItem('theme', t); } catch (e) {}
+  }
+  let saved = null; try { saved = localStorage.getItem('theme'); } catch (e) {}
+  setTheme(saved || 'dark');
+  btn.addEventListener('click', () => setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'));
+
+  const clock = document.getElementById('clock');
+  const fmt = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true });
+  const tick = () => { clock.textContent = `KOCHI, IN · IST ${fmt.format(new Date())}`; };
+  tick(); setInterval(tick, 15000);
+
+  document.getElementById('copy').addEventListener('click', async (e) => {
+    try { await navigator.clipboard.writeText('shyamenk@gmail.com'); e.target.textContent = 'Copied'; }
+    catch { e.target.textContent = 'Select & copy'; }
+    setTimeout(() => { e.target.textContent = 'Copy'; }, 1800);
+  });
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+  const links = [...document.querySelectorAll('.navlink')];
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach((en) => {
+      if (!en.isIntersecting) return;
+      links.forEach((l) => l.setAttribute('aria-current', String(l.getAttribute('href') === `#${en.target.id}`)));
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  links.forEach((l) => { const s = document.querySelector(l.getAttribute('href')); if (s) spy.observe(s); });
+</script>
+</body>
+</html>

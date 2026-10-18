@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Shyam Kumar · Terminal</title>
+<meta name="description" content="Shyam Kumar V M, Cloud & Backend Engineer. Turning production outages into practical lessons." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { mono: ['"Fira Code"', 'ui-monospace', 'monospace'] },
+        colors: { ink: '#0b0b0d', grey: '#abb2bf', accent: '#c778dd', line: '#3a3a40' },
+      },
+    },
+  };
+</script>
+<style>
+  body { background: #0b0b0d; }
+  .dots { background-image: radial-gradient(#abb2bf 1.4px, transparent 1.6px); background-size: 16px 16px; }
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s cubic-bezier(0.25,1,0.5,1), transform .8s cubic-bezier(0.25,1,0.5,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  .caret::after { content: '_'; color: #c778dd; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .float { animation: float 6s ease-in-out infinite; }
+  @keyframes float { 50% { transform: translateY(-10px); } }
+  .rule { transform-origin: left; transform: scaleX(0); transition: transform 1.2s cubic-bezier(0.16,1,0.3,1) .2s; }
+  .in .rule { transform: scaleX(1); }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .rule { opacity: 1 !important; transform: none !important; transition: none !important; }
+    .caret::after, .float { animation: none; }
+  }
+</style>
+</head>
+<body class="font-mono text-grey antialiased selection:bg-accent selection:text-ink">
+
+<!-- Left social rail -->
+<aside class="fixed left-4 top-0 z-30 hidden flex-col items-center gap-3 lg:flex" aria-label="Social links">
+  <span class="h-48 w-px bg-grey/60"></span>
+  <a href="https://github.com/shyamenk" aria-label="GitHub" class="hover:text-white"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.7 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/></svg></a>
+  <a href="https://www.linkedin.com/in/shyamenk" aria-label="LinkedIn" class="hover:text-white"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9V21H9z"/></svg></a>
+  <a href="https://x.com/shyamenk07" aria-label="X" class="hover:text-white"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.2 2H21l-6.5 7.4L22 22h-6l-4.7-6.2L5.8 22H3l7-8L2 2h6.1l4.3 5.7zm-1 18h1.6L7 3.7H5.3z"/></svg></a>
+</aside>
+
+<div class="mx-auto max-w-5xl px-4 sm:px-8">
+  <!-- Nav -->
+  <header class="flex items-center justify-between py-8">
+    <a href="#" class="flex items-center gap-2 font-semibold text-white"><span class="grid h-5 w-5 place-items-center rounded-sm border border-white text-[10px]">S</span>Shyam</a>
+    <nav class="hidden gap-8 text-sm sm:flex">
+      <a href="#home" class="text-white"><span class="text-accent">#</span>home</a>
+      <a href="#projects" class="hover:text-white"><span class="text-accent">#</span>projects</a>
+      <a href="#skills" class="hover:text-white"><span class="text-accent">#</span>skills</a>
+      <a href="#about-me" class="hover:text-white"><span class="text-accent">#</span>about-me</a>
+      <a href="#contacts" class="hover:text-white"><span class="text-accent">#</span>contacts</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section id="home" class="grid items-center gap-10 pt-10 md:grid-cols-2">
+    <div class="reveal">
+      <h1 class="text-[clamp(1.6rem,3.4vw,2.2rem)] font-semibold leading-snug text-white">
+        Turning <span class="text-accent">production outages</span> into <span class="text-accent">practical lessons</span>
+      </h1>
+      <p class="mt-6 max-w-[44ch] leading-relaxed">I'm a cloud &amp; backend engineer. I migrate, harden and cut the cost of systems on AWS, then write down what broke.</p>
+      <a href="#contacts" class="mt-6 inline-block border border-accent px-4 py-2 text-white transition hover:bg-accent/20">Contact me!!</a>
+    </div>
+    <figure class="reveal relative mx-auto w-[300px] sm:w-[340px]">
+      <div class="absolute -left-6 top-10 h-28 w-28 border border-accent"></div>
+      <div class="absolute left-2 top-20 h-20 w-20 border border-accent"></div>
+      <div class="dots absolute -right-4 bottom-20 h-20 w-20"></div>
+      <img src="../assets/me.jpeg" alt="Shyam Kumar with arms crossed, black and white portrait" class="float relative z-10 aspect-square w-full rounded-full object-cover" />
+      <figcaption class="relative z-10 mt-1 flex items-center gap-2 border border-grey px-3 py-2 text-sm">
+        <span class="h-4 w-4 shrink-0 bg-accent"></span>Currently working on <a class="text-white hover:underline" href="https://github.com/shyamenk/costpulse">CostPulse</a>
+      </figcaption>
+    </figure>
+  </section>
+
+  <!-- Quote -->
+  <section class="reveal mx-auto mt-24 w-fit max-w-full">
+    <div class="relative border border-grey px-6 py-6 text-lg text-white sm:text-xl">
+      <span class="absolute -top-4 left-3 bg-ink px-2 text-3xl text-grey">“</span>
+      <p class="caret">Most AWS bills aren't high because of traffic.<br>They're high because of defaults nobody questioned.</p>
+      <span class="absolute -bottom-4 right-3 bg-ink px-2 text-3xl text-grey">”</span>
+    </div>
+    <div class="ml-auto w-fit border border-t-0 border-grey px-4 py-3 text-white">- Shyam</div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="pt-28">
+    <div class="reveal flex items-center justify-between gap-6">
+      <h2 class="flex flex-1 items-center gap-4 text-3xl font-medium text-white"><span><span class="text-accent">#</span>projects</span><span class="rule hidden h-px max-w-md flex-1 bg-accent sm:block"></span></h2>
+      <a href="https://github.com/shyamenk" class="text-white hover:text-accent">View all ~~&gt;</a>
+    </div>
+    <div class="mt-12 grid gap-4 md:grid-cols-3">
+      <article class="reveal border border-grey">
+        <img src="../assets/proj-costpulse.png" alt="CostPulse cover showing a Slack /cost reply" class="aspect-[16/10] w-full border-b border-grey object-cover" />
+        <p class="border-b border-grey p-2 text-sm">Python Lambda SAM Bolt CostExplorer</p>
+        <div class="space-y-4 p-4"><h3 class="text-2xl font-medium text-white">CostPulse</h3><p>AWS spend by service, one Slack command away.</p><a href="https://github.com/shyamenk/costpulse" class="inline-block border border-accent px-4 py-2 text-white hover:bg-accent/20">Github &lt;~&gt;</a></div>
+      </article>
+      <article class="reveal border border-grey" style="transition-delay:.08s">
+        <img src="../assets/proj-transcoding.png" alt="Serverless image transcoding architecture diagram" class="aspect-[16/10] w-full border-b border-grey object-cover" />
+        <p class="border-b border-grey p-2 text-sm">Lambda S3 CloudFront DynamoDB Sharp</p>
+        <div class="space-y-4 p-4"><h3 class="text-2xl font-medium text-white">ImagePipe</h3><p>Event-driven image formats on upload, under 100 ms from the edge.</p><a href="https://github.com/shyamenk/image-transcoding-pipeline" class="inline-block border border-accent px-4 py-2 text-white hover:bg-accent/20">Github &lt;~&gt;</a></div>
+      </article>
+      <article class="reveal border border-grey" style="transition-delay:.16s">
+        <img src="../assets/proj-techblog.png" alt="Tech Blog AI interface" class="aspect-[16/10] w-full border-b border-grey object-cover" />
+        <p class="border-b border-grey p-2 text-sm">FastAPI LangChain LangGraph Gemini Chroma</p>
+        <div class="space-y-4 p-4"><h3 class="text-2xl font-medium text-white">TechBlogAI</h3><p>Research, RAG and SEO for technical posts.</p><a href="https://github.com/shyamenk/tech-blog-ai" class="inline-block border border-accent px-4 py-2 text-white hover:bg-accent/20">Github &lt;~&gt;</a></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills" class="relative pt-28">
+    <h2 class="reveal flex items-center gap-4 text-3xl font-medium text-white"><span><span class="text-accent">#</span>skills</span><span class="rule h-px max-w-xs flex-1 bg-accent"></span></h2>
+    <div class="dots absolute left-0 top-48 hidden h-16 w-16 md:block"></div>
+    <div class="mt-12 grid gap-4 md:ml-auto md:w-[80%] md:grid-cols-3">
+      <div class="reveal border border-grey"><p class="border-b border-grey p-2 font-semibold text-white">Cloud</p><p class="p-2 leading-7">AWS ECS Fargate Lambda S3 RDS DynamoDB CloudFront VPC</p></div>
+      <div class="reveal border border-grey"><p class="border-b border-grey p-2 font-semibold text-white">Infra &amp; Delivery</p><p class="p-2 leading-7">Terraform Docker Kubernetes ArgoCD GitHubActions OIDC</p></div>
+      <div class="reveal border border-grey"><p class="border-b border-grey p-2 font-semibold text-white">Backend</p><p class="p-2 leading-7">Node.js Python FastAPI Express REST</p></div>
+      <div class="reveal border border-grey"><p class="border-b border-grey p-2 font-semibold text-white">Data</p><p class="p-2 leading-7">PostgreSQL MongoDB DynamoDB Redis Drizzle</p></div>
+      <div class="reveal border border-grey"><p class="border-b border-grey p-2 font-semibold text-white">Security &amp; Ops</p><p class="p-2 leading-7">IAM SecretsManager CloudWatch IncidentResponse</p></div>
+      <div class="reveal border border-grey"><p class="border-b border-grey p-2 font-semibold text-white">AI</p><p class="p-2 leading-7">ClaudeAPI OpenAI Gemini LangGraph RAG</p></div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about-me" class="grid items-center gap-10 pt-28 md:grid-cols-[1.2fr_1fr]">
+    <div class="reveal">
+      <h2 class="flex items-center gap-4 text-3xl font-medium text-white"><span><span class="text-accent">#</span>about-me</span><span class="rule h-px max-w-xs flex-1 bg-accent"></span></h2>
+      <p class="mt-8">Hello, I'm Shyam!</p>
+      <p class="mt-6 leading-relaxed">I'm a cloud and backend engineer based in Kochi, India, with six years of shipping production systems for healthcare and SaaS teams.</p>
+      <p class="mt-4 leading-relaxed">Today I'm leading a 9-service migration from GCP to AWS. Before that, I architected a HIPAA-compliant EHR handling 40,000+ patient records a day with zero security incidents.</p>
+      <a href="https://www.linkedin.com/in/shyamenk" class="mt-8 inline-block border border-accent px-4 py-2 text-white hover:bg-accent/20">Read more ~&gt;</a>
+    </div>
+    <div class="reveal relative mx-auto w-64">
+      <div class="dots absolute -left-8 top-6 h-20 w-20"></div>
+      <img src="../assets/me.jpeg" alt="" class="relative aspect-square w-full rounded-full object-cover grayscale" />
+      <div class="absolute -bottom-3 left-0 right-0 mx-auto h-px w-3/4 bg-accent"></div>
+    </div>
+  </section>
+
+  <!-- Contacts -->
+  <section id="contacts" class="pt-28">
+    <h2 class="reveal flex items-center gap-4 text-3xl font-medium text-white"><span><span class="text-accent">#</span>contacts</span><span class="rule h-px max-w-[10rem] flex-1 bg-accent"></span></h2>
+    <div class="mt-8 flex flex-wrap items-start justify-between gap-8">
+      <p class="reveal max-w-[46ch] leading-relaxed">I'm open to cloud, platform and backend roles. If you have a question or a system that keeps falling over, don't hesitate to contact me.</p>
+      <div class="reveal border border-grey p-4">
+        <p class="font-semibold text-white">Message me here</p>
+        <a href="mailto:shyamenk@gmail.com" class="mt-4 flex items-center gap-3 hover:text-white"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>shyamenk@gmail.com</a>
+        <a href="https://x.com/shyamenk07" class="mt-3 flex items-center gap-3 hover:text-white"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.2 2H21l-6.5 7.4L22 22h-6l-4.7-6.2L5.8 22H3l7-8L2 2h6.1l4.3 5.7z"/></svg>@shyamenk07</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer class="mt-28 border-t border-grey">
+  <div class="mx-auto flex max-w-5xl flex-wrap items-start justify-between gap-6 px-4 py-8 sm:px-8">
+    <div><p class="flex items-center gap-3 font-semibold text-white"><span class="grid h-5 w-5 place-items-center rounded-sm border border-white text-[10px]">S</span>Shyam <span class="font-normal text-grey">shyamenk@gmail.com</span></p><p class="mt-3 text-white">Cloud &amp; backend engineer, Kochi</p></div>
+    <div><p class="text-xl text-white">Media</p><div class="mt-3 flex gap-3"><a href="https://github.com/shyamenk" class="hover:text-white">GitHub</a><a href="https://www.linkedin.com/in/shyamenk" class="hover:text-white">LinkedIn</a><a href="https://backendalmanac.in" class="hover:text-white">Blog</a></div></div>
+  </div>
+  <p class="pb-8 text-center text-sm">© Copyright 2026. Made by Shyam</p>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+</script>
+</body>
+</html>

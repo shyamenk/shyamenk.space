@@ -1,0 +1,155 @@
+---
+slug: fundcy
+title: Fundcy - Personal Finance Tracker
+description: A comprehensive personal finance management application built with Next.js 14+, TypeScript, and PostgreSQL. Track income, expenses, savings, investments, and financial goals with detailed analytics and reporting.
+date: '2025-01-10'
+image: /projects/fundcy.png
+technologies:
+  - Next.js 14+
+  - TypeScript
+  - PostgreSQL
+  - Drizzle ORM
+  - Tailwind CSS
+  - shadcn/ui
+  - React Hook Form
+  - Recharts
+  - NextAuth.js
+  - Zod
+githubUrl: https://github.com/shyamenk/fundcy
+liveUrl: https://fundcy-kje4tg9zo-shyam-kumars-projects-6673aaa9.vercel.app/
+featured: false
+---
+
+# Fundcy - Personal Finance Tracker
+
+A comprehensive personal finance management application that empowers users to take control of their financial health through detailed tracking, goal setting, and insightful analytics. Built with modern web technologies for a seamless user experience.
+
+## Core Features
+
+### 📊 **Dashboard Overview**
+- **Real-time Financial Summary**: Instant view of income, expenses, savings, and investments
+- **Net Worth Calculation**: Automatic calculation of your financial position (Assets - Liabilities)
+- **Recent Transactions**: Quick preview of latest financial activities
+- **Goal Progress Tracking**: Visual indicators for active financial goals
+- **Quick Actions**: Easy access to add new transactions and goals
+
+### 💰 **Transaction Management**
+- **Multiple Transaction Types**: Income, expenses, savings, and investments
+- **Comprehensive Categories**: Pre-defined categories with custom support
+- **Advanced Filtering**: Search and filter transactions by date, category, amount
+- **Bulk Operations**: Edit and delete multiple transactions efficiently
+- **Form Validation**: Robust client and server-side validation with Zod
+
+### 🎯 **Goal Management System**
+- **Financial Goal Setting**: Create targets with amounts and deadlines
+- **Progress Tracking**: Visual progress bars and percentage completion
+- **Goal Categories**: Emergency fund, vacation, house down payment, debt payoff
+- **Milestone Tracking**: Set intermediate milestones within larger goals
+- **Goal Completion**: Mark goals as completed with celebration feedback
+
+### 📈 **Advanced Analytics & Reports**
+- **Annual Reports**: Comprehensive yearly financial analysis
+- **Monthly Breakdowns**: Detailed monthly spending and income patterns
+- **Category Analysis**: Deep dive into spending patterns by category
+- **Goal Statistics**: Success rates and completion timelines
+- **Interactive Charts**: Beautiful data visualization with Recharts
+- **Export Functionality**: Download reports in PDF format
+
+### 🏷️ **Category Management**
+- **Pre-defined Categories**: Comprehensive set of financial categories
+- **Custom Categories**: Create your own categories as needed
+- **Category Colors**: Visual organization with color-coded categories
+- **Category Icons**: Intuitive icon-based category identification
+
+## Technical Stack
+
+### **Frontend**
+- **Framework**: Next.js 14+ (App Router) for modern React development
+- **Language**: TypeScript (strict mode) for type safety
+- **Styling**: Tailwind CSS + shadcn/ui components for beautiful UI
+- **Icons**: Lucide React for consistent iconography
+- **Forms**: React Hook Form with Zod validation
+- **Charts**: Recharts for interactive data visualization
+- **Authentication**: NextAuth.js for secure user authentication
+
+### **Backend**
+- **Runtime**: Node.js (Next.js API routes)
+- **Database**: PostgreSQL (Neon serverless) for reliable data storage
+- **ORM**: Drizzle ORM with Drizzle Kit for type-safe database operations
+- **Validation**: Zod schemas (shared between client and server)
+
+### **Development & Deployment**
+- **Package Manager**: pnpm for fast dependency management
+- **Deployment**: Vercel for seamless deployment
+- **Database**: Neon for serverless PostgreSQL
+
+## Key Technical Achievements
+
+### **Performance Optimizations**
+- **Core Web Vitals**: Optimized for Google's performance standards
+- **Bundle Size**: Code splitting and tree shaking implemented
+- **Caching**: Strategic caching for optimal performance
+- **Image Optimization**: Next.js Image component usage
+
+### **Security Features**
+- **Input Validation**: All inputs validated with Zod schemas
+- **SQL Injection Protection**: Drizzle ORM parameterized queries
+- **Environment Variables**: Secure secret management
+- **Type Safety**: Comprehensive TypeScript coverage
+
+### **Developer Experience**
+- **Type Safety**: Strict TypeScript configuration
+- **Code Quality**: ESLint and Prettier configuration
+- **Git Hooks**: Pre-commit hooks for code quality
+- **Database Migrations**: Automated schema management with Drizzle Kit
+
+## Project Architecture
+
+The application follows a modern full-stack architecture with:
+
+- **App Router**: Next.js 15+ App Router for file-based routing
+- **API Routes**: RESTful API endpoints for all CRUD operations
+- **Component Library**: Reusable UI components with shadcn/ui
+- **Database Schema**: Well-designed PostgreSQL schema with relationships
+- **State Management**: React hooks for local state management
+- **Form Handling**: React Hook Form with Zod validation
+
+## Database Design
+
+The application uses a robust PostgreSQL schema with:
+
+- **Transactions Table**: Core financial transaction data
+- **Categories Table**: Pre-defined and custom categories
+- **Goals Table**: Financial goals and targets
+- **Goal Contributions**: Track contributions to goals
+- **User Authentication**: Secure user management
+
+## API Endpoints
+
+Comprehensive RESTful API with endpoints for:
+- Dashboard data and analytics
+- Transaction CRUD operations
+- Goal management
+- Category management
+- Report generation
+- User authentication
+
+## Future Enhancements
+
+- **Budget Tracking**: Monthly budget limits and alerts
+- **Recurring Transactions**: Automated transaction scheduling
+- **Data Import/Export**: CSV import and advanced export options
+- **Mobile App**: React Native companion app
+- **Advanced Analytics**: Machine learning insights
+- **Multi-currency Support**: International finance tracking
+
+## Development Process
+
+This project was developed following best practices:
+- **Agile Methodology**: Iterative development with regular reviews
+- **Code Quality**: Comprehensive testing and linting
+- **Documentation**: Detailed README and inline documentation
+- **Version Control**: Git with conventional commits
+- **Deployment**: Automated CI/CD with Vercel
+
+The application demonstrates modern web development practices with a focus on user experience, performance, and maintainability. It serves as a comprehensive solution for personal finance management with room for future enhancements and scalability. 

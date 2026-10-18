@@ -1,0 +1,168 @@
+---
+slug: aeghiscorp-dashboard
+title: AeghisCorp Dashboard - Shipping Operations Management
+description: A comprehensive shipping operations management platform built with Next.js, TypeScript, and PostgreSQL. Track vessels, manage invoices, handle timesheets, and monitor global shipping operations with real-time analytics and reporting.
+date: '2025-04-22'
+image: /projects/aeghis.png
+technologies:
+  - Next.js
+  - TypeScript
+  - PostgreSQL
+  - Prisma ORM
+  - React Leaflet
+  - React Big Calendar
+  - NextAuth.js
+  - AWS EC2
+  - Tailwind CSS
+  - shadcn/ui
+liveUrl: https://app.aeghiscorp.com/
+featured: false
+---
+
+# AeghisCorp Dashboard - Shipping Operations Management
+
+A comprehensive shipping operations management platform that empowers maritime businesses to streamline vessel tracking, invoice management, and operational workflows. Built with modern web technologies for seamless global shipping operations management.
+
+## Core Features
+
+### 🗺️ **Interactive Dashboard**
+- **World Map Visualization**: Real-time vessel tracking with interactive map using React Leaflet
+- **Color-Coded Status System**: Visual indicators for vessel statuses (Yellow: In Progress, Green: Completed)
+- **Status Statistics Cards**: Live counts for New, In Progress, and Completed vessels
+- **Hover Details**: Instant vessel information including port, ETA, ETB, and ETC
+- **Quick Add Functionality**: Floating action button for rapid vessel entry
+
+### 🚢 **Vessel Management System**
+- **Tabbed Interface**: Card-based navigation for New, In Progress, Completed, and Invoices
+- **Table-Based Listings**: Comprehensive vessel data in organized table format
+- **Advanced Search & Filtering**: Filter vessels by name, port, status, and date ranges
+- **Vessel Details Screen**: Complete vessel information in structured table layout
+- **Status Workflow Management**: Automated status transitions and tracking
+- **Bulk Operations**: Export and manage multiple vessels efficiently
+
+### 📝 **Advanced Vessel Form**
+- **Accordion-Style Layout**: Step-by-step form with collapsible sections for better UX
+- **Auto-Generated Serial Numbers**: Sequential numbering system (000001, 000002...)
+- **Comprehensive Data Fields**: 
+  - Basics: Vessel details, ports, ETA/ETB/ETC with calendar pickers
+  - Cargo: Type and quantity tracking
+  - Agents & Owners: Complete contact information management
+  - Club Handler: Claims handler details and contact info
+  - Operations: P&I, Marine Survey, Legal with timesheet integration
+  - Surveyor: Company details, quotes, reports, and attendance calendar
+  - References: Internal and club reference tracking
+  - Assignment: Team allocation and responsibility tracking
+
+### 💼 **Invoice Management**
+- **Time-Based Status System**: Automated invoice status tracking
+  - On Time (Green): Cleared within 15 days
+  - Due (Amber): 15-60 days outstanding
+  - Overdue (Red): Beyond 60 days
+- **Invoice Status Tracking**: Progress monitoring (In Progress, Completed, Cancelled)
+- **Document Upload**: Invoice file management and storage
+- **Sorting & Filtering**: Advanced invoice organization tools
+
+### 📊 **Analytics & Export**
+- **Multi-Format Export**: CSV and PDF export for vessel details
+- **Tab Data Export**: Bulk export of filtered vessel data
+- **Comprehensive Reporting**: Detailed vessel and invoice reports
+- **Data Validation**: Robust data integrity checks
+
+### 🕐 **Timesheet Management**
+- **Employee Hour Tracking**: Work hours linked to vessel operations
+- **Report Submission**: Predefined format report integration
+- **Validation Rules**: Maximum hours per day and accuracy checks
+- **Operational Transparency**: Clear visibility into team productivity
+
+## Technical Stack
+
+### **Frontend**
+- **Framework**: Next.js with React and TypeScript
+- **Styling**: Tailwind CSS with shadcn/ui components
+- **Maps**: React Leaflet for interactive world map
+- **Calendar**: React Big Calendar for attendance and scheduling
+- **Authentication**: NextAuth.js for secure user management
+- **Export**: Papaparse (CSV) and jsPDF (PDF) generation
+
+### **Backend**
+- **Database**: PostgreSQL with Prisma ORM
+- **API**: Next.js API routes for RESTful endpoints
+- **Validation**: Comprehensive server-side validation
+- **Security**: Data encryption and HTTPS implementation
+
+### **Infrastructure**
+- **Hosting**: AWS EC2 with auto-scaling capabilities
+- **Database**: AWS RDS PostgreSQL
+- **SSL**: AWS Certificate Manager
+- **Performance**: Optimized for 100+ vessels and 50+ employees
+
+## Key Technical Achievements
+
+### **Performance Optimizations**
+- **Export Generation**: Sub-5-second file generation for 100+ vessels
+- **Database Optimization**: Efficient Prisma queries with pagination
+- **Scalable Architecture**: Horizontal scaling support for growth
+- **Responsive Design**: Optimized for desktop, tablet, and mobile
+
+### **Security Features**
+- **Data Encryption**: Sensitive information protection in PostgreSQL
+- **Secure Authentication**: NextAuth.js with password hashing
+- **HTTPS Protocol**: All API communications secured
+- **Input Validation**: Comprehensive client and server-side validation
+
+### **User Experience**
+- **Intuitive Navigation**: Card-to-table UI transition
+- **Progressive Disclosure**: Accordion forms for reduced cognitive load
+- **Visual Feedback**: Color-coded status system throughout
+- **Minimal Clicks**: Streamlined workflows for efficiency
+
+## Project Architecture
+
+The application follows a modern maritime operations architecture:
+
+- **Interactive Dashboard**: Real-time vessel visualization and statistics
+- **Tabbed Management**: Card-based navigation with table listings
+- **Form Workflow**: Accordion-style data entry with validation
+- **Invoice Processing**: Automated status tracking and alerts
+- **Export System**: Multi-format data export capabilities
+- **User Management**: Secure authentication and role-based access
+
+## Database Design
+
+Robust PostgreSQL schema optimized for shipping operations:
+
+- **Vessels Table**: Core vessel data with status tracking
+- **Invoices Table**: Invoice management with time-based status
+- **Timesheets Table**: Employee hour tracking linked to vessels
+- **Users Table**: Authentication and role management
+- **Audit Trail**: Complete operation history tracking
+
+## API Endpoints
+
+Comprehensive RESTful API for:
+- Dashboard data and vessel statistics
+- Vessel CRUD operations with status management
+- Invoice processing and status updates
+- Timesheet management and reporting
+- User authentication and authorization
+- Data export and reporting functions
+
+## Future Enhancements
+
+- **Live GPS Tracking**: Real-time vessel location updates
+- **Advanced Analytics**: AI-based operational insights
+- **Mobile Application**: Native mobile app for field operations
+- **Multi-Currency Support**: International invoice management
+- **Advanced Reporting**: Custom report builder
+- **Role-Based Access Control**: Granular permission system
+
+## Development Process
+
+Developed following maritime industry best practices:
+- **Agile Methodology**: Sprint-based development with client feedback
+- **Security First**: Maritime data protection standards
+- **Performance Focus**: Optimized for operational efficiency
+- **Scalable Design**: Built for future growth and expansion
+- **User-Centric**: Designed for maritime professionals
+
+The AeghisCorp Dashboard represents a modern approach to shipping operations management, combining intuitive user experience with powerful functionality to streamline maritime business processes. The platform is designed for scalability and can grow with expanding operational needs.

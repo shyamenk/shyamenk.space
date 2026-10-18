@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Shyam Kumar · Poster</title>
+<meta name="description" content="Shyam Kumar V M. Pods down? I read the logs. Cloud and Backend Engineer from Kochi." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;700&family=Martian+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          poster: ['Anton', 'Impact', 'sans-serif'],
+          sans: ['Archivo', 'system-ui', 'sans-serif'],
+          mono: ['"Martian Mono"', 'ui-monospace', 'monospace'],
+        },
+        colors: {
+          ember: 'oklch(0.56 0.21 32)',
+          emberdark: 'oklch(0.42 0.17 30)',
+          coal: 'oklch(0.16 0.012 40)',
+          ash: 'oklch(0.94 0.02 60)',
+          smoke: 'oklch(0.8 0.04 50)',
+        },
+      },
+    },
+  };
+</script>
+<style>
+  :root { color-scheme: dark; }
+  body { background: oklch(0.16 0.012 40); }
+  .hero-bg { background: radial-gradient(120% 90% at 78% 30%, oklch(0.62 0.22 35) 0%, oklch(0.5 0.2 30) 35%, oklch(0.24 0.06 32) 75%, oklch(0.16 0.012 40) 100%); }
+  .duotone { filter: grayscale(1) contrast(1.15); mix-blend-mode: luminosity; }
+  .word { display: inline-block; overflow: hidden; vertical-align: top; }
+  .word > span { display: inline-block; transform: translateY(105%); animation: up 1s cubic-bezier(0.16,1,0.3,1) forwards; }
+  @keyframes up { to { transform: none; } }
+  .fade { opacity: 0; animation: fade 1s cubic-bezier(0.25,1,0.5,1) forwards; }
+  @keyframes fade { to { opacity: 1; } }
+  .marquee { animation: marquee 32s linear infinite; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s cubic-bezier(0.16,1,0.3,1), transform .9s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  details[open] .chev { transform: rotate(45deg); }
+  .chev { transition: transform .4s cubic-bezier(0.25,1,0.5,1); }
+  @media (prefers-reduced-motion: reduce) {
+    .word > span, .fade, .reveal { transform: none !important; opacity: 1 !important; animation: none !important; transition: none !important; }
+    .marquee { animation: none; }
+  }
+</style>
+</head>
+<body class="font-sans text-ash antialiased selection:bg-ash selection:text-ember">
+
+<section class="hero-bg relative min-h-[100svh] overflow-hidden">
+  <nav class="relative z-20 mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-8">
+    <a href="#" class="font-poster text-2xl tracking-wide">SHYAMENK<span class="text-coal">.SPACE</span></a>
+    <a href="mailto:shyamenk@gmail.com" class="rounded-full border-2 border-ash px-5 py-2 text-sm font-bold transition hover:bg-ash hover:text-ember">Email me</a>
+  </nav>
+
+  <div class="relative z-10 mx-auto grid max-w-7xl gap-8 px-4 pb-16 pt-6 sm:px-8 lg:grid-cols-[1.25fr_1fr] lg:items-end lg:pt-10">
+    <div>
+      <p class="fade inline-flex items-center gap-2 rounded-full bg-coal/70 px-3 py-1.5 font-mono text-[11px] text-smoke" style="animation-delay:.1s">
+        <span class="relative flex h-2 w-2"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[oklch(0.8_0.17_150)] opacity-70"></span><span class="relative inline-flex h-2 w-2 rounded-full bg-[oklch(0.8_0.17_150)]"></span></span>
+        Open to cloud + platform roles
+      </p>
+      <h1 class="mt-6 font-poster text-[clamp(4rem,13vw,10.5rem)] uppercase leading-[0.86]">
+        <span class="word"><span style="animation-delay:.15s">Pods</span></span>
+        <span class="word"><span style="animation-delay:.25s">down?</span></span><br>
+        <span class="word"><span style="animation-delay:.38s" class="text-coal">I&nbsp;read</span></span><br>
+        <span class="word"><span style="animation-delay:.5s" class="text-coal">the&nbsp;logs.</span></span>
+      </h1>
+      <p class="fade mt-8 max-w-[46ch] text-lg leading-relaxed text-ash/90" style="animation-delay:.8s">
+        Shyam Kumar, Cloud &amp; Backend Engineer in Kochi. Six years turning production outages into short, practical lessons on Linux, Kubernetes, AWS and system design.
+      </p>
+    </div>
+
+    <figure class="fade relative mx-auto w-full max-w-[420px] lg:mx-0 lg:justify-self-end" style="animation-delay:.35s">
+      <div class="relative aspect-square overflow-hidden rounded-full bg-emberdark ring-[10px] ring-coal/30">
+        <!-- Source photo is a circle on a white square; scale past its corners. -->
+        <img src="assets/avatar.jpg" alt="Shyam Kumar, portrait in black and white" class="duotone h-full w-full scale-[1.08] object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-coal/60 via-transparent to-transparent"></div>
+      </div>
+      <figcaption class="absolute -bottom-4 right-4 rotate-[-2deg] bg-ash px-4 py-2 font-poster text-xl uppercase tracking-wide text-coal">
+        Shyam Kumar <span class="block font-sans text-xs font-bold normal-case tracking-normal text-emberdark">Cloud &amp; Backend Engineer</span>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="relative z-10 border-y-2 border-coal/40 bg-coal py-3" aria-hidden="true">
+    <div class="marquee flex w-max gap-10 whitespace-nowrap font-poster text-2xl uppercase tracking-wide text-smoke">
+      <span>CrashLoopBackOff</span><span class="text-ember">✦</span><span>OOMKilled</span><span class="text-ember">✦</span><span>ImagePullBackOff</span><span class="text-ember">✦</span><span>Pending</span><span class="text-ember">✦</span><span>NAT Gateway bill</span><span class="text-ember">✦</span><span>Exit 137</span><span class="text-ember">✦</span><span>DNS, again</span><span class="text-ember">✦</span>
+      <span>CrashLoopBackOff</span><span class="text-ember">✦</span><span>OOMKilled</span><span class="text-ember">✦</span><span>ImagePullBackOff</span><span class="text-ember">✦</span><span>Pending</span><span class="text-ember">✦</span><span>NAT Gateway bill</span><span class="text-ember">✦</span><span>Exit 137</span><span class="text-ember">✦</span><span>DNS, again</span><span class="text-ember">✦</span>
+    </div>
+  </div>
+</section>
+
+<main>
+  <!-- Incident reports: problem / bottleneck / fix -->
+  <section class="mx-auto max-w-7xl px-4 py-24 sm:px-8">
+    <h2 class="reveal font-poster text-[clamp(3rem,8vw,6.5rem)] uppercase leading-[0.9]">Incident<br><span class="text-ember">reports</span></h2>
+    <p class="reveal mt-6 max-w-[56ch] text-lg text-smoke">Real fixes from real systems. Open one.</p>
+
+    <div class="mt-14 divide-y-2 divide-ash/10 border-y-2 border-ash/10">
+      <details class="reveal group py-7" open>
+        <summary class="flex cursor-pointer list-none items-baseline justify-between gap-6">
+          <span class="font-poster text-[clamp(1.8rem,4vw,3rem)] uppercase leading-none group-hover:text-ember">Compute bill, cut in half</span>
+          <span class="chev font-poster text-4xl text-ember">+</span>
+        </summary>
+        <div class="mt-6 grid gap-6 text-smoke md:grid-cols-3">
+          <p><span class="block font-mono text-xs text-ember">PROBLEM</span>9 services leaving GCP for AWS, and nobody wanted a bigger bill.</p>
+          <p><span class="block font-mono text-xs text-ember">BOTTLENECK</span>x86 Fargate tasks sized by habit, not by load.</p>
+          <p><span class="block font-mono text-xs text-ember">FIX</span>Graviton ARM64 with Terraform across every environment. Compute about 51% cheaper.</p>
+        </div>
+      </details>
+      <details class="reveal group py-7">
+        <summary class="flex cursor-pointer list-none items-baseline justify-between gap-6">
+          <span class="font-poster text-[clamp(1.8rem,4vw,3rem)] uppercase leading-none group-hover:text-ember">532 secrets, copied everywhere</span>
+          <span class="chev font-poster text-4xl text-ember">+</span>
+        </summary>
+        <div class="mt-6 grid gap-6 text-smoke md:grid-cols-3">
+          <p><span class="block font-mono text-xs text-ember">PROBLEM</span>Production values leaking into staging, and keys living in .env files.</p>
+          <p><span class="block font-mono text-xs text-ember">BOTTLENECK</span>34 Secrets Manager entries, 532 duplicated values, 33 weak credentials.</p>
+          <p><span class="block font-mono text-xs text-ember">FIX</span>Full audit and rotation, 158+ keys moved off .env, SSH keys replaced with short-lived OIDC.</p>
+        </div>
+      </details>
+      <details class="reveal group py-7">
+        <summary class="flex cursor-pointer list-none items-baseline justify-between gap-6">
+          <span class="font-poster text-[clamp(1.8rem,4vw,3rem)] uppercase leading-none group-hover:text-ember">40-minute builds</span>
+          <span class="chev font-poster text-4xl text-ember">+</span>
+        </summary>
+        <div class="mt-6 grid gap-6 text-smoke md:grid-cols-3">
+          <p><span class="block font-mono text-xs text-ember">PROBLEM</span>Every deploy cost a coffee break, so people batched risky changes.</p>
+          <p><span class="block font-mono text-xs text-ember">BOTTLENECK</span>Cross-compiling ARM64 images on shared x86 runners.</p>
+          <p><span class="block font-mono text-xs text-ember">FIX</span>A self-hosted ARM64 runner. Builds dropped to 8-12 minutes.</p>
+        </div>
+      </details>
+      <details class="reveal group py-7">
+        <summary class="flex cursor-pointer list-none items-baseline justify-between gap-6">
+          <span class="font-poster text-[clamp(1.8rem,4vw,3rem)] uppercase leading-none group-hover:text-ember">40,000 records a day, zero incidents</span>
+          <span class="chev font-poster text-4xl text-ember">+</span>
+        </summary>
+        <div class="mt-6 grid gap-6 text-smoke md:grid-cols-3">
+          <p><span class="block font-mono text-xs text-ember">PROBLEM</span>A healthcare platform where a bug is a breach.</p>
+          <p><span class="block font-mono text-xs text-ember">BOTTLENECK</span>HIPAA rules on every path data takes, for 1,000+ providers.</p>
+          <p><span class="block font-mono text-xs text-ember">FIX</span>A compliant EHR architecture that ran without a security incident.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- Building now -->
+  <section class="bg-ash text-coal">
+    <div class="mx-auto grid max-w-7xl gap-12 px-4 py-24 sm:px-8 lg:grid-cols-2">
+      <div class="reveal">
+        <h2 class="font-poster text-[clamp(3rem,7vw,5.5rem)] uppercase leading-[0.9]">Building<br>in public</h2>
+        <p class="mt-6 max-w-[48ch] text-lg leading-relaxed text-coal/75">Kube by Kube is a free, hands-on Kubernetes course: troubleshooting first, production on AWS last. CostPulse puts the AWS bill one Slack command away.</p>
+      </div>
+      <ul class="reveal space-y-4 self-end">
+        <li><a href="https://github.com/shyamenk/costpulse" class="group flex items-center justify-between rounded-2xl bg-coal px-6 py-5 text-ash transition hover:bg-ember"><span><span class="font-poster text-3xl uppercase">CostPulse</span><span class="block text-sm text-smoke group-hover:text-ash">Slack /cost · Lambda · SAM</span></span><span class="font-poster text-3xl">↗</span></a></li>
+        <li><a href="#" class="group flex items-center justify-between rounded-2xl bg-coal px-6 py-5 text-ash transition hover:bg-ember"><span><span class="font-poster text-3xl uppercase">Kube by Kube</span><span class="block text-sm text-smoke group-hover:text-ash">Free Kubernetes course · in progress</span></span><span class="font-poster text-3xl">↗</span></a></li>
+        <li><a href="https://backendalmanac.in" class="group flex items-center justify-between rounded-2xl bg-coal px-6 py-5 text-ash transition hover:bg-ember"><span><span class="font-poster text-3xl uppercase">Backend Almanac</span><span class="block text-sm text-smoke group-hover:text-ash">The writing</span></span><span class="font-poster text-3xl">↗</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="hero-bg">
+    <div class="mx-auto max-w-7xl px-4 py-24 sm:px-8">
+      <a href="mailto:shyamenk@gmail.com" class="reveal block font-poster text-[clamp(4rem,14vw,12rem)] uppercase leading-[0.85] transition hover:text-coal">Let's<br>talk.</a>
+      <div class="mt-12 flex flex-wrap gap-x-8 gap-y-3 font-bold">
+        <a class="hover:text-coal" href="mailto:shyamenk@gmail.com">shyamenk@gmail.com</a>
+        <a class="hover:text-coal" href="https://x.com/shyamenk07">X</a>
+        <a class="hover:text-coal" href="https://www.linkedin.com/in/shyamenk">LinkedIn</a>
+        <a class="hover:text-coal" href="https://github.com/shyamenk">GitHub</a>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+</script>
+</body>
+</html>

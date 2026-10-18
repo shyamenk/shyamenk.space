@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Shyam Kumar · Lava</title>
+<meta name="description" content="Shyam Kumar V M, Cloud & Backend Engineer. Turning production outages into practical lessons." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&family=Orbitron:wght@500;700&family=Permanent+Marker&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          bebas: ['"Bebas Neue"', 'Impact', 'sans-serif'],
+          sans: ['Outfit', 'system-ui', 'sans-serif'],
+          orb: ['Orbitron', 'sans-serif'],
+          hand: ['"Permanent Marker"', 'cursive'],
+        },
+        colors: {
+          void: '#161618',
+          pit: '#0e0e10',
+          blood: '#6b0f1a',
+          crimson: '#b11226',
+          lava: '#ff4d00',
+          bone: '#efe6da',
+        },
+      },
+    },
+  };
+</script>
+<style>
+  body { background: #0e0e10; }
+  .lava-glow { background: radial-gradient(70% 90% at 72% 40%, #ff4d00 0%, #b11226 30%, #4a0a12 60%, #0e0e10 85%); }
+  .ember-btn { box-shadow: 0 0 0 1px #ff4d00, 0 0 24px -4px #ff4d00, inset 0 0 14px -6px #ff4d00; }
+  .ember-btn:hover { box-shadow: 0 0 0 1px #ff4d00, 0 0 40px 0 #ff4d00, inset 0 0 18px -4px #ff4d00; }
+  .frame { border: 1px solid rgba(255,77,0,.35); }
+  .frame::before, .frame::after { content: ''; position: absolute; width: 38px; height: 38px; border: 1px solid rgba(255,77,0,.6); border-radius: 50%; }
+  .frame::before { top: -10px; left: -10px; border-right-color: transparent; border-bottom-color: transparent; }
+  .frame::after { bottom: -10px; right: -10px; border-left-color: transparent; border-top-color: transparent; }
+  .tilt-l { transform: perspective(900px) rotateY(18deg); }
+  .tilt-r { transform: perspective(900px) rotateY(-18deg); }
+  .flip { transform-style: preserve-3d; transition: transform .9s cubic-bezier(0.16,1,0.3,1); }
+  .flip.on { transform: rotateY(180deg); }
+  .face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .back { transform: rotateY(180deg); }
+  .word { display: inline-block; overflow: hidden; vertical-align: top; }
+  .word > span { display: inline-block; transform: translateY(110%); animation: up 1s cubic-bezier(0.16,1,0.3,1) forwards; }
+  @keyframes up { to { transform: none; } }
+  .fade { opacity: 0; animation: fade 1.1s cubic-bezier(0.25,1,0.5,1) forwards; }
+  @keyframes fade { to { opacity: 1; } }
+  .reveal { opacity: 0; transform: translateY(32px); transition: opacity .9s cubic-bezier(0.16,1,0.3,1), transform .9s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  .ring { stroke-dasharray: 440; stroke-dashoffset: 440; transition: stroke-dashoffset 1.8s cubic-bezier(0.16,1,0.3,1); }
+  .in .ring { stroke-dashoffset: var(--to); }
+  .flicker { animation: flicker 4s infinite; }
+  @keyframes flicker { 0%,100% { opacity: 1; } 92% { opacity: 1; } 93% { opacity: .55; } 94% { opacity: 1; } 96% { opacity: .7; } }
+  details[open] .arrow { transform: rotate(180deg); }
+  .arrow { transition: transform .4s cubic-bezier(0.25,1,0.5,1); }
+  @media (prefers-reduced-motion: reduce) {
+    .word > span, .fade, .reveal { transform: none !important; opacity: 1 !important; animation: none !important; transition: none !important; }
+    .ring { stroke-dashoffset: var(--to); transition: none; }
+    .flicker { animation: none; }
+  }
+</style>
+</head>
+<body class="font-sans text-bone antialiased selection:bg-lava selection:text-void">
+
+<!-- NAV -->
+<header class="sticky top-0 z-30 px-3 pt-3 sm:px-6">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between rounded-2xl border border-white/10 bg-void/80 px-4 py-3 backdrop-blur">
+    <a href="#" class="flex items-center gap-2 font-orb text-sm tracking-[0.2em]">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff4d00" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>
+      SHYAMENK
+    </a>
+    <ul class="hidden items-center gap-7 text-sm text-bone/70 md:flex">
+      <li><a class="hover:text-bone" href="#">Home</a></li>
+      <li><a class="hover:text-bone" href="#services">What I do</a></li>
+      <li><a class="hover:text-bone" href="#timeline">Timeline</a></li>
+      <li><a class="hover:text-bone" href="#faq">FAQ</a></li>
+      <li><a class="hover:text-bone" href="#portfolio">Portfolio</a></li>
+    </ul>
+    <div class="flex items-center gap-2">
+      <a href="https://www.linkedin.com/in/shyamenk" aria-label="LinkedIn" class="grid h-9 w-9 place-items-center rounded-full border border-white/10 hover:border-lava"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9V21H9z"/></svg></a>
+      <a href="mailto:shyamenk@gmail.com" aria-label="Email" class="grid h-9 w-9 place-items-center rounded-full border border-white/10 hover:border-lava"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="px-3 pt-5 sm:px-6">
+    <div class="lava-glow relative mx-auto grid min-h-[78vh] max-w-6xl items-center overflow-hidden rounded-[28px] border border-white/5 lg:grid-cols-[1.1fr_1fr]">
+      <div class="relative z-10 px-6 py-16 text-center sm:px-12 lg:py-24 lg:text-left">
+        <p class="fade inline-flex items-center gap-2 rounded-full border border-white/15 bg-void/60 px-3 py-1 text-xs" style="animation-delay:.1s">
+          <span class="relative flex h-2 w-2"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-70"></span><span class="relative h-2 w-2 rounded-full bg-green-400"></span></span>
+          Available now
+        </p>
+        <h1 class="mt-6 font-bebas text-[clamp(3.2rem,8vw,6.4rem)] uppercase leading-[0.88] tracking-wide">
+          <span class="word"><span style="animation-delay:.15s">Turning</span></span>
+          <span class="word"><span style="animation-delay:.22s">production</span></span><br>
+          <span class="word"><span style="animation-delay:.32s">outages</span></span>
+          <span class="word"><span style="animation-delay:.4s">into</span></span><br>
+          <span class="word"><span style="animation-delay:.5s" class="text-lava">practical&nbsp;lessons</span></span>
+        </h1>
+        <p class="fade mx-auto mt-6 max-w-[42ch] text-lg font-light text-bone/85 lg:mx-0" style="animation-delay:.75s">
+          Cloud &amp; backend engineering on AWS: migrations, cost cuts and systems that stay up.
+        </p>
+        <a href="mailto:shyamenk@gmail.com" class="ember-btn fade mt-9 inline-block rounded-full bg-void px-8 py-3 text-sm font-medium transition" style="animation-delay:.9s">Email Me</a>
+      </div>
+
+      <figure class="fade relative z-10 flex justify-center pb-14 lg:justify-end lg:pb-0 lg:pr-12" style="animation-delay:.4s">
+        <img src="../assets/me.jpeg" alt="Shyam Kumar with arms crossed, black and white portrait" class="h-[300px] w-[300px] rounded-full object-cover shadow-[0_0_80px_-10px_#ff4d00] sm:h-[380px] sm:w-[380px]" />
+        <figcaption class="absolute bottom-10 right-6 text-right lg:bottom-6 lg:right-14">
+          <span class="block bg-crimson px-3 py-1 font-bebas text-xl tracking-wide">Shyam Kumar</span>
+          <span class="block bg-blood px-3 py-1 text-xs">Cloud &amp; Backend Engineer</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="mx-auto max-w-6xl px-4 pt-28 sm:px-6">
+    <h2 class="reveal font-bebas text-6xl tracking-wide">What I do</h2>
+    <div class="mt-12 grid items-center gap-6 md:grid-cols-3">
+      <article class="reveal tilt-l relative rounded-[22px] border border-crimson/70 bg-void p-8 text-center shadow-[0_20px_40px_-20px_#ff4d00]">
+        <h3 class="font-bebas text-3xl tracking-wide">Cloud Migration</h3>
+        <p class="mt-4 font-orb text-xs text-crimson">GCP → AWS</p>
+        <p class="mt-2 font-bebas text-5xl text-crimson">9 services</p>
+        <p class="mt-4 text-sm text-bone/70">Landing zones, Terraform, cutover without downtime.</p>
+      </article>
+
+      <div class="reveal relative h-[340px] [perspective:1200px]">
+        <button type="button" id="flip" class="flip relative h-full w-full text-left" aria-label="Flip card for details">
+          <article class="face absolute inset-0 flex flex-col items-center justify-center rounded-[22px] bg-bone p-8 text-center text-void">
+            <h3 class="font-bebas text-4xl tracking-wide">Cost &amp; Platform</h3>
+            <p class="mt-4 text-sm text-blood">compute cost</p>
+            <p class="font-bebas text-6xl text-crimson">-51%</p>
+            <p class="mt-1 text-sm text-blood">on Graviton ARM64</p>
+            <p class="mt-6 inline-flex items-center gap-2 text-xs text-void/60"><span class="grid h-4 w-4 place-items-center rounded-full border border-crimson"><span class="h-1.5 w-1.5 rounded-full bg-crimson"></span></span>flip me</p>
+          </article>
+          <article class="face back absolute inset-0 flex flex-col justify-center rounded-[22px] bg-crimson p-8 text-bone">
+            <h3 class="font-bebas text-3xl tracking-wide">How it got there</h3>
+            <ul class="mt-4 space-y-2 text-sm">
+              <li>ECS Fargate on Graviton, Terraform everywhere</li>
+              <li>Staging down 70% with Fargate Spot</li>
+              <li>Builds from 35-40 to 8-12 minutes</li>
+            </ul>
+          </article>
+        </button>
+      </div>
+
+      <article class="reveal tilt-r relative rounded-[22px] border border-crimson/70 bg-void p-8 text-center shadow-[0_20px_40px_-20px_#ff4d00]">
+        <h3 class="font-bebas text-3xl tracking-wide">Backend Systems</h3>
+        <p class="mt-4 font-orb text-xs text-crimson">HIPAA healthcare</p>
+        <p class="mt-2 font-bebas text-5xl text-crimson">40k/day</p>
+        <p class="mt-4 text-sm text-bone/70">Patient records processed with zero security incidents.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section id="portfolio" class="mx-auto max-w-6xl px-4 pt-32 sm:px-6">
+    <h2 class="reveal font-bebas text-6xl tracking-wide">Portfolio</h2>
+    <p class="reveal mt-4 max-w-[60ch] text-bone/70">A few things I built recently, each with its own problem, constraint and trade-off.</p>
+
+    <div class="mt-14 space-y-16">
+      <div class="grid items-center gap-10 lg:grid-cols-[1.6fr_1fr]">
+        <article class="reveal frame relative grid items-center gap-6 rounded-2xl p-6 sm:grid-cols-2 sm:p-8">
+          <img src="../assets/proj-costpulse.png" alt="CostPulse cover: Slack /cost reply showing AWS spend by service" class="rounded-xl" />
+          <div>
+            <h3 class="font-bebas text-3xl leading-none tracking-wide">CostPulse: AWS spend in Slack</h3>
+            <p class="mt-3 text-sm text-bone/70">Type /cost, see spend by service. One Slack scope, one IAM action, budget alarms built in.</p>
+            <a href="https://github.com/shyamenk/costpulse" class="mt-4 inline-block text-sm text-lava hover:underline">View on GitHub ↗</a>
+          </div>
+        </article>
+        <blockquote class="reveal text-center">
+          <p class="font-hand text-lg leading-relaxed">"Shyam is an exceptional developer who consistently delivers high-quality work. His attention to detail and problem-solving skills are outstanding."</p>
+          <footer class="mt-5 inline-flex items-center gap-3 text-left"><span class="grid h-12 w-12 place-items-center rounded-full bg-blood font-bebas text-xl">KP</span><span><span class="block bg-void px-2 font-bebas text-lg tracking-wide">Krishna Prasad</span><span class="block px-2 text-xs text-bone/60">Senior Product Manager, CyberSapient</span></span></footer>
+        </blockquote>
+      </div>
+
+      <div class="grid items-center gap-10 lg:grid-cols-[1fr_1.6fr]">
+        <blockquote class="reveal order-2 text-center lg:order-1">
+          <p class="font-hand text-lg leading-relaxed">"Working with Shyam was a pleasure. He not only met our technical requirements but also provided valuable insights that improved our product."</p>
+          <footer class="mt-5 inline-flex items-center gap-3 text-left"><span class="grid h-12 w-12 place-items-center rounded-full bg-blood font-bebas text-xl">JA</span><span><span class="block bg-void px-2 font-bebas text-lg tracking-wide">Jasim Al-Mubarck</span><span class="block px-2 text-xs text-bone/60">Full Stack Developer, CyberSapient</span></span></footer>
+        </blockquote>
+        <article class="reveal frame relative order-1 grid items-center gap-6 rounded-2xl p-6 sm:grid-cols-2 sm:p-8 lg:order-2">
+          <img src="../assets/proj-transcoding.png" alt="Diagram of the serverless image transcoding pipeline on AWS" class="rounded-xl" />
+          <div>
+            <h3 class="font-bebas text-3xl leading-none tracking-wide">Serverless image transcoding</h3>
+            <p class="mt-3 text-sm text-bone/70">Every upload becomes optimised formats, served worldwide through CloudFront under 100 ms.</p>
+            <a href="https://github.com/shyamenk/image-transcoding-pipeline" class="mt-4 inline-block text-sm text-lava hover:underline">View on GitHub ↗</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="grid items-center gap-10 lg:grid-cols-[1.6fr_1fr]">
+        <article class="reveal frame relative grid items-center gap-6 rounded-2xl p-6 sm:grid-cols-2 sm:p-8">
+          <img src="../assets/proj-techblog.png" alt="Tech Blog AI interface for drafting technical posts" class="rounded-xl" />
+          <div>
+            <h3 class="font-bebas text-3xl leading-none tracking-wide">Tech Blog AI</h3>
+            <p class="mt-3 text-sm text-bone/70">Research, RAG over your notes and SEO checks for technical posts, orchestrated with LangGraph.</p>
+            <a href="https://github.com/shyamenk/tech-blog-ai" class="mt-4 inline-block text-sm text-lava hover:underline">View on GitHub ↗</a>
+          </div>
+        </article>
+        <blockquote class="reveal text-center">
+          <p class="font-hand text-lg leading-relaxed">"Shyam's expertise in full-stack development and his ability to quickly adapt to new technologies made him an invaluable team member."</p>
+          <footer class="mt-5 inline-flex items-center gap-3 text-left"><span class="grid h-12 w-12 place-items-center rounded-full bg-blood font-bebas text-xl">NO</span><span><span class="block bg-void px-2 font-bebas text-lg tracking-wide">Nitin O V</span><span class="block px-2 text-xs text-bone/60">Team Lead CMS, Evolve</span></span></footer>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section id="timeline" class="mx-auto max-w-6xl px-4 pt-32 sm:px-6">
+    <h2 class="reveal font-bebas text-6xl tracking-wide">Timeline</h2>
+    <p class="reveal mt-4 max-w-[60ch] text-bone/70">Six years, three stages, each one further down the stack.</p>
+
+    <div class="mt-14 space-y-20">
+      <div class="reveal">
+        <div class="flex flex-wrap items-center gap-8">
+          <div class="relative h-40 w-40 shrink-0">
+            <svg viewBox="0 0 160 160" class="h-full w-full -rotate-90"><circle cx="80" cy="80" r="70" fill="none" stroke="#ffffff20" stroke-dasharray="2 6"/><circle class="ring" style="--to:40" cx="80" cy="80" r="70" fill="none" stroke="#b11226" stroke-width="10" stroke-linecap="round"/></svg>
+            <span class="absolute inset-0 grid place-items-center font-bebas text-4xl">Stage 3</span>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-[0.25em] text-bone/50">Feb 2026 to now · Amdrodd Technologies</p>
+            <h3 class="mt-2 font-bebas text-4xl tracking-wide"><span class="text-crimson">AWS Cloud Engineer</span> · Senior Full Stack</h3>
+          </div>
+        </div>
+        <div class="mt-8 grid gap-4 md:grid-cols-3">
+          <div class="rounded-2xl border border-white/10 bg-void p-6"><p class="font-serif text-bone/50">I</p><p class="mt-3 text-lg">Migrating a multi-tenant SaaS from GCP to AWS</p><p class="mt-2 text-sm text-bone/60">9 microservices, multi-account landing zone, Control Tower, SSO.</p></div>
+          <div class="rounded-2xl border border-crimson/60 bg-void p-6 shadow-[0_0_30px_-12px_#ff4d00]"><p class="font-serif text-bone/50">II</p><p class="mt-3 text-lg">Cutting cost without cutting safety</p><p class="mt-2 text-sm text-bone/60">Compute ~51% cheaper on Graviton, staging ~70% cheaper, savings moved into a hardened prod VPC.</p></div>
+          <div class="rounded-2xl border border-white/10 bg-void p-6"><p class="font-serif text-bone/50">III</p><p class="mt-3 text-lg">Locking down secrets and access</p><p class="mt-2 text-sm text-bone/60">34 secrets audited, 532 duplicates found, 158+ keys off .env, OIDC instead of SSH keys.</p></div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="flex flex-wrap items-center gap-8">
+          <div class="relative h-40 w-40 shrink-0">
+            <svg viewBox="0 0 160 160" class="h-full w-full -rotate-90"><circle cx="80" cy="80" r="70" fill="none" stroke="#ffffff20" stroke-dasharray="2 6"/><circle class="ring" style="--to:150" cx="80" cy="80" r="70" fill="none" stroke="#b11226" stroke-width="10" stroke-linecap="round"/></svg>
+            <span class="absolute inset-0 grid place-items-center font-bebas text-4xl">Stage 2</span>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-[0.25em] text-bone/50">Feb 2024 to Feb 2026 · CyberSapient</p>
+            <h3 class="mt-2 font-bebas text-4xl tracking-wide"><span class="text-crimson">Senior Full Stack Engineer</span> · Healthcare</h3>
+          </div>
+        </div>
+        <div class="mt-8 grid gap-4 md:grid-cols-3">
+          <div class="rounded-2xl border border-white/10 bg-void p-6"><p class="font-serif text-bone/50">I</p><p class="mt-3 text-lg">HIPAA-compliant EHR</p><p class="mt-2 text-sm text-bone/60">1,000+ providers, 40,000+ records a day, zero security incidents.</p></div>
+          <div class="rounded-2xl border border-white/10 bg-void p-6"><p class="font-serif text-bone/50">II</p><p class="mt-3 text-lg">Serverless pipelines</p><p class="mt-2 text-sm text-bone/60">Image transcoding under 100 ms; DrChrono webhooks cut manual entry 75%.</p></div>
+          <div class="rounded-2xl border border-white/10 bg-void p-6"><p class="font-serif text-bone/50">III</p><p class="mt-3 text-lg">Faster everything</p><p class="mt-2 text-sm text-bone/60">PostgreSQL 40% faster, deploys in about 8 minutes.</p></div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="flex flex-wrap items-center gap-8">
+          <div class="relative h-40 w-40 shrink-0">
+            <svg viewBox="0 0 160 160" class="h-full w-full -rotate-90"><circle cx="80" cy="80" r="70" fill="none" stroke="#ffffff20" stroke-dasharray="2 6"/><circle class="ring" style="--to:300" cx="80" cy="80" r="70" fill="none" stroke="#b11226" stroke-width="10" stroke-linecap="round"/></svg>
+            <span class="absolute inset-0 grid place-items-center font-bebas text-4xl">Stage 1</span>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-[0.25em] text-bone/50">Jan 2022 to Jan 2024 · Ethernex IT Solutions, Abu Dhabi</p>
+            <h3 class="mt-2 font-bebas text-4xl tracking-wide"><span class="text-crimson">Web Developer</span> · Front to back</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="mx-auto max-w-6xl px-4 pt-32 sm:px-6">
+    <h2 class="reveal font-bebas text-6xl tracking-wide">FAQ</h2>
+    <p class="reveal mt-4 max-w-[60ch] text-bone/70">The questions I get most. Anything else, just write to me.</p>
+    <div class="reveal mt-10 divide-y divide-white/10 border-y border-white/10">
+      <details class="group py-5"><summary class="flex cursor-pointer list-none items-center gap-6"><span class="font-bebas text-2xl text-bone/50">01</span><span class="flex-1 font-bebas text-2xl tracking-wide group-hover:text-lava sm:text-3xl">What kind of roles are you open to?</span><span class="arrow text-xl">↓</span></summary><p class="mt-4 max-w-[65ch] pl-12 text-bone/70">Cloud, platform and backend roles where I own systems end to end: infrastructure, delivery and the code that runs on it.</p></details>
+      <details class="group py-5"><summary class="flex cursor-pointer list-none items-center gap-6"><span class="font-bebas text-2xl text-bone/50">02</span><span class="flex-1 font-bebas text-2xl tracking-wide group-hover:text-lava sm:text-3xl">Which cloud do you work on?</span><span class="arrow text-xl">↓</span></summary><p class="mt-4 max-w-[65ch] pl-12 text-bone/70">Mostly AWS: ECS Fargate, Lambda, RDS, DynamoDB, CloudFront, Organizations and Control Tower. I've also migrated workloads off GCP.</p></details>
+      <details class="group py-5"><summary class="flex cursor-pointer list-none items-center gap-6"><span class="font-bebas text-2xl text-bone/50">03</span><span class="flex-1 font-bebas text-2xl tracking-wide group-hover:text-lava sm:text-3xl">Do you work with Kubernetes?</span><span class="arrow text-xl">↓</span></summary><p class="mt-4 max-w-[65ch] pl-12 text-bone/70">Yes, with kind clusters and GitOps through Argo CD. I'm also writing Kube by Kube, a free hands-on Kubernetes course.</p></details>
+      <details class="group py-5"><summary class="flex cursor-pointer list-none items-center gap-6"><span class="font-bebas text-2xl text-bone/50">04</span><span class="flex-1 font-bebas text-2xl tracking-wide group-hover:text-lava sm:text-3xl">Can you still write application code?</span><span class="arrow text-xl">↓</span></summary><p class="mt-4 max-w-[65ch] pl-12 text-bone/70">Every day. Node.js, Python and FastAPI on the backend, PostgreSQL and MongoDB for data, Next.js when a UI is needed.</p></details>
+      <details class="group py-5"><summary class="flex cursor-pointer list-none items-center gap-6"><span class="font-bebas text-2xl text-bone/50">05</span><span class="flex-1 font-bebas text-2xl tracking-wide group-hover:text-lava sm:text-3xl">Where are you based?</span><span class="arrow text-xl">↓</span></summary><p class="mt-4 max-w-[65ch] pl-12 text-bone/70">Kochi, Kerala, India (IST). I've worked with teams in India and the UAE.</p></details>
+      <details class="group py-5"><summary class="flex cursor-pointer list-none items-center gap-6"><span class="font-bebas text-2xl text-bone/50">06</span><span class="flex-1 font-bebas text-2xl tracking-wide group-hover:text-lava sm:text-3xl">Where can I read your work?</span><span class="arrow text-xl">↓</span></summary><p class="mt-4 max-w-[65ch] pl-12 text-bone/70">At <a class="text-lava hover:underline" href="https://backendalmanac.in">backendalmanac.in</a>: Linux, Kubernetes, AWS and system design, one real problem per post.</p></details>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="px-3 pb-6 pt-32 sm:px-6">
+    <div class="relative mx-auto max-w-6xl overflow-hidden rounded-[28px] border border-white/10 bg-void px-6 pt-16 sm:px-12">
+      <div class="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-[radial-gradient(60%_80%_at_50%_100%,#b1122666,transparent)]"></div>
+      <p class="reveal relative flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-bone/60">✺ Contact me</p>
+      <p class="reveal relative mt-4 max-w-[38ch] text-2xl font-light leading-snug"><span class="text-crimson">Yes, I'm available now.</span> Most good projects start with a message. The best ones start with a slightly awkward one.</p>
+      <div class="reveal relative mt-14 flex flex-wrap items-end justify-between gap-6">
+        <div><p class="text-xs uppercase tracking-[0.2em] text-bone/50">Say hello at</p><a href="mailto:shyamenk@gmail.com" class="mt-2 inline-block text-xl hover:text-lava">shyamenk@gmail.com ↗</a></div>
+        <div class="flex flex-wrap gap-6 text-sm text-bone/70"><a class="hover:text-bone" href="https://www.linkedin.com/in/shyamenk">linkedin</a><a class="hover:text-bone" href="https://x.com/shyamenk07">x</a><a class="hover:text-bone" href="https://github.com/shyamenk">github</a><a class="hover:text-bone" href="https://backendalmanac.in">blog</a></div>
+      </div>
+      <p class="flicker relative mt-10 select-none whitespace-nowrap text-center font-bebas text-[17vw] leading-[0.8] text-crimson/80 lg:text-[11.5rem]">Shyam Kumar</p>
+    </div>
+    <p class="mx-auto max-w-6xl py-6 text-center text-xs text-bone/40">© 2026 Shyam Kumar V M · Kochi, India</p>
+  </section>
+</main>
+
+<script>
+  document.getElementById('flip').addEventListener('click', (e) => e.currentTarget.classList.toggle('on'));
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+</script>
+</body>
+</html>
