@@ -104,7 +104,7 @@ B.Tech, Computer Science & Engineering · Mangalam College of Engineering · 200
    *Python · Bolt · Lambda · SAM · Cost Explorer* · [GitHub](https://github.com/shyamenk/costpulse)
 2. **Serverless Image Transcoding Pipeline** · 2025
    Event-driven pipeline that turns every upload into optimised formats and serves them globally via CloudFront.
-   *Lambda · S3 · CloudFront · DynamoDB · Sharp · CloudFormation* · [GitHub](https://github.com/shyamenk/image-transcoding-pipeline)
+   *Lambda · S3 · CloudFront · DynamoDB · Sharp · CloudFormation* · [GitHub](https://github.com/shyamenk/serverless-image-transcoding-pipeline)
 3. **Kube by Kube** · in progress
    A free, hands-on Kubernetes course. Plain language, troubleshooting first, one real app from your first cluster to production on AWS.
    *Kubernetes · Argo CD · AWS* · [GitHub](https://github.com/shyamenk/kube-by-kube) **[CHECK: public?]**
