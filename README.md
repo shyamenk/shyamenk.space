@@ -15,6 +15,18 @@ npm run build
 
 CI (`.github/workflows/ci.yml`) runs lint, format check, build and tests on every PR and push to `main`.
 
+## Environment variables
+
+The contact form (`src/app/contact/actions.ts`) sends mail through [Resend](https://resend.com). Set these in Vercel (Production), or in `.env.local` for local testing.
+
+| Variable         | Required | Default                                   | Purpose                                                           |
+| ---------------- | -------- | ----------------------------------------- | ----------------------------------------------------------------- |
+| `RESEND_API_KEY` | Yes      | none (the form shows an error without it) | Resend API key with sending access                                |
+| `CONTACT_FROM`   | No       | `shyamenk.space <onboarding@resend.dev>`  | Sender; production uses `shyamenk.space <contact@shyamenk.space>` |
+| `CONTACT_TO`     | No       | `shyamenk@gmail.com`                      | Inbox that receives contact messages                              |
+
+Sending from `@shyamenk.space` needs the domain verified in Resend. The records live in Hostinger DNS: TXT `resend._domainkey` (DKIM), CNAMEs `send` and `rsend` (SPF / return path), and TXT `_dmarc`. Copy exact values from the Resend dashboard if they ever need re-adding.
+
 ## Routes
 
 | Route                           | Source                                                                                                                    |
