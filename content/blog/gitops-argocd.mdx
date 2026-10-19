@@ -55,18 +55,18 @@ The deployment ends after `kubectl apply`. After that:
 
 This creates configuration drift.
 
-## What GitOps Changes 🔄
+## What GitOps Changes
 
 GitOps flips the deployment model. Instead of CI pushing changes, the cluster pulls them. Git becomes the only source of truth.
 
 Four core principles:
 
-- ✅ **Declarative:** describe the desired state instead of deployment steps.
-- ✅ **Versioned:** every infrastructure change is a Git commit.
-- ✅ **Pull-based:** the cluster pulls changes from Git. No external system pushes into production.
-- ✅ **Continuous reconciliation:** the cluster constantly compares reality with Git. If something changes manually, it changes it back.
+- **Declarative:** describe the desired state instead of deployment steps.
+- **Versioned:** every infrastructure change is a Git commit.
+- **Pull-based:** the cluster pulls changes from Git. No external system pushes into production.
+- **Continuous reconciliation:** the cluster constantly compares reality with Git. If something changes manually, it changes it back.
 
-## How ArgoCD Works ⚙️
+## How ArgoCD Works
 
 ArgoCD runs inside Kubernetes. Its job is simple:
 
@@ -95,10 +95,10 @@ Deployment is no longer a one-time event. It's an ongoing process.
 
 ArgoCD consists of four major pieces:
 
-- 📦 **API Server:** handles UI, CLI and API requests.
-- 📂 **Repo Server:** clones Git repositories and renders manifests.
-- ⚡ **Application Controller:** the reconciliation engine. This is where the magic happens.
-- 🗄 **Redis:** caches manifests and application state.
+- **API Server:** handles UI, CLI and API requests.
+- **Repo Server:** clones Git repositories and renders manifests.
+- **Application Controller:** the reconciliation engine. This is where the magic happens.
+- **Redis:** caches manifests and application state.
 
 ## Repository Structure
 
@@ -129,7 +129,7 @@ Benefits:
 - Better access control
 - Easier environment management
 
-## My Test 🧪
+## My Test
 
 I deployed the Guestbook application with ArgoCD. Git declared:
 
@@ -146,7 +146,7 @@ kubectl scale deployment guestbook-ui \
 
 Git still wanted 1 replica. The cluster now had 5.
 
-## What Happened Next 👀
+## What Happened Next
 
 Within seconds, ArgoCD detected the drift. It automatically terminated the four extra pods.
 
@@ -160,20 +160,20 @@ No. CI and GitOps solve different problems.
 
 | CI                  | ArgoCD                      |
 | ------------------- | --------------------------- |
-| ✅ Build            | ✅ Deploy                   |
-| ✅ Test             | ✅ Monitor drift            |
-| ✅ Security scanning | ✅ Self-heal                |
-| ✅ Push images      | ✅ Continuous reconciliation |
+| Build | Deploy |
+| Test | Monitor drift |
+| Security scanning | Self-heal |
+| Push images | Continuous reconciliation |
 
 Think of ArgoCD as the deployment engine, not the build system.
 
 ## Key Takeaways
 
-- ✔ Git should be the single source of truth.
-- ✔ Stop pushing changes into production.
-- ✔ Let the cluster pull them instead.
-- ✔ Continuous reconciliation is the real power of GitOps.
-- ✔ Self-healing removes configuration drift before it becomes an incident.
+- Git should be the single source of truth.
+- Stop pushing changes into production.
+- Let the cluster pull them instead.
+- Continuous reconciliation is the real power of GitOps.
+- Self-healing removes configuration drift before it becomes an incident.
 
 ## Final Thoughts
 
