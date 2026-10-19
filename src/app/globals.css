@@ -13,6 +13,13 @@
   --font-bebas: var(--font-bebas-neue), Impact, sans-serif;
   --font-orb: var(--font-orbitron), sans-serif;
   --font-hand: var(--font-permanent-marker), cursive;
+
+  /* Type scale: each step is a half golden-ratio jump (x1.272) from a 1rem body, so two steps up is x1.618. */
+  --text-body: 1.125rem;
+  --text-lead: 1.272rem;
+  --text-h4: 1.618rem;
+  --text-h3: 2.058rem;
+  --text-h2: 3.33rem;
 }
 
 html {
@@ -259,15 +266,6 @@ select,
   transform: none;
 }
 
-.ring {
-  stroke-dasharray: 440;
-  stroke-dashoffset: 440;
-  transition: stroke-dashoffset 1.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.in .ring {
-  stroke-dashoffset: var(--to);
-}
-
 .flicker {
   animation: flicker 4s infinite;
 }
@@ -304,10 +302,6 @@ details[open] .faq-arrow {
     opacity: 1 !important;
     animation: none !important;
     transition: none !important;
-  }
-  .ring {
-    stroke-dashoffset: var(--to);
-    transition: none;
   }
   .flicker {
     animation: none;

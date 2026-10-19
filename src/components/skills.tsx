@@ -1,34 +1,20 @@
+import { SkillTabs } from "@/components/skill-tabs";
 import { skills } from "@/content/site";
 
 export function Skills() {
   return (
     <section id="skills" className="mx-auto max-w-6xl px-4 pt-32 sm:px-6">
-      <h2 className="reveal font-bebas text-6xl tracking-wide">{skills.title}</h2>
-      <p className="reveal mt-4 max-w-[60ch] text-bone/70">{skills.intro}</p>
+      <h2 className="reveal font-bebas text-h2 tracking-wide">{skills.title}</h2>
+      <p className="reveal mt-4 max-w-[60ch] text-body text-bone/70">{skills.intro}</p>
 
-      <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {skills.groups.map((group, i) => (
-          <article
-            key={group.name}
-            className="reveal card rounded-2xl border border-white/10 bg-void p-6"
-            style={{ transitionDelay: `${(i % 3) * 0.08}s` }}
-          >
-            <h3 className="font-bebas text-2xl tracking-wide text-crimson">{group.name}</h3>
-            <ul className="mt-4 flex flex-wrap gap-2">
-              {group.items.map((item) => (
-                <li key={item} className="chip rounded-full border border-white/10 px-3 py-1 text-sm text-bone/75">
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </article>
-        ))}
+      <div className="reveal">
+        <SkillTabs />
       </div>
 
-      <div className="reveal mt-10 flex flex-wrap items-center gap-3 text-sm text-bone/60">
-        <span className="text-xs uppercase tracking-[0.2em]">Certifications</span>
+      <div className="reveal mt-12 flex flex-wrap items-center gap-3 border-t border-white/10 pt-8 text-base text-bone/70">
+        <span className="mr-2 font-orb text-xs tracking-[0.2em] text-bone/50">CERTIFIED</span>
         {skills.certifications.map((c) => (
-          <span key={c} className="rounded-full border border-crimson/50 px-3 py-1">
+          <span key={c} className="rounded-full border border-crimson/50 px-4 py-1.5">
             {c}
           </span>
         ))}

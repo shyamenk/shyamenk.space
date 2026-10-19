@@ -1,11 +1,21 @@
 import Link from "next/link";
 
-export function SectionHeading({ title, intro, cta }: { title: string; intro?: string; cta?: { label: string; href: string } }) {
+export function SectionHeading({
+  title,
+  intro,
+  cta,
+  compact,
+}: {
+  title: string;
+  intro?: string;
+  cta?: { label: string; href: string };
+  compact?: boolean;
+}) {
   return (
     <div className="reveal flex flex-wrap items-end justify-between gap-6">
       <div>
-        <h2 className="font-bebas text-6xl tracking-wide">{title}</h2>
-        {intro && <p className="mt-4 max-w-[60ch] text-bone/70">{intro}</p>}
+        <h2 className="font-bebas text-h2 tracking-wide">{title}</h2>
+        {intro && <p className={`mt-4 max-w-[60ch] text-bone/70 ${compact ? "text-[17px]" : "text-body"}`}>{intro}</p>}
       </div>
       {cta && (
         <Link
