@@ -9,6 +9,10 @@ All notable changes to shyamenk.space. Format follows [Keep a Changelog](https:/
 - Contact form email is sent from `contact@shyamenk.space` (domain verified in Resend) instead of Resend's shared onboarding address (#41).
 - README documents the contact form environment variables and the DNS records behind them (#41).
 
+### Removed
+
+- Unused 1.7 MB image `public/blog/api-design-build-scale.png` (#43).
+
 ## [0.2.0] - 2026-10-19
 
 Two new Kubernetes posts, a test suite with CI on every PR, real 404 status codes, and a cleanup of the older posts.
