@@ -19,7 +19,10 @@ export function SiteHeader() {
         <ul className="hidden items-center gap-7 text-sm text-bone/70 md:flex">
           {nav.map((item) => (
             <li key={item.href}>
-              <Link className="relative py-1 transition hover:text-bone after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-lava after:transition-transform after:duration-300 hover:after:scale-x-100" href={item.href}>
+              <Link
+                className="relative py-1 transition hover:text-bone after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-lava after:transition-transform after:duration-300 hover:after:scale-x-100"
+                href={item.href}
+              >
                 {item.label}
               </Link>
             </li>
@@ -49,7 +52,10 @@ export function SiteHeader() {
           </a>
 
           <details className="group relative md:hidden">
-            <summary className="grid h-9 w-9 list-none place-items-center rounded-full border border-white/10 transition hover:border-lava" aria-label="Menu">
+            <summary
+              className="grid h-9 w-9 list-none place-items-center rounded-full border border-white/10 transition hover:border-lava"
+              aria-label="Menu"
+            >
               <span className="flex flex-col gap-1" aria-hidden="true">
                 <span className="block h-px w-4 bg-bone transition group-open:translate-y-[2.5px] group-open:rotate-45" />
                 <span className="block h-px w-4 bg-bone transition group-open:-translate-y-[2.5px] group-open:-rotate-45" />

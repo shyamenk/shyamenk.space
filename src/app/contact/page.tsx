@@ -53,7 +53,10 @@ export default function ContactPage() {
                       <span className="block">{channel.label}</span>
                       <span className="block text-sm text-bone/50">{channel.handle}</span>
                     </span>
-                    <span className="text-bone/40 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-lava" aria-hidden="true">
+                    <span
+                      className="text-bone/40 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-lava"
+                      aria-hidden="true"
+                    >
                       {internal ? "→" : "↗"}
                     </span>
                   </>

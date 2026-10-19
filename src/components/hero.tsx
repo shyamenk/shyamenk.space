@@ -38,10 +38,7 @@ export function Hero() {
             </span>
           </h1>
 
-          <p
-            className="fade mx-auto mt-6 max-w-[42ch] text-lg font-light text-bone/85 lg:mx-0"
-            style={{ animationDelay: "0.75s" }}
-          >
+          <p className="fade mx-auto mt-6 max-w-[42ch] text-lg font-light text-bone/85 lg:mx-0" style={{ animationDelay: "0.75s" }}>
             {hero.sub}
           </p>
           <a
@@ -53,10 +50,7 @@ export function Hero() {
           </a>
         </div>
 
-        <figure
-          className="fade relative z-10 flex justify-center pb-14 lg:justify-end lg:pb-0 lg:pr-12"
-          style={{ animationDelay: "0.4s" }}
-        >
+        <figure className="fade relative z-10 flex justify-center pb-14 lg:justify-end lg:pb-0 lg:pr-12" style={{ animationDelay: "0.4s" }}>
           <Image
             src={profile.photo.src}
             alt={profile.photo.alt}
