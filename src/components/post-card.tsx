@@ -19,21 +19,21 @@ export function PostCard({ post, index = 0 }: { post: PostMeta; index?: number }
         />
       </div>
       <div className="flex flex-1 flex-col p-6">
-        <p className="text-xs text-bone/50">
+        <p className="text-[13px] text-bone/55">
           <time dateTime={post.date}>{formatDate(post.date)}</time> · {post.readTime}
         </p>
-        <h3 className="mt-2 text-xl font-medium leading-snug">
+        <h3 className="mt-2 font-bebas text-h4 leading-tight tracking-wide">
           <Link href={`/blog/${post.slug}`} className="after:absolute after:inset-0 hover:text-lava">
             {post.title}
           </Link>
         </h3>
-        <p className="mt-3 line-clamp-3 text-sm text-bone/70">{post.excerpt}</p>
+        <p className="mt-3 line-clamp-3 text-[15px] leading-relaxed text-bone/60">{post.excerpt}</p>
         <ul className="relative z-10 mt-auto flex flex-wrap gap-1.5 pt-5">
           {post.tags.map((tag) => (
             <li key={tag}>
               <Link
                 href={`/blog/tags/${tagSlug(tag)}`}
-                className="chip inline-block rounded-full border border-white/10 px-2.5 py-0.5 text-[11px] text-bone/60"
+                className="chip inline-block rounded-full border border-white/10 px-2.5 py-0.5 text-xs text-bone/60"
               >
                 #{tag}
               </Link>

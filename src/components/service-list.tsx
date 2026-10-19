@@ -33,11 +33,11 @@ export function ServiceList() {
                 onClick={() => setOpen(isOpen ? -1 : i)}
                 className="flex w-full items-center gap-6 py-6 text-left sm:gap-10"
               >
-                <span className={`font-orb text-sm transition-colors duration-300 ${isOpen ? "text-lava" : "text-bone/40"}`}>
+                <span className={`font-orb text-xs transition-colors duration-300 ${isOpen ? "text-lava" : "text-bone/40"}`}>
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span
-                  className={`flex-1 font-bebas text-[clamp(2rem,5vw,3.75rem)] leading-none tracking-wide transition-[color,transform] duration-500 motion-reduce:transition-none ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                  className={`flex-1 font-bebas text-[clamp(1.272rem,3vw,2.058rem)] leading-none tracking-wide transition-[color,transform] duration-500 motion-reduce:transition-none ease-[cubic-bezier(0.16,1,0.3,1)] ${
                     isOpen ? "translate-x-2 text-bone" : "text-bone/70 group-hover:text-bone"
                   }`}
                 >
@@ -65,9 +65,9 @@ export function ServiceList() {
               <div className="overflow-hidden">
                 <div className="grid gap-6 pb-8 pl-0 sm:pl-[4.75rem] lg:grid-cols-[1.2fr_1fr]">
                   <div>
-                    <p className="max-w-[52ch] text-lg leading-relaxed text-bone/80">{item.body}</p>
+                    <p className="max-w-[52ch] text-lead leading-relaxed text-bone/80">{item.body}</p>
                     <p className="mt-4 flex gap-3 text-sm text-bone/60">
-                      <span className="font-orb text-[10px] tracking-[0.2em] text-crimson">PROOF</span>
+                      <span className="font-orb text-xs tracking-[0.2em] text-crimson">PROOF</span>
                       {item.proof}
                     </p>
                   </div>

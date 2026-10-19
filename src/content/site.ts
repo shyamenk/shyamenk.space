@@ -27,7 +27,7 @@ export const hero = {
   headline: [["Turning", "production"], ["outages", "into"]],
   headlineAccent: "practical lessons",
   sub: "Cloud & backend engineering on AWS: migrations, cost cuts and systems that stay up.",
-  cta: { label: "Email Me", href: `mailto:${profile.email}` },
+  cta: { label: "Contact me", href: "/contact" },
 };
 
 export const services = {
@@ -144,26 +144,21 @@ export const writing = {
 
 export type Stage = {
   label: string;
-  // Portion of the ring left unfilled, out of 440 (the ring's circumference).
-  ringOffset: number;
   period: string;
   role: string;
   roleSuffix: string;
   steps: { title: string; body: string }[];
-  highlightStep?: number;
 };
 
 export const timeline = {
-  title: "Timeline",
+  title: "Experience",
   intro: "Six years, three stages, each one further down the stack.",
   stages: [
     {
       label: "Stage 3",
-      ringOffset: 40,
       period: "Feb 2026 to now · Amdrodd Technologies",
       role: "AWS Cloud Engineer",
       roleSuffix: "Senior Full Stack",
-      highlightStep: 1,
       steps: [
         { title: "Migrating a multi-tenant SaaS from GCP to AWS", body: "9 microservices, multi-account landing zone, Control Tower, SSO." },
         { title: "Cutting cost without cutting safety", body: "Compute ~51% cheaper on Graviton, staging ~70% cheaper with Fargate Spot and graceful SIGTERM handling, savings moved into a hardened prod VPC." },
@@ -175,7 +170,6 @@ export const timeline = {
     },
     {
       label: "Stage 2",
-      ringOffset: 150,
       period: "Feb 2024 to Feb 2026 · CyberSapient",
       role: "Senior Full Stack Engineer",
       roleSuffix: "Healthcare",
@@ -187,11 +181,24 @@ export const timeline = {
     },
     {
       label: "Stage 1",
-      ringOffset: 300,
       period: "Jan 2022 to Jan 2024 · Ethernex IT Solutions, Abu Dhabi",
       role: "Web Developer",
       roleSuffix: "Front to back",
-      steps: [],
+      steps: [
+        { title: "Billing and SMS workflows", body: "Stripe subscriptions and Twilio reminders with rate limiting and webhook validation, billing errors down 30%." },
+        { title: "Node.js APIs on MongoDB", body: "Validated REST endpoints with structured errors; indexing and schema redesign cut query latency 35%." },
+        { title: "Interfaces for healthcare providers", body: "Responsive React and Tailwind UIs across desktop, tablet and mobile, built with UX designers." },
+      ],
+    },
+    {
+      label: "Earlier",
+      period: "Feb 2012 to Feb 2014 · Codelynks, Kochi",
+      role: "Junior iOS Developer",
+      roleSuffix: "Native apps",
+      steps: [
+        { title: "Three iPhone apps in the App Store", body: "Native Objective-C apps with UIKit, Auto Layout and REST API integrations." },
+        { title: "Fewer crashes", body: "Profiled with Xcode Instruments and fixed the bottlenecks, cutting crash rates 40%." },
+      ],
     },
   ] satisfies Stage[],
 };

@@ -8,9 +8,16 @@ All notable changes to shyamenk.space. Format follows [Keep a Changelog](https:/
 
 - Blog post "OWASP Top 10:2025: What Changed Since 2021, and What I Keep Finding in Real Audits"; the 2021 post links to it (#45).
 - Site favicon: an orange S on the dark palette, as `icon.svg`, `apple-icon.png` and a 16/32/48px `favicon.ico` (#47).
+- Experience entry for the Web Developer role at Ethernex and a short earlier entry for Codelynks (#49).
+- Toolbox tabs: pick a group on the left, see its tools on the right (#49).
 
 ### Changed
 
+- Home page type scale: one golden-ratio set of sizes for headings, lead text and body, applied to every section and card (#49).
+- Experience is a vertical timeline with bullets instead of cards (#49).
+- Project cards show the year as a badge on the cover image; blog and project cards share one text style (#49).
+- Hero button reads "Contact me" and opens the contact form instead of the mail client (#49).
+- Kind words quotes use the body font in italic instead of the handwriting font (#49).
 - Contact form email is sent from `contact@shyamenk.space` (domain verified in Resend) instead of Resend's shared onboarding address (#41).
 - README documents the contact form environment variables and the DNS records behind them (#41).
 
