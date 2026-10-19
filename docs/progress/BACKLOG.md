@@ -4,13 +4,13 @@ Open work for shyamenk.space, in priority order. Each task gets a GitHub issue a
 
 ## Verify
 
-### T1 · Check the contact email in Gmail · Priority: High
+### T1 · Check the contact email in Gmail · Priority: High · Done (#39, confirmed by owner 2026-10-19)
 
 **Acceptance criteria:**
 
-- [ ] A test message from https://www.shyamenk.space/contact arrives with subject "New message from {name} · {Role|Project|General}"
-- [ ] The branded template renders correctly in Gmail (web and mobile, light and dark mode)
-- [ ] The topic dropdown keeps its value after a validation error
+- [x] A test message from https://www.shyamenk.space/contact arrives with subject "New message from {name} · {Role|Project|General}"
+- [x] The branded template renders correctly in Gmail (web and mobile, light and dark mode)
+- [x] The topic dropdown keeps its value after a validation error
 
 ## Quality
 
