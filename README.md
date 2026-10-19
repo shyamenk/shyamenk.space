@@ -9,11 +9,11 @@ npm install
 npm run dev           # http://localhost:3000
 npm run lint          # zero warnings allowed
 npm run format        # format:check verifies without writing
-npm test              # Vitest unit tests
+npm test              # Vitest tests; run npm run build first (status-code tests use next start)
 npm run build
 ```
 
-CI (`.github/workflows/ci.yml`) runs lint, format check, tests and build on every PR and push to `main`.
+CI (`.github/workflows/ci.yml`) runs lint, format check, build and tests on every PR and push to `main`.
 
 ## Routes
 

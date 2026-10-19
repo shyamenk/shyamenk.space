@@ -22,11 +22,11 @@ Open work for shyamenk.space, in priority order. Each task gets a GitHub issue a
 - [x] Unit tests cover `emailSubject`, `contactEmail` escaping, and contact form validation
 - [x] GitHub Actions runs lint, format check, build and tests on every PR
 
-### T3 · Return a real 404 status for unknown slugs · Priority: Low
+### T3 · Return a real 404 status for unknown slugs · Priority: Low · Done (#35)
 
 **Acceptance criteria:**
 
-- [ ] `/blog/does-not-exist` and `/projects/does-not-exist` return HTTP 404, not 200 + noindex
+- [x] `/blog/does-not-exist` and `/projects/does-not-exist` return HTTP 404, not 200 + noindex
 
 ## Content (owner's call)
 

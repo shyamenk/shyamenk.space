@@ -20,6 +20,7 @@ All notable changes to shyamenk.space. Format follows [Keep a Changelog](https:/
 
 ### Fixed
 
+- Unknown post, project and tag slugs return HTTP 404 instead of 200 + noindex in production builds (#35).
 - Header LinkedIn and email links and footer social links open in a new tab (#19).
 
 ### Removed

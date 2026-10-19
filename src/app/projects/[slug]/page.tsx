@@ -5,6 +5,9 @@ import { notFound } from "next/navigation";
 import { HeaderActions, PageHeader } from "@/components/page-header";
 import { getProject, getProjects } from "@/lib/content";
 
+// Unknown slugs must render fully before responding; otherwise the fallback shell ships a 200 before notFound() runs.
+export const ensureStatic = "navigation";
+
 export function generateStaticParams() {
   return getProjects().map((project) => ({ slug: project.slug }));
 }

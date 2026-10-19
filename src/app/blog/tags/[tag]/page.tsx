@@ -5,6 +5,9 @@ import { PostCard } from "@/components/post-card";
 import { TagList } from "@/components/tag-list";
 import { getPosts, getTags, tagSlug } from "@/lib/content";
 
+// Unknown slugs must render fully before responding; otherwise the fallback shell ships a 200 before notFound() runs.
+export const ensureStatic = "navigation";
+
 export function generateStaticParams() {
   return getTags().map(({ slug }) => ({ tag: slug }));
 }
