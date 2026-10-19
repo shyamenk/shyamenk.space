@@ -1,157 +1,131 @@
 ---
-title: "System Design: How Tech Giants Build Systems That Never Break"
+title: "System Design: The Early Decisions That Decide Whether Your System Scales"
 date: "2024-11-12"
-excerpt: "Every successful tech system shares a hidden pattern. Learn the principles that make tech giants' systems scalable, resilient, and maintainable."
+excerpt: "Most scaling problems are decided in the first weeks, long before the traffic arrives. Three rules for the foundation, and the order to scale in when growth comes."
 tags:
   - System Design
   - Backend
   - Architecture
 featuredImage: "/blog/system-design.jpeg"
-readTime: "12 min read"
+readTime: "4 min read"
 ---
 
-## A Practical Guide to Building Scalable, Resilient, and Maintainable Systems
+Some systems grow from 100 users to a million with a few upgrades.
+Others need a rewrite at 10,000.
 
-Every successful tech system shares a hidden pattern. Why do some platforms handle millions of users without breaking, while others crumble under pressure? Thousands of well-funded startups crash despite their technical resources.
+The difference is rarely clever code.
+It's a handful of decisions made early, usually without much thought.
 
-The difference isn't luck — it's architecture.
+Get them right and scaling is a series of small steps.
+Get them wrong and you pay for it in rewrites.
 
-In this guide, we'll break down the principles that make tech giants' systems scalable, resilient, and maintainable. You'll learn why architecture matters, the mistakes to avoid, and the key strategies that successful companies use to build systems that thrive under pressure.
+Here are the decisions that matter, and the order to scale in when growth comes.
 
-System design isn't about clever coding tricks — it's about **making simple, strategic decisions early** to prevent complex problems later. Think of it like chess: your first moves determine the endgame. Successful system architects think several steps ahead, anticipating growth, failure, and scaling challenges before they arise.
+## The Cost of Early Mistakes
 
-### The Cost of Early Mistakes
+Even very large companies hit these walls:
 
-Consider these real-world examples:
+- **Twitter's "Fail Whale" era:** its early monolithic application couldn't keep up with user growth, and outages were frequent until it was gradually broken into services.
+- **Facebook's PHP performance problem:** rather than rewrite its huge PHP codebase, Facebook built its own compiler and runtime (HipHop, then HHVM) and later the Hack language to make the existing code fast enough.
 
-- **Twitter's Fail Whale Era:** Early monolithic architecture couldn't handle user growth, leading to frequent crashes.
-- **Facebook's PHP Rewrite:** The original codebase, designed for a smaller user base, had to be rewritten from scratch to scale.
-- **Reddit's Viral Post Outages:** Reddit's early system design struggled with unexpected surges in traffic, causing frequent downtime.
+Both survived because they had the money and engineers to dig out. Most teams don't. That's why the early decisions matter.
 
-Your architecture choices in the first week will define your system's future. Get it wrong, and you'll face costly rewrites. Get it right, and you'll scale seamlessly.
+## Rule 1: Know Your Numbers
 
-## Building Your Foundation: The Three Unbreakable Rules
+Before you design anything, estimate what the system has to handle. Numbers turn opinions into decisions.
 
-### Rule 1: Know Your Numbers
+### Traffic
 
-Before writing a single line of code, understand your system's key metrics. Metrics guide your design decisions, helping you plan for growth and avoid bottlenecks.
+- **Daily active users:** how many people use it each day?
+- **Requests per second:** average, and at peak.
+- **Peak vs. average:** design for the peak, not the average.
+- **Growth:** where will these numbers be in a year?
 
-#### Traffic Metrics
+### Data
 
-- **Daily Active Users (DAU):** How many users engage with your system daily?
-- **Requests per Second (RPS):** How many requests does your system handle per second?
-- **Peak vs. Average Load:** Plan for spikes in traffic, not just the average.
-- **Growth Rate Projections:** Forecasting future traffic prevents last-minute scaling crises.
+- **Storage growth:** how fast does data accumulate?
+- **Read vs. write ratio:** is it mostly reads, mostly writes, or both?
+- **Data per user:** how much does each user add?
+- **Retention:** how long must you keep it?
 
-#### Data Metrics
+### Performance
 
-- **Storage Growth Rate:** How quickly is your data growing?
-- **Read vs. Write Ratio:** Are users mostly reading or writing data?
-- **Data Size per User:** Know how much storage each user requires.
-- **Retention Requirements:** How long do you need to store user data?
+- **Response time:** what's acceptable for users?
+- **Availability:** how much downtime per month can you tolerate?
+- **Latency budget:** how much of that response time can each component use?
+- **Throughput:** how much data must move at peak?
 
-#### Performance Metrics
+## Rule 2: Choose Your Data Foundation Carefully
 
-- **Response Time Requirements:** What's your acceptable response speed?
-- **Availability Targets:** What percentage of uptime do you guarantee?
-- **Latency Budgets:** What's the maximum delay allowed for processing data?
-- **Throughput Needs:** How much data must the system handle during peak times?
+Your database is the hardest thing to change later. Choose it for how your data behaves.
 
-Understanding these metrics early ensures your architecture can scale and meet user expectations.
+### Relational databases (e.g. PostgreSQL)
 
-### Rule 2: Data Foundation Matters
+Best when consistency and relationships matter:
 
-Your database is the heart of your system. It dictates how data is stored, accessed, and scaled as your application grows. Choosing the wrong database can result in poor performance and expensive migrations.
+- Payments and banking
+- Bookings and inventory
+- Anything where two records must never disagree
 
-#### SQL Databases (e.g., PostgreSQL)
+### NoSQL databases (e.g. MongoDB, Cassandra)
 
-SQL databases excel when data consistency is critical. They are ideal for systems requiring complex relationships between data and transactional integrity. Examples include:
+Best when you need flexible schemas or very high write volume spread across many machines:
 
-- Banking platforms
-- Booking systems
-- Applications where reliability is non-negotiable
+- Activity feeds
+- Logging and event data
+- Data whose shape changes often
 
-#### NoSQL Databases (e.g., MongoDB, Cassandra)
+If you're unsure, start with PostgreSQL. It handles far more scale than most applications ever reach, and moving off it later is easier than moving onto it.
 
-NoSQL databases shine when horizontal scaling and schema flexibility are priorities. They are designed for high write performance, making them perfect for use cases like:
+## Rule 3: Keep It Simple
 
-- Social media platforms
-- Logging systems
-- Applications with dynamic data structures or heavy traffic
+A simple system is easier to understand, debug and scale. Complexity added "for later" usually costs you now and doesn't help later.
 
-The right database aligns with your use case, ensuring your system remains scalable and efficient over time.
+- Give each service one clear job.
+- Keep dependencies between services to a minimum.
+- Choose proven technology over new and exciting.
+- Cut features that don't earn their keep.
 
-### Rule 3: Simplicity is Non-Negotiable
+Netflix is a useful example: it ran as a monolith first and moved to microservices only when its growth demanded it.
 
-Simplicity is the ultimate sophistication. A simple architecture is easier to scale, debug, and maintain as your system grows. Overcomplicating early on often leads to inefficiency and failure.
+## Scale in Blocks, Not Balloons
 
-#### Netflix's Approach to Simplicity
+Scaling isn't stretching one big system until it bursts. It's adding the next block only when you need it, in roughly this order.
 
-Netflix's architecture evolved with growth. Starting as a monolithic system, it transitioned to microservices but maintained simplicity to ensure reliability and scalability. By simplifying its architecture, Netflix avoided unnecessary complexity, making its system robust and efficient.
+### Level 1: Cache
 
-#### Key Principles for Simplicity
+Caching is the cheapest speed-up you'll ever get.
 
-- Each service should focus on one primary task.
-- Minimize dependencies between services to reduce failure points.
-- Opt for proven, reliable technologies over trendy but untested options.
-- Eliminate features that don't add significant value.
+- Keep sessions and hot data in an in-memory cache like **Redis**.
+- Put images and static files on a **CDN**, close to users.
+- Cache expensive queries and computed results, with a clear expiry.
 
-A simpler system not only reduces the chance of failure but also makes scaling and maintaining it far more manageable.
+### Level 2: Scale the Database
 
-## The Scaling Secret: Blocks, Not Balloons
+When caching isn't enough:
 
-Scaling isn't about stretching your system to its limits; it's about building in blocks. This approach ensures that as you grow, your system remains stable and efficient.
+1. **Scale up first:** a bigger server and better indexes go a long way.
+2. **Add read replicas:** send reads to copies, writes to the primary.
+3. **Shard last:** split data across servers only when one primary can't keep up with writes.
 
-### Level 1: Smart Caching
+### Level 3: Split Into Services
 
-Caching is your first line of defense against slow response times. By storing frequently accessed data in memory, you reduce the need to query your database repeatedly.
+When one codebase becomes the bottleneck for your teams:
 
-**Best Practices for Caching:**
+1. **Define data ownership:** decide which part of the system owns each piece of data.
+2. **Extract services along those lines**, one at a time.
+3. **Put an API gateway in front** to route traffic and handle cross-cutting concerns like auth and rate limits.
 
-- Use in-memory caches like **Redis** for user sessions and frequent calculations.
-- Store shared data in a distributed cache for team-wide access.
-- Cache large files like images at the network edge using a **Content Delivery Network (CDN)** for faster delivery.
+## Key Takeaways
 
-With smart caching, you can handle spikes in traffic without breaking a sweat.
+- Most scaling problems are decided early, not when traffic arrives.
+- Estimate traffic, data and performance numbers before you design.
+- Pick your database for how your data behaves. When unsure, start with PostgreSQL.
+- Keep the system simple until growth forces a change.
+- Scale in order: cache, then database, then services.
 
-### Level 2: Database Scaling
+## Final Thoughts
 
-When caching isn't enough, it's time to scale your database.
+Great systems aren't the ones that never break.
 
-- **Step 1: Vertical Scaling**: Upgrade your existing database server with better hardware and optimize queries.
-- **Step 2: Horizontal Scaling**: Distribute your database load by:
-  - Creating replicas for reading.
-  - Sharding data across multiple servers.
-
-By scaling horizontally, you ensure that your database can handle millions of requests without slowing down.
-
-### Level 3: Service Structure
-
-As your system grows, breaking it into smaller, independent services becomes essential.
-
-**Steps to Break a Monolith:**
-
-1. Define Data Ownership: Identify which part of your system owns each piece of data.
-2. Build Independent Services: Develop services around clear data boundaries.
-3. Connect via API Gateway: Use an API gateway with load balancing to manage traffic between services.
-
-Breaking a monolith into services allows each component to scale independently, reducing the risk of bottlenecks.
-
-## The Three Pillars of Great Systems
-
-- **Ease of Understanding:** The architecture should be intuitive for developers to grasp.
-- **Ease of Change:** Systems must be flexible enough to accommodate new features.
-- **Obstacle-Free Growth:** Design systems that scale without major overhauls.
-
-By keeping these principles in mind, you can build systems that grow with your business.
-
-## Conclusion: Build, Scale, and Ship with Confidence
-
-Great system design is about preparation and simplicity. By understanding your metrics, choosing the right tools, and planning for growth, you can build systems that never break under pressure.
-
-**Now it's your turn:**
-
-- Are you ready to simplify your architecture and plan for success?
-- What's the one architectural decision you can make today that will save you headaches tomorrow?
-
-**Start small, think big, and design systems that thrive.**
+They're the ones built so that when growth comes, the next step is obvious and small.
