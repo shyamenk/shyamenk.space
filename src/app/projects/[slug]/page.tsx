@@ -42,19 +42,19 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
       />
       {links.length > 0 && (
         <HeaderActions label="Project links">
-            {links.map((link, i) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className={
-                  i === 0
-                    ? "ember-btn rounded-full bg-void px-6 py-2.5 text-sm"
-                    : "chip rounded-full border border-white/20 bg-void/60 px-6 py-2.5 text-sm"
-                }
-              >
-                {link.label} ↗
-              </a>
-            ))}
+          {links.map((link, i) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className={
+                i === 0
+                  ? "ember-btn rounded-full bg-void px-6 py-2.5 text-sm"
+                  : "chip rounded-full border border-white/20 bg-void/60 px-6 py-2.5 text-sm"
+              }
+            >
+              {link.label} ↗
+            </a>
+          ))}
         </HeaderActions>
       )}
 
@@ -84,10 +84,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
               ))}
             </ul>
           </div>
-          <Link
-            href="/projects"
-            className="reveal card mt-4 block rounded-2xl border border-white/10 bg-void p-6 text-sm hover:text-lava"
-          >
+          <Link href="/projects" className="reveal card mt-4 block rounded-2xl border border-white/10 bg-void p-6 text-sm hover:text-lava">
             ← More projects
           </Link>
         </aside>

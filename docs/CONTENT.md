@@ -63,7 +63,9 @@ I learn by doing and write down what breaks. Those notes become posts on the blo
 ## 5. Experience
 
 ### AWS Cloud Engineer · Senior Full Stack Engineer
+
 **Amdrodd Technologies LLC** · Kochi · Feb 2026 to present
+
 - Leading the migration of a multi-tenant SaaS platform (enterprise clients) from GCP to AWS across 9 microservices; caught an unmonitored auto-scaling misconfiguration that silently scaled 1 to 4 tasks with no alerts.
 - Built a multi-account AWS landing zone (Organizations, Control Tower, IAM Identity Center) for central governance and SSO.
 - Moved services to ECS Fargate on Graviton/ARM64 with Terraform across dev, staging and prod, cutting compute cost ~51% vs x86.
@@ -74,7 +76,9 @@ I learn by doing and write down what breaks. Those notes become posts on the blo
 - Replaced a shared MongoDB Atlas superuser with 10 least-privilege per-app users, rotating 7 of 10 apps the same day.
 
 ### Senior Full Stack Engineer
+
 **CyberSapient Technologies** · Trivandrum · Feb 2024 to Feb 2026
+
 - Architected a HIPAA-compliant EHR platform serving 1,000+ providers and 40,000+ patient records daily, with zero security incidents.
 - Built a serverless image transcoding pipeline (Lambda, S3, DynamoDB, CloudFront) with <100 ms CDN latency.
 - Designed a DrChrono webhook integration (Lambda, S3, SES) that cut manual data entry by 75%.
@@ -83,15 +87,19 @@ I learn by doing and write down what breaks. Those notes become posts on the blo
 - Real-time analytics dashboard (Next.js, shadcn/ui), 30% faster metric access.
 
 ### Web Developer
+
 **Ethernex IT Solutions** · Abu Dhabi, UAE · Jan 2022 to Jan 2024
+
 - Responsive healthcare web apps with React and Tailwind CSS.
 - Stripe subscription billing and Twilio SMS appointment reminders.
 - REST APIs in Node.js; MongoDB indexing and query optimisation.
 
 ### Junior iPhone Developer
+
 **Codelynks** · Kochi · Feb 2012 to Feb 2014 **[CHECK: show this? It's outside the "6 years" framing]**
 
 ### Education
+
 B.Tech, Computer Science & Engineering · Mangalam College of Engineering · 2005-2009
 
 ---
@@ -99,25 +107,27 @@ B.Tech, Computer Science & Engineering · Mangalam College of Engineering · 200
 ## 6. Projects
 
 ### Featured
+
 1. **CostPulse** · Slack app · 2026
    `/cost` in Slack shows your AWS spend by service. One Slack scope, one IAM action, cost guardrails built in.
-   *Python · Bolt · Lambda · SAM · Cost Explorer* · [GitHub](https://github.com/shyamenk/costpulse)
+   _Python · Bolt · Lambda · SAM · Cost Explorer_ · [GitHub](https://github.com/shyamenk/costpulse)
 2. **Serverless Image Transcoding Pipeline** · 2025
    Event-driven pipeline that turns every upload into optimised formats and serves them globally via CloudFront.
-   *Lambda · S3 · CloudFront · DynamoDB · Sharp · CloudFormation* · [GitHub](https://github.com/shyamenk/serverless-image-transcoding-pipeline)
+   _Lambda · S3 · CloudFront · DynamoDB · Sharp · CloudFormation_ · [GitHub](https://github.com/shyamenk/serverless-image-transcoding-pipeline)
 3. **Kube by Kube** · in progress
    A free, hands-on Kubernetes course. Plain language, troubleshooting first, one real app from your first cluster to production on AWS.
-   *Kubernetes · Argo CD · AWS* · [GitHub](https://github.com/shyamenk/kube-by-kube) **[CHECK: public?]**
+   _Kubernetes · Argo CD · AWS_ · [GitHub](https://github.com/shyamenk/kube-by-kube) **[CHECK: public?]**
 4. **Tech Blog AI** · 2026
    AI writing assistant for technical posts: research, RAG over your notes, SEO checks, multi-step LangGraph workflows.
-   *Python · FastAPI · LangChain · LangGraph · Gemini · ChromaDB* · [GitHub](https://github.com/shyamenk/tech-blog-ai)
+   _Python · FastAPI · LangChain · LangGraph · Gemini · ChromaDB_ · [GitHub](https://github.com/shyamenk/tech-blog-ai)
 
 ### More work
-5. **MedRabbits** · Healthcare platform: appointments, telemedicine, medical records. *React · Node.js · PostgreSQL · ECS · RDS* · [medrabbits.com](https://medrabbits.com)
-6. **Gemcaps** · Healthcare revenue-cycle platform for billing, coding and patient services. *Next.js · PostgreSQL · ECS · Lambda · SNS/SES · Redis*
-7. **AeghisCorp Dashboard** · Shipping operations: vessels, invoices, timesheets, live analytics. *Next.js · PostgreSQL · Prisma · EC2*
-8. **Fundcy** · Personal finance tracker with goals and analytics. *Next.js · PostgreSQL · Drizzle* · [GitHub](https://github.com/shyamenk/fundcy)
-9. **Kubernetes Notes** · Searchable viewer for my Kubernetes study notes. *React · Vite · Tailwind*
+
+5. **MedRabbits** · Healthcare platform: appointments, telemedicine, medical records. _React · Node.js · PostgreSQL · ECS · RDS_ · [medrabbits.com](https://medrabbits.com)
+6. **Gemcaps** · Healthcare revenue-cycle platform for billing, coding and patient services. _Next.js · PostgreSQL · ECS · Lambda · SNS/SES · Redis_
+7. **AeghisCorp Dashboard** · Shipping operations: vessels, invoices, timesheets, live analytics. _Next.js · PostgreSQL · Prisma · EC2_
+8. **Fundcy** · Personal finance tracker with goals and analytics. _Next.js · PostgreSQL · Drizzle_ · [GitHub](https://github.com/shyamenk/fundcy)
+9. **Kubernetes Notes** · Searchable viewer for my Kubernetes study notes. _React · Vite · Tailwind_
 
 ---
 
@@ -140,6 +150,7 @@ B.Tech, Computer Science & Engineering · Mangalam College of Engineering · 200
 **Intro:** I write on the blog about Linux, Kubernetes, AWS and system design. Each post is one real problem, the bottleneck behind it, and the fix.
 
 Posts (now in `content/blog`):
+
 - Mastering API Design: "Most developers know how to build APIs, but only a few know how to design them." · Dec 2024
 - System Design: "Every successful tech system shares a hidden pattern." · Dec 2024
 - Optimizing Database Design: scalable, high-performance databases. · Nov 2024

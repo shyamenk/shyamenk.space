@@ -44,9 +44,7 @@ export function Timeline() {
                   <li
                     key={step.title}
                     className={`card rounded-2xl border bg-void p-6 ${
-                      i === stage.highlightStep
-                        ? "border-crimson/60 shadow-[0_0_30px_-12px_#ff4d00]"
-                        : "border-white/10"
+                      i === stage.highlightStep ? "border-crimson/60 shadow-[0_0_30px_-12px_#ff4d00]" : "border-white/10"
                     }`}
                   >
                     <p className="font-serif text-bone/50" aria-hidden="true">

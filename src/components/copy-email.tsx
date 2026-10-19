@@ -31,9 +31,7 @@ export function CopyEmail({ email }: { email: string }) {
           </>
         )}
       </svg>
-      <span aria-live="polite">
-        {status === "copied" ? "Copied" : status === "failed" ? "Select and copy" : "Copy email"}
-      </span>
+      <span aria-live="polite">{status === "copied" ? "Copied" : status === "failed" ? "Select and copy" : "Copy email"}</span>
     </button>
   );
 }

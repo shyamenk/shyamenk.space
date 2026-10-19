@@ -1,14 +1,6 @@
 import Link from "next/link";
 
-export function SectionHeading({
-  title,
-  intro,
-  cta,
-}: {
-  title: string;
-  intro?: string;
-  cta?: { label: string; href: string };
-}) {
+export function SectionHeading({ title, intro, cta }: { title: string; intro?: string; cta?: { label: string; href: string } }) {
   return (
     <div className="reveal flex flex-wrap items-end justify-between gap-6">
       <div>

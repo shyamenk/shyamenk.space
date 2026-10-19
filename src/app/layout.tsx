@@ -25,10 +25,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${outfit.variable} ${bebasNeue.variable} ${orbitron.variable} ${permanentMarker.variable} antialiased`}
-    >
+    <html lang="en" className={`${outfit.variable} ${bebasNeue.variable} ${orbitron.variable} ${permanentMarker.variable} antialiased`}>
       <body className="font-sans">
         <a
           href="#content"

@@ -38,7 +38,10 @@ export function ProjectCard({ project, index = 0 }: { project: ProjectMeta; inde
           ))}
         </ul>
         <p className="mt-auto flex items-center gap-2 pt-6 text-sm text-lava">
-          Read the case study <span className="card-arrow" aria-hidden="true">↗</span>
+          Read the case study{" "}
+          <span className="card-arrow" aria-hidden="true">
+            ↗
+          </span>
         </p>
       </div>
     </article>

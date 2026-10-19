@@ -181,11 +181,17 @@ select,
 }
 
 .ember-btn {
-  box-shadow: 0 0 0 1px #ff4d00, 0 0 24px -4px #ff4d00, inset 0 0 14px -6px #ff4d00;
+  box-shadow:
+    0 0 0 1px #ff4d00,
+    0 0 24px -4px #ff4d00,
+    inset 0 0 14px -6px #ff4d00;
   transition: box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 .ember-btn:hover {
-  box-shadow: 0 0 0 1px #ff4d00, 0 0 40px 0 #ff4d00, inset 0 0 18px -4px #ff4d00;
+  box-shadow:
+    0 0 0 1px #ff4d00,
+    0 0 40px 0 #ff4d00,
+    inset 0 0 18px -4px #ff4d00;
 }
 
 /* Ornamental corner arcs on portfolio frames */

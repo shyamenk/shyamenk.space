@@ -15,12 +15,7 @@ const sans = "'Helvetica Neue', Helvetica, Arial, sans-serif";
 const display = "Impact, 'Arial Narrow Bold', 'Helvetica Neue', Arial, sans-serif";
 
 function escapeHtml(value: string) {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
 
 function sentAt() {
