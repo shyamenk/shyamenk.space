@@ -40,9 +40,9 @@ Open work for shyamenk.space, in priority order. Each task gets a GitHub issue a
 
 ## Email
 
-### T6 · Send contact email from the site's own domain · Priority: Low
+### T6 · Send contact email from the site's own domain · Priority: Low · Done (#41, confirmed by owner 2026-10-19)
 
 **Acceptance criteria:**
 
-- [ ] `shyamenk.space` verified in Resend (DNS records added at Hostinger)
-- [ ] `CONTACT_FROM` set to an address on the domain; mail still arrives
+- [x] `shyamenk.space` verified in Resend (DNS records added at Hostinger)
+- [x] `CONTACT_FROM` set to an address on the domain; mail still arrives
