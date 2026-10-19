@@ -4,6 +4,10 @@ All notable changes to shyamenk.space. Format follows [Keep a Changelog](https:/
 
 ## [Unreleased]
 
+### Added
+
+- Blog post "OWASP Top 10:2025: What Changed Since 2021, and What I Keep Finding in Real Audits"; the 2021 post links to it (#45).
+
 ### Changed
 
 - Contact form email is sent from `contact@shyamenk.space` (domain verified in Resend) instead of Resend's shared onboarding address (#41).

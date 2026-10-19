@@ -1,0 +1,244 @@
+---
+title: "OWASP Top 10:2025: What Changed Since 2021, and What I Keep Finding in Real Audits"
+date: "2026-10-19"
+excerpt: "Two new categories, SSRF folded into access control, and misconfiguration jumping to number 2. Here's the 2025 list explained, mapped to what actually turns up when you audit a production system."
+tags:
+  - Security
+  - Backend
+  - DevOps
+featuredImage: "/blog/owasp-top-10-2025.png"
+readTime: "10 min read"
+---
+
+This year I audited two production systems for two different clients.
+
+Neither had a clever zero-day waiting to be found.
+
+One had its production WordPress server sitting on a public EC2 instance. No CDN. No firewall in front of it. And an AI chatbot with its own vector database running on the box that nobody had written down anywhere. I only found it by running `docker ps`.
+
+The other stored patient data. No multi-factor login. No session timeout. No record of who read which patient's file, or when.
+
+None of that is exotic. All of it is on the new OWASP Top 10.
+
+The 2025 edition is built on data from **over 2.8 million applications**. It moved things around in ways that match what I keep seeing. Here's what changed, and what each risk looks like in a real system.
+
+## What the OWASP Top 10 Is
+
+The Open Worldwide Application Security Project (OWASP) is a non-profit that publishes free security guidance. Its Top 10 ranks the most critical web application security risks.
+
+For 2025, **8 of the 10 categories come from testing data** contributed by security firms. **2 come from a community survey** of practitioners, to catch risks the data can't see yet.
+
+If you read my [post on the 2021 edition](/blog/owasp-top-ten), this is the update.
+
+## What Changed Since 2021
+
+| #   | 2025                                   | Compared with 2021                                      |
+| --- | -------------------------------------- | ------------------------------------------------------- |
+| A01 | Broken Access Control                  | Still #1. Now includes SSRF                             |
+| A02 | Security Misconfiguration              | Up from #5                                              |
+| A03 | Software Supply Chain Failures         | **New.** Expands "Vulnerable and Outdated Components"   |
+| A04 | Cryptographic Failures                 | Down from #2                                            |
+| A05 | Injection                              | Down from #3                                            |
+| A06 | Insecure Design                        | Down from #4                                            |
+| A07 | Authentication Failures                | Same place, shorter name                                |
+| A08 | Software or Data Integrity Failures    | Same place                                              |
+| A09 | Security Logging and Alerting Failures | Same place. "Monitoring" became "Alerting"              |
+| A10 | Mishandling of Exceptional Conditions  | **New.** Error handling, logic errors, failing open     |
+
+Three shifts matter most:
+
+- **Configuration beat code.** Misconfiguration jumped to #2, above cryptography and injection.
+- **Your dependencies are now your attack surface.** Supply chain failures got their own category at #3.
+- **How you fail matters.** A new category covers what your app does when something goes wrong.
+
+Now the list, one by one.
+
+## A01: Broken Access Control
+
+Users can do things they shouldn't: read another user's records, change someone else's order, call an admin endpoint.
+
+It's still #1, and OWASP's numbers are blunt: **100% of the applications tested were found to have some form of broken access control**, with over 1.8 million occurrences.
+
+**What's new:** Server-Side Request Forgery (SSRF) now lives here. SSRF is when your server fetches a URL an attacker chose, and reaches something it shouldn't, like an internal service or the cloud metadata endpoint at `169.254.169.254` that hands out credentials. OWASP folded it in because it's an access control failure at a trust boundary.
+
+**The fix that matters most:** deny by default, and check ownership on every record, not just "is this user logged in".
+
+```javascript
+// Fetch by id AND owner, so one user can never load another user's document
+const doc = await prisma.document.findFirst({
+  where: { id: req.params.id, ownerId: req.user.id },
+});
+if (!doc) return res.status(404).end();
+```
+
+On AWS, require IMDSv2 for instance metadata. It needs a session token that a simple SSRF request can't get.
+
+## A02: Security Misconfiguration
+
+Default passwords. Sample apps left on production servers. Storage buckets open to the internet. Missing security headers.
+
+It jumped from #5 to #2. OWASP's explanation: "With more shifts into highly configurable software, it's not surprising to see this category moving up." **100% of the applications tested had some form of misconfiguration.**
+
+This is the category I find most in audits, because it isn't one bug. It's dozens of settings, each left at a default.
+
+- The ed-tech client's production server sat on the public internet with **no CDN and no web application firewall** in front of it.
+- The healthcare app was missing **security headers and secure cookie flags**. Small on their own. Together, they widen every other attack.
+
+**The fix:** make hardening repeatable instead of manual.
+
+- Build every environment (dev, staging, prod) from the same infrastructure code, with different credentials in each.
+- Remove what you don't use: sample apps, unused ports, default accounts.
+- Review cloud storage permissions as part of every change, not once a year.
+
+## A03: Software Supply Chain Failures (New)
+
+This replaces "Vulnerable and Outdated Components" and goes much wider: not just your libraries, but your build tools, CI pipeline, package registries and update process.
+
+It ranked **#1 in the community survey, with exactly 50% of respondents** putting it first. It also has the **highest average incidence rate of any category, at 5.19%**.
+
+My audit version of this: the chatbot and vector database nobody had documented. Nobody can patch, monitor or secure a component they don't know is running.
+
+**The fix:** know exactly what you ship, and where it came from.
+
+```bash
+# Install exactly what the lockfile pins, and fail if anything doesn't match
+npm ci
+
+# Check that installed packages were signed by the registry
+npm audit signatures
+
+# Generate a Software Bill of Materials (SBOM): a list of every component you ship
+npx @cyclonedx/cyclonedx-npm --output-file sbom.json
+```
+
+Then watch vulnerability databases for what's in that list, choose dependency versions on purpose, and roll updates out in stages rather than everywhere at once.
+
+## A04: Cryptographic Failures
+
+Data that should be protected isn't, or is protected badly: plain-text passwords, weak algorithms, unencrypted connections, keys in source code.
+
+It dropped from #2 to #4. The ranking is relative, so a lower place doesn't mean it got safer. It means other risks now show up more often.
+
+In the healthcare audit, encryption at rest and in transit **hadn't been verified end to end**, and the most sensitive fields had **no column-level encryption**. "The database is encrypted" is a claim. Checking every hop is a fact.
+
+**The fix:** TLS everywhere, including internal traffic. Encryption at rest, verified. Passwords hashed with a slow, salted algorithm like bcrypt or Argon2. Keys in a secrets manager, never in code.
+
+## A05: Injection
+
+Untrusted input gets run as a query or command: SQL injection, command injection, cross-site scripting (XSS).
+
+It's down from #3 to #5. Modern frameworks and ORMs have made the easy cases rarer, but every raw query is a new chance.
+
+**The fix:** parameterized queries or an ORM, always. Escape output by default. Treat every input as hostile, including data from your own other services.
+
+## A06: Insecure Design
+
+Some flaws aren't bugs in the code. The design itself is unsafe: a password reset that relies on guessable questions, a checkout with no limit on attempts, a feature that trusts the client to send the price.
+
+It's down from #4 to #6.
+
+**The fix:** threat-model features before you build them. Ask "how would someone abuse this?" in the design review, not after launch.
+
+## A07: Authentication Failures
+
+Weak passwords allowed, no multi-factor authentication (MFA), sessions that never expire, credential stuffing left unchecked.
+
+Same place, and the name dropped "Identification".
+
+The healthcare app had **no MFA and no session timeout** on a system holding patient records. Two settings, both available in any mature auth library, both missing.
+
+**The fix:** use a proven auth library or provider. Turn on MFA. Expire sessions. Rate-limit and monitor login attempts.
+
+## A08: Software or Data Integrity Failures
+
+Code or data is trusted without checking it hasn't been tampered with: unsigned updates, unverified CI artifacts, scripts loaded from a CDN with no integrity check.
+
+It overlaps with supply chain, but focuses on verifying integrity at the moment you use something.
+
+**The fix:** sign and verify what you build and deploy. Use Subresource Integrity for third-party scripts:
+
+```html
+<script
+  src="https://cdn.example.com/lib.min.js"
+  integrity="sha384-REPLACE_WITH_THE_FILE_HASH"
+  crossorigin="anonymous"
+></script>
+```
+
+## A09: Security Logging and Alerting Failures
+
+You can't respond to an attack you can't see. And a log nobody is alerted on is just a place where evidence waits.
+
+The rename from "Monitoring" to "Alerting" is the point. Collecting logs isn't enough. Something has to wake someone up.
+
+The healthcare app had **no structured audit trail** of who accessed which patient record, and when. If a record had leaked, there would have been no way to tell whose account did it.
+
+**The fix:** log security events (logins, failures, permission changes, access to sensitive records) in a structured format. Send them somewhere tamper-resistant. Alert on the patterns that matter.
+
+## A10: Mishandling of Exceptional Conditions (New)
+
+This category is about what happens when things go wrong:
+
+- **Failing open:** an error in a permission check that ends up granting access.
+- **Leaky errors:** stack traces or database errors shown to users, which help attackers refine their next attempt.
+- **Half-finished transactions:** a multi-step payment interrupted halfway and never rolled back.
+- **Resource exhaustion:** errors that leave resources locked until the system runs out.
+
+It covers 24 weaknesses, with over 769,000 occurrences in OWASP's data.
+
+The rule is simple: **when in doubt, fail closed.**
+
+```javascript
+async function canAccess(user, doc) {
+  try {
+    return await policyService.check(user, doc);
+  } catch (err) {
+    logger.error({ err, userId: user.id }, "policy check failed");
+    return false; // fail closed: an error never grants access
+  }
+}
+
+// Last-resort handler: log the details, show the user nothing internal
+app.use((err, req, res, next) => {
+  logger.error({ err, path: req.path });
+  res.status(500).json({ error: "internal_error" });
+});
+```
+
+Roll back every part of an interrupted transaction. Put limits on retries and resources so one failure can't snowball into an outage.
+
+## What I Check First in an Audit
+
+If you only have a day, this order finds the most for the least effort:
+
+1. **List what's actually running.** Not what the docs say. Run `docker ps`, list every instance in every account and region. Undocumented components are where the worst surprises live (A02, A03).
+2. **Check what's exposed to the internet.** Public instances, open security groups, public buckets, admin panels (A01, A02).
+3. **Check authentication.** MFA, session timeouts, password rules, login rate limits (A07).
+4. **Check access control on the most sensitive records.** Can user A read user B's data by changing an id? (A01)
+5. **Check what gets logged and who gets alerted** (A09).
+
+## Key Takeaways
+
+- The 2025 list is built on data from over 2.8 million applications: 8 categories from data, 2 from a community survey.
+- Broken access control is still #1, and SSRF now lives inside it. Check ownership on every record.
+- Misconfiguration jumped to #2. Make hardening repeatable with infrastructure as code.
+- Supply chain failures are new at #3. Pin dependencies, verify signatures, keep an SBOM.
+- "Alerting" replaced "Monitoring": logs without alerts don't protect anyone.
+- The new A10 asks what happens when things fail. Fail closed.
+
+## Final Thoughts
+
+The 2025 list says something the breach headlines don't.
+
+Most risk doesn't come from brilliant attackers. It comes from defaults nobody changed, components nobody listed, and errors nobody planned for.
+
+Those are boring problems. That's good news: boring problems have boring, repeatable fixes.
+
+## Sources
+
+- [OWASP Top 10:2025](https://top10.owasp.org/2025)
+- [OWASP Top 10:2025 Introduction: what's new and how the data was collected](https://top10.owasp.org/2025/0x00_2025-Introduction/)
+- [A01:2025 Broken Access Control](https://top10.owasp.org/2025/A01_2025-Broken_Access_Control/)
+- [A02:2025 Security Misconfiguration](https://top10.owasp.org/2025/A02_2025-Security_Misconfiguration/)
+- [A03:2025 Software Supply Chain Failures](https://top10.owasp.org/2025/A03_2025-Software_Supply_Chain_Failures/)
+- [A10:2025 Mishandling of Exceptional Conditions](https://top10.owasp.org/2025/A10_2025-Mishandling_of_Exceptional_Conditions/)
