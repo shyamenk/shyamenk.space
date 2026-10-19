@@ -12,6 +12,7 @@ All notable changes to shyamenk.space. Format follows [Keep a Changelog](https:/
 
 ### Changed
 
+- Database Normalization excerpt no longer cites an unsourced 80% figure (#31).
 - GitOps with ArgoCD post dated July 22, 2026 (#29).
 - Removed emojis from the GitOps with ArgoCD post (#26).
 - `npm run lint` fails on any warning; `@types/node` bumped to `^24` (#21).
@@ -19,6 +20,10 @@ All notable changes to shyamenk.space. Format follows [Keep a Changelog](https:/
 ### Fixed
 
 - Header LinkedIn and email links and footer social links open in a new tab (#19).
+
+### Removed
+
+- Webpack, Database Design and Understanding HTTP posts, as off-focus for the cloud/backend positioning; their URLs and the tag pages they left empty redirect (308) to `/blog` (#31).
 
 ## [0.1.0] - 2026-10-18
 
