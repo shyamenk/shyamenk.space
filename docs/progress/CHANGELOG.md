@@ -12,6 +12,7 @@ All notable changes to shyamenk.space. Format follows [Keep a Changelog](https:/
 
 ### Changed
 
+- GitOps with ArgoCD post dated July 22, 2026 (#29).
 - Removed emojis from the GitOps with ArgoCD post (#26).
 - `npm run lint` fails on any warning; `@types/node` bumped to `^24` (#21).
 
