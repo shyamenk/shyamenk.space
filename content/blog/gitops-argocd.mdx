@@ -1,0 +1,184 @@
+---
+title: "GitOps with ArgoCD: How I Stopped Trusting kubectl apply and Started Trusting Git"
+date: "2026-10-19"
+excerpt: "I created configuration drift in a live Kubernetes cluster on purpose and watched ArgoCD undo it within seconds. Here's why deployment should be a loop, not a command."
+tags:
+  - DevOps
+  - Kubernetes
+  - GitOps
+featuredImage: "/blog/gitops-argocd.png"
+readTime: "4 min read"
+---
+
+Every Kubernetes deployment seems to end the same way.
+
+```bash
+kubectl apply -f deployment.yaml
+```
+
+The pipeline finishes. Everyone moves on.
+
+But what happens if someone manually changes the cluster five minutes later?
+
+Nothing. Your CI pipeline already finished.
+
+That's the problem. GitOps solves it.
+
+I recently tested ArgoCD in a live Kubernetes cluster, intentionally created configuration drift, and watched ArgoCD fix it automatically within seconds.
+
+Here's what I learned.
+
+## The Problem with kubectl apply
+
+Traditional CI/CD looks like this.
+
+```text
+Developer
+     │
+     ▼
+CI Pipeline
+(Build → Test → Push Image)
+     │
+     ▼
+kubectl apply
+     │
+     ▼
+Kubernetes Cluster
+```
+
+The deployment ends after `kubectl apply`. After that:
+
+- Nobody checks whether the cluster still matches Git.
+- Manual production fixes remain forever.
+- CI needs cluster-admin credentials.
+- Git is no longer the source of truth.
+
+This creates configuration drift.
+
+## What GitOps Changes 🔄
+
+GitOps flips the deployment model. Instead of CI pushing changes, the cluster pulls them. Git becomes the only source of truth.
+
+Four core principles:
+
+- ✅ **Declarative:** describe the desired state instead of deployment steps.
+- ✅ **Versioned:** every infrastructure change is a Git commit.
+- ✅ **Pull-based:** the cluster pulls changes from Git. No external system pushes into production.
+- ✅ **Continuous reconciliation:** the cluster constantly compares reality with Git. If something changes manually, it changes it back.
+
+## How ArgoCD Works ⚙️
+
+ArgoCD runs inside Kubernetes. Its job is simple:
+
+```text
+Git Repository
+        │
+        ▼
+     ArgoCD
+        │
+Compare Desired State
+        │
+        ▼
+Kubernetes Cluster
+```
+
+Every reconciliation loop:
+
+1. Reads manifests from Git
+2. Reads live Kubernetes objects
+3. Compares both
+4. Applies changes if they don't match
+
+Deployment is no longer a one-time event. It's an ongoing process.
+
+## The Components
+
+ArgoCD consists of four major pieces:
+
+- 📦 **API Server:** handles UI, CLI and API requests.
+- 📂 **Repo Server:** clones Git repositories and renders manifests.
+- ⚡ **Application Controller:** the reconciliation engine. This is where the magic happens.
+- 🗄 **Redis:** caches manifests and application state.
+
+## Repository Structure
+
+One mistake many teams make: keeping application code and Kubernetes manifests in the same repository.
+
+A better approach:
+
+```text
+Application Repo
+│
+├── Source Code
+├── Tests
+└── Dockerfile
+
+Manifest Repo
+│
+├── base/
+└── overlays/
+    ├── dev
+    ├── staging
+    └── prod
+```
+
+Benefits:
+
+- Independent infrastructure changes
+- Cleaner CI pipelines
+- Better access control
+- Easier environment management
+
+## My Test 🧪
+
+I deployed the Guestbook application with ArgoCD. Git declared:
+
+```yaml
+replicas: 1
+```
+
+Everything was healthy. Then I intentionally changed production.
+
+```bash
+kubectl scale deployment guestbook-ui \
+  --replicas=5
+```
+
+Git still wanted 1 replica. The cluster now had 5.
+
+## What Happened Next 👀
+
+Within seconds, ArgoCD detected the drift. It automatically terminated the four extra pods.
+
+No engineer intervened. No pipeline reran. Git simply won, exactly as designed.
+
+That single demo changed how I think about deployments.
+
+## Is ArgoCD a CI/CD Replacement?
+
+No. CI and GitOps solve different problems.
+
+| CI                  | ArgoCD                      |
+| ------------------- | --------------------------- |
+| ✅ Build            | ✅ Deploy                   |
+| ✅ Test             | ✅ Monitor drift            |
+| ✅ Security scanning | ✅ Self-heal                |
+| ✅ Push images      | ✅ Continuous reconciliation |
+
+Think of ArgoCD as the deployment engine, not the build system.
+
+## Key Takeaways
+
+- ✔ Git should be the single source of truth.
+- ✔ Stop pushing changes into production.
+- ✔ Let the cluster pull them instead.
+- ✔ Continuous reconciliation is the real power of GitOps.
+- ✔ Self-healing removes configuration drift before it becomes an incident.
+
+## Final Thoughts
+
+The biggest mindset shift wasn't learning another Kubernetes tool. It was realizing that deployment shouldn't be a one-time command.
+
+It should be a continuous loop that constantly ensures production matches Git.
+
+Once you watch ArgoCD automatically undo manual changes in real time, it's hard to go back to ending every pipeline with `kubectl apply`.

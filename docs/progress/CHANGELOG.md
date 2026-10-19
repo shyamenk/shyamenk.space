@@ -6,6 +6,7 @@ All notable changes to shyamenk.space. Format follows [Keep a Changelog](https:/
 
 ### Added
 
+- Blog post "GitOps with ArgoCD: How I Stopped Trusting kubectl apply and Started Trusting Git" (#23).
 - Prettier (`npm run format`, `npm run format:check`), Vitest unit tests for the contact email and form validation (`npm test`), and a GitHub Actions CI workflow (#21).
 
 ### Changed
