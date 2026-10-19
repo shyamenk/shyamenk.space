@@ -4,6 +4,10 @@ All notable changes to shyamenk.space. Format follows [Keep a Changelog](https:/
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-19
+
+Two new Kubernetes posts, a test suite with CI on every PR, real 404 status codes, and a cleanup of the older posts.
+
 ### Added
 
 - Blog post "Kubernetes from Zero: How I Stopped Babysitting Containers and Started Declaring What I Want" (#25).
