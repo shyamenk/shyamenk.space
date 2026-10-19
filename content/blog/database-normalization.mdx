@@ -1,5 +1,5 @@
 ---
-title: "Why Your Database Is Failing (and How to Fix It)"
+title: "Database Normalization: Why Your Data Disagrees With Itself and How to Fix It"
 date: "2024-11-20"
 excerpt: "Duplicate rows, update anomalies, data that disagrees with itself: most of it traces back to how tables are organised. A practical guide to normalization, from 1NF to 3NF."
 tags:
@@ -7,135 +7,148 @@ tags:
   - Backend
   - Best Practices
 featuredImage: "/blog/cover.jpeg"
-readTime: "8 min read"
+readTime: "5 min read"
 ---
 
-## The Ultimate Guide to Database Normalization
+A customer moves house.
 
-Messy databases lead to slow performance, errors, and frustration. Normalization is a proven method to clean up your data, reduce duplication, and ensure it's consistent.
+You update their address.
+Their next order still ships to the old one.
 
-It's the foundation of a database that grows with your application.
+Nobody wrote a bug.
+The address was stored in five rows, and you updated four.
 
-In this post, we'll break down:
-
-- What normalization is
-- The problems it solves
-- Its undeniable advantages
-- How to apply it step-by-step
-- Tips, tricks, and best practices
-
-By the end, you'll be equipped to design smarter, faster, and more reliable databases.
+That's not a code problem. It's a table design problem.
+And the fix has a name: **normalization**.
 
 ## What Is Database Normalization?
 
-At its core, normalization is the process of organizing data in a database. It involves creating tables and defining relationships between them. The purpose is to follow rules that protect the data, eliminate redundancy, and ensure consistency. By doing this, the database becomes more flexible and easier to manage.
+Normalization is the process of organising data into tables so that **each fact is stored in exactly one place**.
 
-### Key Goals of Normalization:
+It has four goals:
 
-1. **Eliminate Redundancy**: Avoid storing duplicate data.
-2. **Ensure Consistency**: Prevent discrepancies in updates.
-3. **Optimize Storage**: Save disk space by storing data efficiently.
-4. **Improve Scalability**: Make it easier to maintain and grow the database.
+- **No redundancy:** don't store the same fact twice.
+- **No contradictions:** an update happens in one place, so copies can't disagree.
+- **Less wasted storage:** repeated values take space.
+- **Easier change:** a clean structure is simpler to extend.
 
-## Why Normalization Matters
+## Why It Matters: A Broken Orders Table
 
-Imagine you're managing an **e-commerce database**. Here's a sample table with issues:
+Here's a typical first version of an e-commerce orders table:
 
-**Issues with this Design:**
+| order_id | customer_name | customer_address | product        | product_price |
+| -------- | ------------- | ---------------- | -------------- | ------------- |
+| 1001     | Alice         | 12 Park Rd       | Keyboard       | 49            |
+| 1002     | Alice         | 12 Park Rd       | Mouse, Monitor | 20, 180       |
+| 1003     | Bob           | 7 Hill St        | Keyboard       | 49            |
 
-- **Redundancy**: Alice's address is repeated for every order.
-- **Inconsistency**: If Alice moves, updating all rows increases error risk.
-- **Scalability**: Adding more products or customers makes the table cumbersome.
+It works. It also has three problems.
 
-## What Problems Does Normalization Solve?
+- **Redundancy:** Alice's address and the keyboard's price are repeated on every order.
+- **Inconsistency:** if Alice moves, every one of her rows must be updated. Miss one and the data contradicts itself.
+- **Messy values:** order 1002 crams two products and two prices into single cells. You can't query or total them properly.
 
-### 1. Data Redundancy
+## The Problems Normalization Solves
 
-Storing the same data multiple times wastes space. In the example above, Alice's address is duplicated unnecessarily.
+### Update anomalies
 
-**Solution**: Split the data into separate tables for customers and orders.
+When a fact lives in many rows, changing it means changing all of them. One missed row and your data disagrees with itself.
 
-### 2. Data Inconsistency
+### Insert anomalies
 
-When duplicate data exists, updates can lead to inconsistencies.
+You can't add a new product until someone orders it, because products only exist inside order rows.
 
-For example, if we update Alice's address in one row but forget the others, the database contains conflicting information.
+### Delete anomalies
 
-**Solution**: With normalization, data is updated in one place, ensuring consistency.
+Delete Bob's only order and you lose Bob's address too.
 
-### 3. Query Performance
+Normalization removes all three by giving each kind of fact its own table.
 
-Large, unorganized tables slow down queries. A poorly designed database makes even simple searches take longer.
+## The Normal Forms, Step by Step
 
-**Solution**: Breaking data into logical tables speeds up searches and improves indexing.
+Normalization happens in stages called **normal forms**. Each one builds on the last.
 
-## Advantages of Normalization
+### First Normal Form (1NF): One Value per Cell
 
-1. **Better Data Integrity**: Relationships ensure that data is consistent and accurate.
-2. **Efficient Storage**: Saves space by eliminating duplicates.
-3. **Simpler Maintenance**: Updating one table is faster and less error-prone.
-4. **Scalability**: Easier to add new data without breaking the structure.
-5. **Improved Querying**: Structured data makes retrieving information faster.
+- Every column holds a single, atomic value. No lists like "Mouse, Monitor".
+- No repeating groups of columns, like `product1`, `product2`, `product3`.
 
-## The Steps of Normalization
+### Second Normal Form (2NF): Depend on the Whole Key
 
-Normalization is achieved in stages called **normal forms (NFs)**.
+- The table is in 1NF.
+- If the key has more than one column, every other column depends on the **whole** key, not just part of it.
 
-**Here's a simple breakdown:**
+### Third Normal Form (3NF): Depend Only on the Key
 
-### First Normal Form (1NF): Eliminate Duplicate Columns
+- The table is in 2NF.
+- No column depends on another non-key column. A customer's address depends on the customer, not on the order.
 
-- Ensure each column contains atomic values (no lists or arrays).
-- Remove duplicate columns from a table.
+## Normalizing the Orders Table
 
-### Second Normal Form (2NF): Remove Partial Dependencies
+### Step 1: Get to 1NF
 
-- Ensure every column depends on the **whole primary key** (if a composite key exists).
-- Create separate tables for entities.
+Split order 1002 so each row holds one product:
 
-### Third Normal Form (3NF): Eliminate Transitive Dependencies
+| order_id | customer_name | customer_address | product  | product_price |
+| -------- | ------------- | ---------------- | -------- | ------------- |
+| 1001     | Alice         | 12 Park Rd       | Keyboard | 49            |
+| 1002     | Alice         | 12 Park Rd       | Mouse    | 20            |
+| 1002     | Alice         | 12 Park Rd       | Monitor  | 180           |
+| 1003     | Bob           | 7 Hill St        | Keyboard | 49            |
 
-- Remove dependencies where non-key columns depend on other non-key columns.
+Every cell now holds one value. The key is now `(order_id, product)`.
 
-## How to Approach Normalization
+### Step 2: Get to 2NF
 
-1. **Start with Your Data**: Analyze your raw data and identify redundancies.
-2. **Draw ER Diagrams**: Visualize relationships between entities.
-3. **Normalize Step-by-Step**: Apply each normal form methodically.
-4. **Balance Performance**: Over-normalization can slow down reads.
+`customer_name` depends only on `order_id`, and `product_price` depends only on `product`. Both depend on part of the key, so they move out:
 
-## Tips and Tricks for Mastering Normalization
+```text
+orders(order_id, customer_name, customer_address)
+order_items(order_id, product_id)
+products(product_id, name, price)
+```
 
-1. **Understand the Business Context**: Tailor your design to the application's needs.
-2. **Know When to Denormalize**: For read-heavy apps, slight denormalization can improve performance.
-3. **Use Tools**: Database design tools like Lucidchart or dbdiagram.io can simplify the process.
+### Step 3: Get to 3NF
 
-## Best Practices
+In `orders`, the address depends on the customer, not the order. Give customers their own table:
 
-1. **Always Use Primary Keys**: Ensure each table has a unique identifier.
-2. **Leverage Foreign Keys**: Define clear relationships between tables.
-3. **Document Your Design**: Keep a record of your schema and decisions for future reference.
+```text
+customers(customer_id, name, address)
+orders(order_id, customer_id)
+order_items(order_id, product_id, quantity)
+products(product_id, name, price)
+```
 
-## Example of Applying Normalization
+Now Alice's address lives in one row. Update it once and every order sees the change.
 
-Let's revisit our **e-commerce example**.
+## How to Approach It
 
-### Step 1: Raw Data (Unnormalized)
+1. **Start with real data.** List the facts you store and spot the ones that repeat.
+2. **Draw the relationships.** A quick entity-relationship diagram shows which table owns which fact.
+3. **Apply the forms in order.** 1NF, then 2NF, then 3NF.
+4. **Use keys.** Every table gets a primary key. Every relationship gets a foreign key, so the database enforces it.
+5. **Write down your decisions.** Future you will want to know why a table looks the way it does.
 
-Start with your raw, messy table containing all the data.
+## Know When to Denormalize
 
-### Step 2: Normalize to 1NF
+Normalization trades fewer copies for more joins.
 
-Split into separate tables for customers, orders, and products.
+For most applications, 3NF is the right default. But for read-heavy paths, like a reporting dashboard, storing a few pre-joined or pre-computed values can be worth it.
 
-### Step 3: Normalize to 2NF
+Denormalize on purpose, for a measured reason, and keep the normalized tables as the source of truth.
 
-Add unique identifiers for products and customers, and remove partial dependencies.
+## Key Takeaways
 
-### Step 4: Normalize to 3NF
-
-Ensure no transitive dependencies by creating a table for any remaining dependent data.
+- Normalization means storing each fact in exactly one place.
+- Duplicated facts cause update, insert and delete anomalies.
+- **1NF:** one value per cell. **2NF:** depend on the whole key. **3NF:** depend only on the key.
+- Use primary and foreign keys so the database enforces relationships.
+- Denormalize only for measured read performance, never by accident.
 
 ## Final Thoughts
 
-Proper database design is the foundation of any scalable app. Start applying normalization today to clean up your data and improve efficiency.
+Most "data bugs" aren't bugs in the code.
+
+They're the same fact stored in two places, slowly drifting apart.
+
+Normalize first, and you'll spend a lot less time wondering which copy is the right one.

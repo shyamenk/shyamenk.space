@@ -12,6 +12,7 @@ All notable changes to shyamenk.space. Format follows [Keep a Changelog](https:/
 
 ### Changed
 
+- API Design, Database Normalization, NGINX, OWASP Top 10 and System Design posts rewritten to the house style of the newer posts: hook openings, Key Takeaways and Final Thoughts, no em dashes or unsourced statistics, labelled code blocks, accurate read times. Fixes the missing normalization tables, the Facebook rewrite claim, the misread OWASP percentages and mislabeled OWASP code examples; the OWASP post now notes the 2025 edition (#33).
 - Database Normalization excerpt no longer cites an unsourced 80% figure (#31).
 - GitOps with ArgoCD post dated July 22, 2026 (#29).
 - Removed emojis from the GitOps with ArgoCD post (#26).

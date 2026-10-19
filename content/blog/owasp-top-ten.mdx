@@ -1,287 +1,275 @@
 ---
-title: "Securing Modern Web Applications: A Deep Dive into OWASP Top Ten"
+title: "OWASP Top 10: The Web Security Risks Every Backend Engineer Should Know"
 date: "2025-03-19"
-excerpt: "A comprehensive guide to understanding and preventing the most critical web application security risks according to OWASP Top Ten 2021."
+excerpt: "Broken access control showed up more than 318,000 times in the data behind the OWASP Top 10. A walk through all ten risks in the 2021 edition, with a code example for preventing each one."
 tags:
   - Security
   - Web Development
   - Backend
 featuredImage: "/blog/security.jpg"
-readTime: "15 min read"
+readTime: "7 min read"
 ---
 
-## The Critical Importance of Web Application Security
+> **Update:** OWASP has since published the [Top 10:2025](https://top10.owasp.org/2025). This post covers the 2021 edition, which was current when it was written. Most of the advice still applies; the 2025 list reorders some risks and adds Software Supply Chain Failures and Mishandling of Exceptional Conditions.
 
-In today's digital landscape, web applications are the backbone of modern business operations. However, with great power comes great responsibility - and significant security risks. The Open Web Application Security Project (OWASP) Top Ten serves as a crucial guide for developers and security professionals, highlighting the most critical security risks facing web applications today.
+Most breaches don't need a genius attacker.
 
-**Did you know?**
+They need one endpoint that forgot to check who's calling.
+One query built by gluing strings together.
+One dependency nobody updated.
 
-- 94% of applications tested by OWASP had some form of security vulnerability
-- The average cost of a data breach in 2023 was $4.45 million
-- 43% of cyber attacks target small businesses
-- 60% of companies that suffer a cyber attack go out of business within six months
+In the data behind the OWASP Top 10, broken access control showed up **more than 318,000 times**, more than any other risk.
+And IBM put the average cost of a data breach in 2023 at **$4.45 million**.
 
-## Understanding OWASP Top Ten 2021
+The OWASP Top 10 is the shortlist of what goes wrong most often. Here are all ten, with a way to prevent each.
 
-The OWASP Top Ten 2021 represents a significant evolution in how we think about web application security. Let's explore each vulnerability, their rankings, and learn how to prevent them in modern web applications.
+## What the OWASP Top 10 Is
+
+The Open Worldwide Application Security Project (OWASP) is a non-profit that publishes free security guidance. Its Top 10 ranks the most critical web application security risks, based on data from real application testing plus a community survey.
+
+It isn't a complete checklist. It's the place to start.
+
+## The OWASP Top 10 (2021)
 
 ### A01:2021 – Broken Access Control
 
-Moving up from the fifth position, Broken Access Control is now the most critical security risk. A staggering 94% of applications were tested for some form of broken access control, with 34 Common Weakness Enumerations (CWEs) mapped to this category - more than any other category.
+Up from fifth place to first. Users can act outside their permissions: reading other users' data, or calling admin endpoints. It had the most occurrences in OWASP's dataset, over 318,000, and more mapped weaknesses (34 CWEs) than any other category.
 
-**Prevention Example:**
+**Prevention: check permissions on every request, on the server.**
 
 ```javascript
 // Express.js middleware for role-based access control
 const checkPermission = (requiredRole) => {
   return (req, res, next) => {
     if (!req.user || !req.user.roles.includes(requiredRole)) {
-      return res.status(403).json({ error: 'Access denied' })
+      return res.status(403).json({ error: "Access denied" });
     }
-    next()
-  }
-}
+    next();
+  };
+};
 
-// Usage
-app.get('/admin/users', checkPermission('admin'), (req, res) => {
+app.get("/admin/users", checkPermission("admin"), (req, res) => {
   // Handle admin-only route
-})
+});
 ```
 
 ### A02:2021 – Cryptographic Failures
 
-Previously known as "Sensitive Data Exposure," this category has shifted up to the second position. The focus has evolved from a broad symptom to addressing the root cause: failures in cryptography that lead to sensitive data exposure or system compromise.
+Previously called "Sensitive Data Exposure." The focus moved from the symptom (data leaked) to the cause: missing or weak cryptography.
 
-**Prevention Example:**
+**Prevention: hash passwords with a slow, salted algorithm. Never store them in plain text.**
 
 ```javascript
-// Using bcrypt for password hashing
-const bcrypt = require('bcrypt')
+const bcrypt = require("bcrypt");
 
 async function hashPassword(password) {
-  const saltRounds = 12
-  return await bcrypt.hash(password, saltRounds)
+  const saltRounds = 12;
+  return bcrypt.hash(password, saltRounds);
 }
 
 async function verifyPassword(password, hash) {
-  return await bcrypt.compare(password, hash)
+  return bcrypt.compare(password, hash);
 }
 ```
 
 ### A03:2021 – Injection
 
-Sliding down to the third position, Injection remains a critical concern. 94% of applications were tested for some form of injection, with 33 CWEs mapped to this category - the second most occurrences. This category now includes Cross-site Scripting (XSS) vulnerabilities.
+Down to third, but still common. Untrusted input ends up executed as a query or command. This category now includes Cross-Site Scripting (XSS).
 
-**Prevention Example:**
+**Prevention: use parameterized queries or an ORM. Never build queries from strings.**
 
 ```javascript
-// Using parameterized queries with Prisma
-const { PrismaClient } = require('@prisma/client')
-const prisma = new PrismaClient()
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 
 async function getUser(email) {
-  // Safe from SQL injection
-  return await prisma.user.findUnique({
-    where: { email },
-  })
+  // Prisma parameterizes this, so it's safe from SQL injection
+  return prisma.user.findUnique({ where: { email } });
 }
 ```
 
 ### A04:2021 – Insecure Design
 
-A new category for 2021, focusing on risks related to design and architectural flaws. This emphasizes the importance of "shifting left" in security by incorporating threat modeling, secure design patterns, and reference architectures from the start.
+New in 2021. Some flaws can't be fixed by better code because the design itself is unsafe, like a login form with no limit on attempts. The fix starts earlier: threat modeling and secure design patterns.
 
-**Prevention Example:**
+**Prevention: design abuse limits in from the start.**
 
 ```javascript
-// Implementing rate limiting
-const rateLimit = require('express-rate-limit')
+const rateLimit = require("express-rate-limit");
 
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // 5 attempts
-  message: 'Too many login attempts, please try again later',
-})
+  max: 5, // 5 attempts per window
+  message: "Too many login attempts, please try again later",
+});
 
-app.use('/login', loginLimiter)
+app.use("/login", loginLimiter);
 ```
 
 ### A05:2021 – Security Misconfiguration
 
-Moving up from #6, this category affects 90% of applications tested. With the increasing shift to highly configurable software, proper security configuration has become more critical than ever.
+Up from sixth. Default passwords, verbose error pages, missing security headers. OWASP tested 90% of applications for some form of misconfiguration, with an average incidence rate of 4.51%.
 
-**Prevention Example:**
+**Prevention: secure defaults, applied the same way everywhere.**
 
 ```javascript
-// Secure Express.js configuration
-const helmet = require('helmet')
-const express = require('express')
-const app = express()
+const express = require("express");
+const helmet = require("helmet");
+const session = require("express-session");
 
-// Security headers
-app.use(helmet())
+const app = express();
 
-// Disable X-Powered-By header
-app.disable('x-powered-by')
+app.use(helmet()); // sensible security headers
+app.disable("x-powered-by");
 
-// Set secure cookie options
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    cookie: {
-      secure: true,
-      httpOnly: true,
-      sameSite: 'strict',
-    },
-  })
-)
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: true, httpOnly: true, sameSite: "strict" },
+  }),
+);
 ```
 
 ### A06:2021 – Vulnerable and Outdated Components
 
-Previously titled "Using Components with Known Vulnerabilities," this category moved up from #9 in 2017. It represents a significant challenge in testing and risk assessment.
+Previously "Using Components with Known Vulnerabilities," up from ninth. Your code can be perfect and still be exploited through a library.
 
-**Prevention Example:**
+**Prevention: scan dependencies continuously and update them.**
 
 ```bash
-# Regular security audits with npm
 npm audit
 npm audit fix
 
-# Using Snyk for continuous security monitoring
+# Continuous monitoring with Snyk
 snyk test
 snyk monitor
 ```
 
 ### A07:2021 – Identification and Authentication Failures
 
-Previously "Broken Authentication," this category has slid down from the second position. While still critical, the increased availability of standardized frameworks has helped improve security in this area.
+Previously "Broken Authentication," down from second. Standard frameworks have made it less common, but weak passwords, missing multi-factor authentication and poor session handling still cause breaches.
 
-**Prevention Example:**
+**Prevention: use a proven auth library, and add a second factor on top of passwords.**
 
 ```javascript
-// Implementing MFA with Passport.js
-const passport = require('passport')
-const { Strategy: LocalStrategy } = require('passport-local')
+// Password verification with Passport.js.
+// Add a second factor (TOTP or WebAuthn) after this step for MFA.
+const passport = require("passport");
+const { Strategy: LocalStrategy } = require("passport-local");
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {
-    const user = await User.findOne({ username })
-    if (!user) return done(null, false)
+    const user = await User.findOne({ username });
+    if (!user) return done(null, false);
 
-    const isValid = await user.verifyPassword(password)
-    if (!isValid) return done(null, false)
+    const isValid = await user.verifyPassword(password);
+    if (!isValid) return done(null, false);
 
-    return done(null, user)
-  })
-)
+    return done(null, user);
+  }),
+);
 ```
 
 ### A08:2021 – Software and Data Integrity Failures
 
-A new category focusing on assumptions related to software updates, critical data, and CI/CD pipelines without verifying integrity.
+New in 2021. Code or data is trusted without checking it hasn't been tampered with: unpinned dependencies, unsigned updates, CI/CD pipelines that pull whatever is latest.
 
-**Prevention Example:**
+**Prevention: pin exactly what you install, and verify what you load.**
 
-```javascript
-// Implementing content security policy
-const csp = require('helmet-csp')
+```bash
+# Install exactly what package-lock.json pins, and fail if it doesn't match
+npm ci
+```
 
-app.use(
-  csp({
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", 'data:', 'https:'],
-      connectSrc: ["'self'"],
-      fontSrc: ["'self'"],
-      objectSrc: ["'none'"],
-      mediaSrc: ["'self'"],
-      frameSrc: ["'none'"],
-    },
-  })
-)
+```html
+<!-- Subresource Integrity: the browser refuses the script if its hash changes -->
+<script
+  src="https://cdn.example.com/lib.min.js"
+  integrity="sha384-REPLACE_WITH_THE_FILE_HASH"
+  crossorigin="anonymous"
+></script>
 ```
 
 ### A09:2021 – Security Logging and Monitoring Failures
 
-Previously "Insufficient Logging & Monitoring," this category moved up from #10. Failures here directly impact visibility, incident alerting, and forensics.
+Previously "Insufficient Logging & Monitoring," up from tenth. If you don't log security events, you can't detect an attack or investigate one.
 
-**Prevention Example:**
+**Prevention: log who did what, when, from where, and alert on the suspicious parts.**
 
 ```javascript
-// Implementing comprehensive logging
-const winston = require('winston')
+const winston = require("winston");
 
 const logger = winston.createLogger({
-  level: 'info',
+  level: "info",
   format: winston.format.json(),
   transports: [
-    new winston.transports.File({ filename: 'error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'combined.log' }),
+    new winston.transports.File({ filename: "error.log", level: "error" }),
+    new winston.transports.File({ filename: "combined.log" }),
   ],
-})
+});
 
-// Logging middleware
 app.use((req, res, next) => {
   logger.info({
     method: req.method,
     path: req.path,
     ip: req.ip,
-    userAgent: req.get('user-agent'),
-  })
-  next()
-})
+    userAgent: req.get("user-agent"),
+  });
+  next();
+});
 ```
 
 ### A10:2021 – Server-Side Request Forgery (SSRF)
 
-Added from the Top 10 community survey (#1), SSRF shows relatively low incidence rates but has above-average testing coverage and high ratings for Exploit and Impact potential.
+Added from the community survey, where it ranked first. The server fetches a URL the attacker controls, which can reach internal services or cloud metadata endpoints.
 
-**Prevention Example:**
+**Prevention: only fetch from an allowlist of hosts.**
 
 ```javascript
-// Implementing URL validation
-const isValidUrl = (url) => {
-  try {
-    const parsedUrl = new URL(url)
-    // Whitelist allowed domains
-    const allowedDomains = ['api.example.com', 'cdn.example.com']
-    return allowedDomains.includes(parsedUrl.hostname)
-  } catch {
-    return false
-  }
-}
+const allowedHosts = ["api.example.com", "cdn.example.com"];
 
-app.get('/proxy', (req, res) => {
-  const url = req.query.url
-  if (!isValidUrl(url)) {
-    return res.status(400).json({ error: 'Invalid URL' })
+const isAllowedUrl = (url) => {
+  try {
+    const { protocol, hostname } = new URL(url);
+    return protocol === "https:" && allowedHosts.includes(hostname);
+  } catch {
+    return false;
   }
-  // Proceed with safe URL
-})
+};
+
+app.get("/proxy", (req, res) => {
+  if (!isAllowedUrl(req.query.url)) {
+    return res.status(400).json({ error: "Invalid URL" });
+  }
+  // Proceed with the safe URL
+});
 ```
 
-## Best Practices for Implementation
+## Putting It Into Practice
 
-1. **Regular Security Audits**
-   - Conduct automated and manual security testing
-   - Keep dependencies updated
-   - Use security scanning tools
+- **Audit regularly:** combine automated scanning with manual review, and keep dependencies current.
+- **Design for security:** threat-model new features and follow least privilege by default.
+- **Monitor continuously:** log security events, alert on suspicious patterns, and review them.
 
-2. **Security by Design**
-   - Implement security from the start
-   - Follow the principle of least privilege
-   - Use secure coding practices
+## Key Takeaways
 
-3. **Continuous Monitoring**
-   - Implement comprehensive logging
-   - Set up alerting for suspicious activities
-   - Regular security reviews
+- Broken access control is the most common risk. Check permissions on every request, server-side.
+- Hash passwords with a slow, salted algorithm, and never build queries from strings.
+- Rate-limit sensitive actions like login, by design.
+- Ship secure defaults and scan dependencies continuously.
+- Pin and verify what you install and load.
+- Log security events, and only fetch URLs from an allowlist.
 
-## Conclusion
+## Final Thoughts
 
-Security is not a one-time implementation but a continuous process. By understanding and implementing measures against the OWASP Top Ten vulnerabilities, you can significantly improve your web application's security posture.
+Security isn't a feature you add at the end.
 
-Remember: The cost of preventing security issues is always less than the cost of fixing them after a breach.
+It's a set of small, boring habits applied everywhere. The OWASP Top 10 tells you which habits to build first.
+
+## Sources
+
+- [OWASP Top 10:2021, A01 Broken Access Control](https://top10.owasp.org/2021/A01_2021-Broken_Access_Control/)
+- [OWASP Top 10:2025](https://top10.owasp.org/2025)
+- [IBM: Cost of a Data Breach Report 2023](https://www.ibm.com/reports/data-breach)
