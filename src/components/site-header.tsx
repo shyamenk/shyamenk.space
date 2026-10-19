@@ -30,6 +30,8 @@ export function SiteHeader() {
           {linkedin && (
             <a
               href={linkedin.href}
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="LinkedIn"
               className="grid h-9 w-9 place-items-center rounded-full border border-white/10 transition hover:-translate-y-0.5 hover:border-lava hover:text-lava"
             >
@@ -38,6 +40,8 @@ export function SiteHeader() {
           )}
           <a
             href={`mailto:${profile.email}`}
+            target="_blank"
+            rel="noopener noreferrer"
             aria-label="Email"
             className="grid h-9 w-9 place-items-center rounded-full border border-white/10 transition hover:-translate-y-0.5 hover:border-lava hover:text-lava"
           >
