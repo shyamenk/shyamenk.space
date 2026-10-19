@@ -4,6 +4,10 @@ All notable changes to shyamenk.space. Format follows [Keep a Changelog](https:/
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-19
+
+A site favicon, a consistent type scale across the home page, a vertical Experience timeline with the Web Developer role filled in, tabbed Toolbox, and a new OWASP Top 10:2025 post.
+
 ### Added
 
 - Blog post "OWASP Top 10:2025: What Changed Since 2021, and What I Keep Finding in Real Audits"; the 2021 post links to it (#45).
