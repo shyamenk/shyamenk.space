@@ -6,10 +6,14 @@ Personal site of Shyam Kumar V M, Cloud & Backend Engineer. Next.js 16 (App Rout
 
 ```sh
 npm install
-npm run dev     # http://localhost:3000
-npm run lint
+npm run dev           # http://localhost:3000
+npm run lint          # zero warnings allowed
+npm run format        # format:check verifies without writing
+npm test              # Vitest unit tests
 npm run build
 ```
+
+CI (`.github/workflows/ci.yml`) runs lint, format check, tests and build on every PR and push to `main`.
 
 ## Routes
 

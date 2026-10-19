@@ -4,6 +4,14 @@ All notable changes to shyamenk.space. Format follows [Keep a Changelog](https:/
 
 ## [Unreleased]
 
+### Added
+
+- Prettier (`npm run format`, `npm run format:check`), Vitest unit tests for the contact email and form validation (`npm test`), and a GitHub Actions CI workflow (#21).
+
+### Changed
+
+- `npm run lint` fails on any warning; `@types/node` bumped to `^24` (#21).
+
 ### Fixed
 
 - Header LinkedIn and email links and footer social links open in a new tab (#19).

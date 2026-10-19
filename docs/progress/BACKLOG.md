@@ -14,13 +14,13 @@ Open work for shyamenk.space, in priority order. Each task gets a GitHub issue a
 
 ## Quality
 
-### T2 · Add Prettier and a test setup · Priority: High
+### T2 · Add Prettier and a test setup · Priority: High · Done (#21)
 
 **Acceptance criteria:**
 
-- [ ] `npm run format` and `npm run format:check` exist and pass
-- [ ] Unit tests cover `emailSubject`, `contactEmail` escaping, and contact form validation
-- [ ] GitHub Actions runs lint, format check, build and tests on every PR
+- [x] `npm run format` and `npm run format:check` exist and pass
+- [x] Unit tests cover `emailSubject`, `contactEmail` escaping, and contact form validation
+- [x] GitHub Actions runs lint, format check, build and tests on every PR
 
 ### T3 · Return a real 404 status for unknown slugs · Priority: Low
 
