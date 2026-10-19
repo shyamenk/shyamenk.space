@@ -7,6 +7,7 @@ All notable changes to shyamenk.space. Format follows [Keep a Changelog](https:/
 ### Added
 
 - Blog post "OWASP Top 10:2025: What Changed Since 2021, and What I Keep Finding in Real Audits"; the 2021 post links to it (#45).
+- Site favicon: an orange S on the dark palette, as `icon.svg`, `apple-icon.png` and a 16/32/48px `favicon.ico` (#47).
 
 ### Changed
 
