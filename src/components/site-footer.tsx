@@ -15,7 +15,7 @@ export function SiteFooter() {
         ))}
         {profile.socials.map((s) => (
           <li key={s.label}>
-            <a href={s.href} className="transition hover:text-lava">
+            <a href={s.href} target="_blank" rel="noopener noreferrer" className="transition hover:text-lava">
               {s.label}
             </a>
           </li>

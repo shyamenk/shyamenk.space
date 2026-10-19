@@ -4,6 +4,9 @@ All notable changes to shyamenk.space. Format follows [Keep a Changelog](https:/
 
 ## [Unreleased]
 
+### Fixed
+- Header LinkedIn and email links and footer social links open in a new tab (#19).
+
 ## [0.1.0] - 2026-10-18
 
 First public release at https://www.shyamenk.space (Vercel, domain on Hostinger DNS).
