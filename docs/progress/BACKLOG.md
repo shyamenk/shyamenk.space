@@ -62,3 +62,10 @@ Open work for shyamenk.space, in priority order. Each task gets a GitHub issue a
 ### T8 · Replace the observability placeholder covers · Priority: Low
 
 - [ ] Owner swaps `public/blog/{monitoring-vs-observability,logs-metrics-traces,what-is-opentelemetry}.png` for final 1672×940 covers
+
+### T9 · Align observability dates with LinkedIn, drop cover label · Priority: Medium · Done (#55)
+
+**Acceptance criteria:**
+
+- [x] Part 1 is dated 2026-11-30, Part 2 2026-12-01 and Part 3 2026-12-02
+- [x] The three covers no longer show the "placeholder cover" label and stay 1672×940

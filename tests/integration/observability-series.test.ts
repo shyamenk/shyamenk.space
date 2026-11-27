@@ -30,6 +30,11 @@ describe("Observability series (#53)", () => {
     expect(getTags().find((t) => t.tag === "Observability")?.slug).toBe("observability");
   });
 
+  it("dates each part to its LinkedIn post: Nov 30, Dec 1, Dec 2 (#55)", () => {
+    const dates = SERIES.map((slug) => getPosts().find((p) => p.slug === slug)?.date);
+    expect(dates).toEqual(["2026-11-30", "2026-12-01", "2026-12-02"]);
+  });
+
   it.each(SERIES)("%s cites its sources", (slug) => {
     expect(body(slug)).toMatch(/^## Sources\n\n- \[.+\]\(https:\/\//m);
   });
