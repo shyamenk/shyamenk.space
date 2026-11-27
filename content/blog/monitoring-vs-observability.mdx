@@ -1,0 +1,241 @@
+---
+title: "Monitoring vs Observability: Why Your Green Dashboard Can't Explain a Slow Checkout"
+date: "2026-12-01"
+excerpt: "Error rate 0%. Average latency 182 ms. Every dashboard green. And 1 in 50 customers waits 3 seconds to pay. Here's why monitoring can't see that, and what observability changes."
+tags:
+  - Observability
+  - DevOps
+  - Backend
+featuredImage: "/blog/monitoring-vs-observability.png"
+readTime: "8 min read"
+---
+
+> **Observability series, Part 1 of 3.** Part 1: Monitoring vs Observability · [Part 2: Logs, Metrics and Traces](/blog/logs-metrics-traces) · [Part 3: What Is OpenTelemetry](/blog/what-is-opentelemetry)
+
+Error rate: 0%.
+Average latency: 182 ms.
+CPU and memory: normal.
+
+Every dashboard is green.
+
+Meanwhile, 1 in 50 customers is staring at a spinner on the payment page for 3 seconds. Some of them give up and leave.
+
+Both things are true at the same time.
+The dashboards aren't lying. They're answering the questions you asked them to answer, and nobody asked "how slow is the slowest 1%?"
+
+That's the whole gap between monitoring and observability:
+
+**Monitoring only answers questions you thought of in advance. Observability lets you ask new ones after something goes wrong.**
+
+This post explains that difference from scratch, with the arithmetic that shows why averages hide real pain, and a three-question test you can run against your own last incident.
+
+## Monitoring: Watching Signals You Chose in Advance
+
+Monitoring means collecting a set of **predefined signals** and setting a threshold on each one.
+
+The usual list:
+
+- CPU usage
+- Memory
+- Disk I/O
+- HTTP 500 errors
+
+If CPU goes above 80%, page someone. If 5xx errors go above 1%, page someone.
+
+This works well for failures you can predict. You knew CPU could spike, so you built an alert for it. These are **known unknowns**: you don't know _when_ they'll happen, but you know they _can_.
+
+> Monitoring tells you **when** something is wrong. It can't tell you **why**.
+
+### Why that stopped being enough
+
+With one server, you could list most of the ways it might fail.
+
+A modern system is different. A single checkout might touch an API gateway, an order service, a payment service, a database, a queue and a third-party card processor. Each of those can fail on its own, slow down on its own, or fail only in combination with another.
+
+There are too many combinations to write a threshold for each.
+
+And you can't write an alert for a failure you never imagined. Those are **unknown unknowns**: "slow only for users in one region, on one card type, after the 2 AM deploy." No dashboard was built for that, because nobody knew to build it.
+
+## Anatomy of a Silent Failure
+
+Here's how a failure hides from monitoring.
+
+The Payment Service develops a **tail latency spike**. A small share of requests become very slow. Nothing throws an error. Every request eventually succeeds. It's just slow for some users.
+
+Your alerts watch the **error rate**. Slow isn't failed, so the error rate stays at 0%. The signal exists inside the system, but nothing is looking at it.
+
+To see why, you need two ideas: latency percentiles and error rate.
+
+### Latency, averages and percentiles
+
+**Latency** is how long one request takes, from arrival to response.
+
+The obvious way to summarise latency is the average. The problem is that an **average hides the truth**: a few very slow requests get smoothed out by many fast ones.
+
+**Percentiles** describe the whole spread instead. A percentile answers: _"X% of requests were faster than this number."_
+
+| Number           | Plain meaning                           | What it tells you              |
+| ---------------- | --------------------------------------- | ------------------------------ |
+| **P50** (median) | Half the requests were faster than this | The typical user's experience  |
+| **P95**          | 19 in 20 requests were faster           | Where "slow" starts to show    |
+| **P99**          | 99 in 100 requests were faster          | The worst 1%, called the tail  |
+| **Max**          | The single slowest request              | Often a one-off outlier, noisy |
+
+### The arithmetic
+
+Say 1,000 requests hit the Payment Service:
+
+- 900 take 100 ms
+- 80 take 400 ms
+- 20 take 3,000 ms
+
+Here's what each summary shows:
+
+| Metric  | Value                                                  | Looks like                         |
+| ------- | ------------------------------------------------------ | ---------------------------------- |
+| Average | (900×100 + 80×400 + 20×3,000) ÷ 1,000 = **182 ms**     | All fine                           |
+| P50     | **100 ms**                                             | All fine                           |
+| P95     | **400 ms**                                             | A bit slow                         |
+| P99     | **3,000 ms**                                           | 1 in 50 users waits 3 seconds      |
+
+The average says 182 ms, and everyone relaxes.
+
+P99 says 20 out of every 1,000 customers are stuck for 3 seconds on the payment page.
+
+At 1 million requests a day, that's **20,000 slow checkouts a day**, on a dashboard that shows nothing wrong.
+
+### The tail hurts more than "1%" sounds
+
+One page load rarely makes one backend call. It often makes dozens.
+
+If a page makes 100 backend calls, the chance that at least one of them lands in the slowest 1% is:
+
+```text
+1 − 0.99^100 ≈ 0.63
+```
+
+About **63%**. So "the worst 1% of requests" ends up slowing down most page loads.
+
+That's why the rule of thumb is: **alert on P95 or P99, never on the average.** Watch P50 to see the normal experience.
+
+### Error rate, and why it missed this
+
+**Error rate** is the share of requests that failed over a time window:
+
+```text
+error rate = (failed requests ÷ total requests) × 100%
+```
+
+If the API served 10,000 requests in the last 5 minutes and 50 returned a 5xx, the error rate is 0.5%.
+
+What counts as a failure:
+
+- **5xx responses** count. They're your fault.
+- **4xx responses** usually don't. A user typing a wrong URL isn't your outage. The exception is a sudden spike: if every request returns 401 after a deploy, you probably broke auth.
+- **Timeouts** count, even with no status code.
+
+The time window matters too. 50 errors in 5 minutes is very different from 50 errors in a day.
+
+Here's the lesson from the silent failure: **error rate only catches things that fail. Slow isn't failed.**
+
+Google's SRE book pairs four signals for exactly this reason: **latency, errors, traffic and saturation**, the Four Golden Signals. Part 2 covers them properly. For now, notice that error rate alone covers one of the four.
+
+## Observability: Understanding the Inside from the Outside
+
+The word comes from control theory. Rudolf Kalman defined it around 1960:
+
+> A system is **observable** if you can work out its internal state purely from its external outputs.
+
+(You'll see it written as **o11y**: o, then 11 letters, then y. Same trick as "k8s".)
+
+For software, the goal shifts. You're no longer asking "is it broken?" You're asking **what exactly is broken, and where**, including for failures you've never seen before.
+
+### The same failure, seen through observability
+
+Now imagine every request emits a timestamped, end-to-end record of where its time went. That record is called a **trace**. Here's one slow checkout:
+
+```text
+Frontend            |████████████████████████████████████████| 820 ms
+API Gateway         |█                                       |   2 ms
+Order Service       |█                                       |  15 ms
+Payment Service     |  ███████████████████████████████████████| 812 ms
+  Payment DB Query  |    ████████████████████████████████████| 780 ms  ◄ slow step
+                    0       200      400      600      800 ms
+```
+
+You don't need to guess. 780 of the 820 ms went into one database query on the payment path. In this scenario the cause is a missing index on that query.
+
+Look at what you **didn't** have to do:
+
+- Add a new metric
+- Redeploy to collect more data
+- SSH into a server and grep log files
+
+The data was already there. You asked a new question of it, and it answered.
+
+## Monitoring vs Observability, Side by Side
+
+|                       | Monitoring                       | Observability                       |
+| --------------------- | -------------------------------- | ----------------------------------- |
+| **Main question**     | Is it broken?                    | Why is it broken, and where?        |
+| **Covers**            | Known unknowns                   | Unknown unknowns                    |
+| **Data**              | Aggregates: averages, counts     | Detailed events with lots of context |
+| **New question means** | Add a metric, redeploy, wait    | Query the data you already have     |
+
+One important point: **observability doesn't replace monitoring.** You still need alerts that wake you up. Observability is what you open after the alert fires.
+
+## The Three Properties of an Observable System
+
+What makes the difference isn't the tool you buy. It's the shape of the data underneath. An observable system has three properties.
+
+| Property                         | What it gives you | Plain meaning                                    | Example                                                      |
+| -------------------------------- | ----------------- | ------------------------------------------------ | ------------------------------------------------------------ |
+| **High cardinality**             | Granularity       | You can find **one specific request**            | The exact request for `user_id=8812`, `order_id=A-55102`     |
+| **High dimensionality**          | Context           | You can slice by **many different attributes**   | Region, app version, card type, feature flag, database shard |
+| **Hypothesis-free exploration**  | Flexibility       | You can ask **new questions now**, no redeploy   | "Are slow payments only on app v4.2 with Visa in eu-west?"   |
+
+The first two sound alike, so here's the difference:
+
+- **Cardinality** is how many **unique values** one field has. `http_method` has about 5, which is low. `user_id` has millions, which is high.
+- **Dimensionality** is how many **fields** each event carries. 5 fields is low. 100+ is high.
+
+There's a catch. Traditional metrics systems struggle with high cardinality, because every unique label value creates a new stored time series and storage cost explodes. That's why rich context usually lives in **traces and structured events**, not in metric labels. Part 2 shows the math behind that.
+
+## The Litmus Test: Where Do You Stand?
+
+A litmus test is one quick question that tells you the truth without a long investigation.
+
+Take your **real system** and your **most recent incident**, not a hypothetical one. Answer honestly, based on what you actually did:
+
+1. When a user reported the failure, could you find **the specific failing request**, or only an error count?
+2. When the alert fired, did you **already have the data** to diagnose it, or did you SSH into servers and grep logs?
+3. Did you **add a new metric after the incident** because you realised you needed it?
+
+If you answered "only a count", "grep logs" or "yes, after", you're in the monitoring trap for that part of the system. You're one step behind the failures you haven't seen yet.
+
+Write each failing answer down. That list is your observability to-do list.
+
+## Where the Field Is in 2026
+
+- **OpenTelemetry is the standard way to produce telemetry.** One SDK per language plus the OpenTelemetry Collector, accepted by almost every backend. Its predecessors, OpenTracing and OpenCensus, are archived. Part 3 covers it.
+- **There are now four signals, not three.** The classic trio of metrics, logs and traces now includes **continuous profiling** (CPU and memory per function), which is in public alpha in OpenTelemetry.
+- **"Wide events" are gaining ground.** Instead of three separate data types, store one wide, structured event per request with many fields, and derive metrics from it. It's the same idea as high cardinality plus high dimensionality.
+
+## Key Takeaways
+
+- **The limit:** monitoring watches signals you picked in advance. It tells you when, not why.
+- **The math:** averages hide the slow tail. Alert on P95 or P99. A 1% tail can slow down most page loads.
+- **The data:** observability needs detailed, high-cardinality, high-dimensionality telemetry, so you can ask questions nobody planned for.
+- **The reality:** a better tool on top of thin data just gives you a faster dashboard showing the wrong things.
+
+## What's Next
+
+Observability needs the right data. So what data, exactly?
+
+[Part 2: Logs, Metrics and Traces](/blog/logs-metrics-traces) covers the three signals, what each one is good and bad at, and how linking them turns an alert into a root cause in a few clicks.
+
+## Sources
+
+- [Google SRE Book: Monitoring Distributed Systems (the Four Golden Signals)](https://sre.google/sre-book/monitoring-distributed-systems/)
+- [OpenTelemetry: Signals](https://opentelemetry.io/docs/concepts/signals/)
+- [OpenTelemetry: Profiles public alpha](https://opentelemetry.io/blog/2026/profiles-alpha)

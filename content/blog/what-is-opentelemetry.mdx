@@ -1,0 +1,286 @@
+---
+title: "What Is OpenTelemetry: Instrument Once, Switch Vendors with a Config Change"
+date: "2026-12-03"
+excerpt: "Before OpenTelemetry, your telemetry code belonged to your vendor, and switching meant rewriting every service. Now the vendor is one block of Collector config. Here's how the pieces fit, a working Collector config, and what OTel still doesn't save you from."
+tags:
+  - Observability
+  - OpenTelemetry
+  - DevOps
+featuredImage: "/blog/what-is-opentelemetry.png"
+readTime: "10 min read"
+---
+
+> **Observability series, Part 3 of 3.** [Part 1: Monitoring vs Observability](/blog/monitoring-vs-observability) · [Part 2: Logs, Metrics and Traces](/blog/logs-metrics-traces) · Part 3: What Is OpenTelemetry
+
+Picture a company with 30 services, all instrumented with one vendor's agent.
+
+The renewal quote comes in higher than last year. Someone suggests trying a different backend.
+
+Then someone else asks the real question: how many services would we have to touch?
+
+All 30. The tracing calls, the metrics client, the log shipper: every one of them is written against that vendor's library. Switching isn't a procurement decision. It's a quarter of engineering work.
+
+That was normal until a few years ago. It isn't anymore.
+
+**With OpenTelemetry, the vendor is a config line, not a code dependency.** The API, the SDK and the Collector separate _producing_ telemetry from _storing_ it. Switching backends means changing an exporter, not rewriting services.
+
+[Part 1](/blog/monitoring-vs-observability) explained why you need rich telemetry. [Part 2](/blog/logs-metrics-traces) explained the three signals and how to link them. This part covers the standard that produces all three.
+
+## The Memory Hook: A Courier Network
+
+Think of shipping parcels from an online shop. Every OpenTelemetry piece has a counterpart:
+
+| Shipping world                                                | OpenTelemetry piece                  | What it does                                                         |
+| ------------------------------------------------------------- | ------------------------------------ | -------------------------------------------------------------------- |
+| **The standard shipping form** everyone fills in the same way | **API**                              | Defines what you can say ("start a span"). Ships nothing on its own. |
+| **The packing desk:** packs, groups, re-sends lost parcels    | **SDK**                              | Does the real work: batching, retries, sampling, exporting           |
+| **An automatic label printer** on the conveyor belt           | **Zero-code instrumentation**        | Labels standard parcels (HTTP calls, DB queries) with no code        |
+| **The tracking number** handed to every courier in the chain  | **Context propagation**              | The trace ID travels in an HTTP header, so services join one trace  |
+| **The standard parcel size** every carrier accepts            | **OTLP**                             | One wire format for logs, metrics and traces                         |
+| **The sorting hub**                                           | **Collector**                        | Receives telemetry, cleans it, routes it to one or more backends     |
+| **The carriers**                                              | **Backends**                         | Jaeger, Prometheus, Grafana, Datadog, Elastic, Honeycomb…            |
+
+> Write the label once. Drop it at the hub. Switching carriers is a change at the hub, not in your shop.
+
+## Before and After OpenTelemetry
+
+**Before (around 2019):** every vendor shipped its own agent and SDK. The Datadog agent, the New Relic agent, the Jaeger client, a Prometheus client for metrics, Fluentd for logs. Your code was written against their libraries.
+
+**After:** one open standard. Your code talks to the OpenTelemetry API. The vendor is picked in configuration.
+
+```text
+BEFORE: one adapter per tool                 AFTER: one universal port
+
+  App ──[Datadog agent]──► Datadog              App ──[OTel SDK]──► OTLP ──► Collector ──┬─► Jaeger
+  App ──[NR agent]───────► New Relic                                                      ├─► Prometheus
+  App ──[Jaeger client]──► Jaeger                                                         └─► Datadog
+```
+
+It works like USB-C: one port, and every charger fits.
+
+| Problem              | Vendor agents                                  | OpenTelemetry                                                   |
+| -------------------- | ---------------------------------------------- | --------------------------------------------------------------- |
+| **Switching vendor** | Rewrite instrumentation in every service       | Change the Collector's exporters. App code stays the same.      |
+| **Lock-in**          | Your data is in their format, tied to their agent | OTLP is accepted by almost every backend                     |
+| **Two backends**     | Run two agents                                 | One Collector exports the same data to both                     |
+| **Maintenance**      | Many agents to patch                           | One SDK per language, one Collector                             |
+| **Owner**            | A company                                      | The CNCF. Open source, and a **graduated** project since May 2026 |
+
+OpenTelemetry came from a merger in 2019 of two earlier projects: **OpenTracing** (a tracing API) and **OpenCensus** (Google's tracing and metrics libraries). It replaced both.
+
+Two things people mix up:
+
+- **OpenTelemetry (OTel)** is the whole project: API, SDKs, Collector, conventions. **OTLP** is the protocol, one piece of it.
+- **OTel doesn't store or display anything.** You still need a backend.
+
+## The Four Core Components
+
+| Component            | What it does                                                                       | Remember                                                                                       |
+| -------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| **API**              | Vendor-neutral calls: start a span, add to a counter, emit a log                   | Without an SDK installed, API calls do nothing at almost no cost. That's why libraries depend only on the API. |
+| **SDK**              | Implements the API: creates spans, batches, retries, samples, exports              | Configured once at app startup                                                                 |
+| **Zero-code instrumentation** | Records HTTP calls, database queries and queue calls with no code changes | Covers libraries and frameworks, not your business logic                                       |
+| **Collector**        | A separate process that receives, processes and exports telemetry                  | Optional, but recommended in production                                                        |
+
+### Zero-code isn't the whole story
+
+Zero-code instrumentation (also called auto instrumentation) knows that Express received a request and that Postgres ran a query.
+
+It doesn't know that this checkout applied a coupon. For that, you add a span yourself with the API:
+
+```python
+with tracer.start_as_current_span("apply_coupon") as span:
+    span.set_attribute("coupon.code", code)
+    ...
+```
+
+Real systems use both. Zero-code for the plumbing, manual spans for what the request _means_ to your business.
+
+A few more pieces worth knowing:
+
+- **Semantic conventions:** standard attribute names like `http.request.method` and `service.name`. Without them, every team names fields differently and cross-service dashboards break.
+- **The Kubernetes Operator:** injects instrumentation into pods and manages Collectors on a cluster.
+- **eBPF instrumentation (OBI):** instruments running Linux apps from the kernel, with no SDK in the app at all. It reached v1.0 in 2026.
+
+## OTLP and Context Propagation
+
+### OTLP: the language telemetry travels in
+
+When a tool tells you to "point it at your OTLP endpoint", this is what it means.
+
+| Transport     | Default port | Use it when                                                    |
+| ------------- | ------------ | -------------------------------------------------------------- |
+| **OTLP/gRPC** | `4317`       | Service to Collector inside your network. The common default.  |
+| **OTLP/HTTP** | `4318`       | gRPC is blocked by a proxy or load balancer, or you send from a browser |
+
+Both carry exactly the same data. Pick the one your network allows.
+
+### Context propagation: the tracking number
+
+When a request enters your first service, it gets a trace ID. Each service puts that ID into the `traceparent` header of its outgoing calls (the W3C standard from Part 2). The next service reads it and continues the same trace.
+
+```text
+Frontend ──traceparent: 00-4bf92f…-a1b2…-01──► Backend ──traceparent: 00-4bf92f…-c3d4…-01──► Database call
+(span A)                                       (span B, parent A)                            (span C, parent B)
+
+             same trace ID 4bf92f… everywhere; only the parent span ID changes
+```
+
+OpenTelemetry's instrumentation injects and reads this header for you.
+
+## The Journey of One Trace
+
+A user clicks **Checkout**. Here's what happens to the telemetry:
+
+```text
+1. TRIGGER          User clicks "Checkout"
+2. INSTRUMENTATION  Zero-code instrumentation calls the API; the SDK creates a span
+3. PROPAGATION      The trace ID rides along on outgoing calls in traceparent
+4. SDK              Finished spans are batched and sampled
+5. OTLP             Spans go over the wire in OTLP format
+6. COLLECTOR        Receive → process (filter, scrub, sample) → route
+7. BACKENDS         Jaeger / Tempo / Elastic / Honeycomb / Datadog …
+```
+
+Three things to keep straight:
+
+- **The Collector is optional.** The SDK can send OTLP straight to a backend. The Collector is recommended in production because it adds buffering, central config, PII scrubbing and routing to several backends.
+- **Prometheus isn't a trace backend.** It stores metrics only. Use Jaeger, Grafana Tempo or a vendor for traces. (Prometheus 3 can accept OTLP metrics directly.)
+- **Traces aren't analytics.** Traces are usually sampled, so not every request is kept. Use them for "why was this checkout slow?", not for counting business events.
+
+## A Working Collector Config
+
+A Collector config has building blocks you define, and a `service` section that switches them on by putting them into pipelines.
+
+| Block                    | Job                                                     |
+| ------------------------ | ------------------------------------------------------- |
+| **receivers**            | How data gets in, for example OTLP on 4317 and 4318     |
+| **processors**           | What happens in between: memory limits, filtering, PII scrubbing, sampling |
+| **exporters**            | Where data goes out to                                  |
+| **service → pipelines**  | Wires them together, one pipeline per signal            |
+
+> Defining a component does nothing on its own. It only runs if a pipeline under `service` lists it.
+
+A minimal config for the current Collector, sending traces to Jaeger:
+
+```yaml
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317 # default is localhost; 0.0.0.0 is needed inside containers
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  memory_limiter: # protects the Collector from running out of memory
+    check_interval: 1s
+    limit_percentage: 80
+    spike_limit_percentage: 20
+
+exporters:
+  otlp_grpc/jaeger: # type/name: an OTLP gRPC exporter named "jaeger"
+    endpoint: jaeger:4317
+    tls:
+      insecure: true # local demo only
+    sending_queue:
+      enabled: true
+      batch:
+        enabled: true # replaces the old batch processor
+  debug: # prints telemetry to the Collector's own logs
+    verbosity: basic
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter]
+      exporters: [otlp_grpc/jaeger, debug]
+```
+
+**Now add a second backend.** Define one more exporter, say `otlp_http/honeycomb` with its endpoint and API key header, and add it to the `exporters` list in the pipeline. Restart the Collector.
+
+Not one line of application code changed. That's the whole promise of OpenTelemetry, in one YAML edit.
+
+### Gotchas in current Collector versions
+
+- **Exporter names changed.** Since Collector v0.144.0 the OTLP exporters are `otlp_grpc` and `otlp_http`. The old names `otlp` and `otlphttp` still work as deprecated aliases, and you'll see them in older tutorials.
+- **Batching moved into the exporter.** Use `sending_queue.batch`. The separate `batch` processor is deprecated.
+- **Receivers listen on `localhost` by default.** Inside Docker or Kubernetes, set `0.0.0.0` explicitly, or nothing outside the container can reach the Collector. It's the most common "my data isn't arriving" bug.
+- **There's no `jaeger` exporter anymore.** Jaeger accepts OTLP natively, so you use `otlp_grpc`.
+
+## Reading a Trace Waterfall
+
+Once data reaches a backend, you'll mostly look at a **waterfall**: every span in a trace as a bar on a timeline.
+
+```text
+POST /checkout            frontend-service   |████████████████████████████████████████| 610 ms
+├─ GET /cart              cart-service       |██                                      |  25 ms
+├─ POST /checkout         checkout-service   |  ██████████████████████████████████████| 570 ms  ◄ slowest
+│  ├─ SELECT inventory    postgres           |   ████████████████████████████████     | 480 ms  ◄ real cause
+│  └─ POST /charge        payment-service    |                                   ███  |  60 ms
+└─ render                 frontend-service   |                                       █|   5 ms
+```
+
+How to read it:
+
+1. Find the **longest bar** under the root. Here it's `checkout-service`.
+2. Look **inside** it. A 480 ms inventory query is the real bottleneck, not checkout's own code.
+3. Click that span to see its attributes and the logs linked by `trace_id`, the alert, isolate, diagnose path from Part 2.
+
+Read the units carefully. µs, ms and s all show up in real tools, and 120 µs vs 120 ms is a 1,000× difference.
+
+## What OpenTelemetry Changes for Each Role
+
+| Role                   | Before                                            | With OpenTelemetry                                                            |
+| ---------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------- |
+| **Developers**         | Learn each vendor's API, per language             | Learn one API. Instrumentation survives a vendor change.                      |
+| **DevOps engineers**   | Pipelines tied to vendor agents                   | Own a vendor-neutral YAML pipeline. Trial a backend by adding an exporter.     |
+| **Platform engineers** | Every team does it differently                    | Set one standard, and control sampling, PII scrubbing and destinations centrally |
+
+**PII** is personally identifiable information: emails, phone numbers, card numbers. Scrubbing it in the Collector, with the `attributes`, `redaction` or `transform` processors, means one rule protects every service instead of trusting every team to remember.
+
+## What OpenTelemetry Doesn't Save You From
+
+OpenTelemetry removes the cost of **re-instrumenting** when you switch vendors.
+
+It doesn't remove:
+
+- **Migrating dashboards, alerts and saved queries.** Those live in the backend, and you still rebuild them.
+- **Storage cost.** The backend still bills for what you send. Sampling and filtering in the Collector are how you control it.
+- **Thinking about what to record.** Zero-code covers the plumbing. Business meaning still needs your manual spans and attributes.
+
+Any honest pitch for OTel includes those three.
+
+## Where the Field Is in 2026
+
+- **OpenTelemetry graduated in the CNCF on 21 May 2026**, the foundation's highest maturity level, alongside Kubernetes and Prometheus.
+- **Traces, metrics and logs are stable** in the API, protocol and Collector. **Profiles** is in public alpha, so not ready for critical production yet.
+- **SDK declarative configuration is stable** (schema 1.0.0, March 2026): one YAML file instead of dozens of `OTEL_*` environment variables. Support still varies by language.
+- **The Collector is still on `v0.x` versions**, released roughly every two weeks. Pin a version and check the release notes before upgrading.
+
+## Key Takeaways
+
+- **One open standard, any backend.** Instrument once, send anywhere.
+- **Four components:** the API (what to say), the SDK (does the work), zero-code instrumentation (captures the plumbing), the Collector (receives, processes, routes).
+- **Two connectors:** OTLP, the shared format, and context propagation, the trace ID that stitches services together.
+- **Low starting cost:** zero-code instrumentation plus a Collector config gets you full traces without touching app code. Add manual spans for business meaning later.
+- **Not free:** dashboards, alerts and storage don't migrate themselves.
+
+## What's Next
+
+That's the theory: why monitoring isn't enough, which signals to collect, and the standard that produces them.
+
+Next I'm building it for real: three Node.js microservices on Kubernetes, instrumented with OpenTelemetry, sending traces to Honeycomb, with injected latency and an AI assistant helping track down the cause. That write-up comes next.
+
+## Sources
+
+- [CNCF: OpenTelemetry graduation announcement](https://www.cncf.io/announcements/2026/05/21/cloud-native-computing-foundation-announces-opentelemetrys-graduation/)
+- [OpenTelemetry: Specification status](https://opentelemetry.io/docs/specs/status/)
+- [OpenTelemetry: Collector configuration](https://opentelemetry.io/docs/collector/configuration/)
+- [OpenTelemetry: Collector batching migration](https://opentelemetry.io/blog/2026/collector-batching-migration/)
+- [OpenTelemetry Collector v0.144.0 release notes](https://newreleases.io/project/github/open-telemetry/opentelemetry-collector/release/v0.144.0)
+- [OpenTelemetry: Migrating from the Jaeger exporter](https://opentelemetry.io/blog/2023/jaeger-exporter-collector-migration)
+- [OpenTelemetry: OBI v1.0 release](https://opentelemetry.io/blog/2026/obi-v1-release/)
+- [OpenTelemetry: Stable declarative configuration](https://opentelemetry.io/blog/2026/stable-declarative-config/)
+- [OpenTelemetry: Profiles public alpha](https://opentelemetry.io/blog/2026/profiles-alpha)

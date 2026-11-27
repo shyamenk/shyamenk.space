@@ -46,3 +46,19 @@ Open work for shyamenk.space, in priority order. Each task gets a GitHub issue a
 
 - [x] `shyamenk.space` verified in Resend (DNS records added at Hostinger)
 - [x] `CONTACT_FROM` set to an address on the domain; mail still arrives
+
+## Writing
+
+### T7 · Observability series, Parts 1–3 · Priority: Medium · Done (#53)
+
+**Acceptance criteria:**
+
+- [x] Part 1 `/blog/monitoring-vs-observability`, Part 2 `/blog/logs-metrics-traces` and Part 3 `/blog/what-is-opentelemetry` return HTTP 200 in a production build
+- [x] Each post has title, date, excerpt, tags, featuredImage and readTime front matter, and its featuredImage file exists under `public/`
+- [x] Each post links to the other two parts of the series
+- [x] All three posts carry the `Observability` tag, so `/blog/tags/observability` lists them
+- [x] Facts that go beyond the source notes are cited in a Sources section
+
+### T8 · Replace the observability placeholder covers · Priority: Low
+
+- [ ] Owner swaps `public/blog/{monitoring-vs-observability,logs-metrics-traces,what-is-opentelemetry}.png` for final 1672×940 covers
