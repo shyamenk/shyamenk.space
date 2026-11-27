@@ -1,0 +1,270 @@
+---
+title: "Logs, Metrics and Traces: Three Signals Are Worth Little Until You Link Them"
+date: "2026-12-02"
+excerpt: "Metrics tell you something is wrong. Traces tell you where. Logs tell you why. Here's what each signal is good and bad at, the cardinality math that decides where your data goes, and the one field that links all three."
+tags:
+  - Observability
+  - DevOps
+  - Backend
+featuredImage: "/blog/logs-metrics-traces.png"
+readTime: "9 min read"
+---
+
+> **Observability series, Part 2 of 3.** [Part 1: Monitoring vs Observability](/blog/monitoring-vs-observability) · Part 2: Logs, Metrics and Traces · [Part 3: What Is OpenTelemetry](/blog/what-is-opentelemetry)
+
+A P99 latency alert fires.
+
+You open the metrics dashboard. The graph spiked at 14:32.
+You open the log search in another tab and type the time range.
+You open the tracing tool in a third tab and try to find a slow request from around then.
+
+Three tools. Three query languages. You're copying timestamps between tabs and hoping they line up.
+
+That's what "we have logs, metrics and traces" looks like for a lot of teams. All three signals are collected. None of them are connected.
+
+Here's the point of this post:
+
+**The three signals pay off only when they're linked.** One field, `trace_id`, plus a feature called exemplars, turns three separate dashboards into one path: alert, then where, then why.
+
+[Part 1](/blog/monitoring-vs-observability) showed that observability depends on the data underneath. This part covers that data: what each signal is, what it's good and bad at, and how to wire them together.
+
+## The Memory Hook: A Late Food Delivery
+
+You order dinner on a food delivery app. It arrives 50 minutes late.
+
+The app shows you three different things, and each one maps to a signal:
+
+| What the app shows                  | Example                                                                     | Signal      |
+| ----------------------------------- | --------------------------------------------------------------------------- | ----------- |
+| **The order chat**                  | "7:25 Restaurant: out of paneer, substituting."                             | **Logs**    |
+| **The ops team's dashboard**        | Orders per minute, average delivery time, riders available, one number each | **Metrics** |
+| **The live tracking map**           | Placed 7:00 → at restaurant 7:02–7:30 → picked up 7:45 → delivered 7:50     | **Traces**  |
+
+Here's how the delivery company finds the problem:
+
+1. **Dashboard:** average delivery time jumped from 30 to 50 minutes tonight. _Something_ is wrong.
+2. **Tracking map:** this order spent 28 minutes at the restaurant and 2 on the road. The restaurant is _where_.
+3. **Order chat:** "Out of paneer, substituting." That's _why_.
+
+> Dashboard says **something**. The map says **where**. The chat says **why**.
+
+Keep that in mind. Every section below is one of those three.
+
+## Logs: The Forensic Record
+
+A **log** is a timestamped record of one event inside your system. Think of it as the application's diary.
+
+```text
+2026-05-08 14:32:01 ERROR Payment failed for order #5521 — reason: card declined
+```
+
+A good log line has three parts:
+
+- **A precise timestamp:** when it happened. Use UTC in ISO 8601 format.
+- **A severity level:** how bad it is. `DEBUG` < `INFO` < `WARN` < `ERROR` < `FATAL`.
+- **Context:** what happened, to what, and why.
+
+### Plain text vs structured JSON
+
+The line above is easy for a person to read and hard for a machine to query. To find "all Visa card declines in the last hour", you need fragile regex and grep.
+
+Now the same event as **structured JSON**, where every fact is a named field:
+
+```json
+{
+  "timestamp": "2026-05-08T14:32:01.123Z",
+  "severity": "ERROR",
+  "service": "payment-service",
+  "message": "Payment failed",
+  "order_id": "5521",
+  "user_id": "u_88213",
+  "reason": "card_declined",
+  "card_network": "visa",
+  "trace_id": "4bf92f3577b34da6a3ce929d0e0e4736",
+  "span_id": "00f067aa0ba902b7"
+}
+```
+
+The search becomes a query: `reason = "card_declined" AND card_network = "visa"`. No regex.
+
+Look at the last two fields. `trace_id` and `span_id` link this log line to the exact request that produced it. They're the most important fields in the whole object, and we'll come back to them.
+
+**Logs are good at:** high-cardinality detail like `order_id` and `user_id`, exact error messages, stack traces.
+
+**Logs are bad at:** cheap counting. Answering "how many payments failed in the last 10 minutes?" means scanning a lot of text, and storing every line at high volume gets expensive.
+
+## Metrics: The Vital Signs
+
+A **metric** is a number measured repeatedly over time.
+
+```text
+http_requests_total{service="payment", status="500"}   →   12, 15, 14, 87, 240 ...
+                                                            (one value every 15 s)
+```
+
+Each data point is tiny: a name, a few labels, a number and a timestamp. That makes metrics cheap to store for months and fast to graph and alert on.
+
+The trade-off is that metrics are **aggregates**. They tell you 240 requests failed. They don't tell you which ones.
+
+### Start with the Four Golden Signals
+
+Google's SRE book says that if you measure only four things for a user-facing service, measure these:
+
+| Signal         | Question it answers             | How to measure it                                         | Watch out for                                                                               |
+| -------------- | ------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| **Latency**    | How long does a response take?  | P50, P95, P99. Never only the average.                    | Track successful and failed requests separately. An instant 500 makes latency look great. |
+| **Errors**     | What share of requests fail?    | Failed ÷ total, per time window                           | Count what's your fault: 5xx and timeouts, not most 4xx                                     |
+| **Traffic**    | How much demand is there?       | Requests per second, messages per second                  | A sudden **drop** to zero is also a problem. Something upstream may be broken.              |
+| **Saturation** | How full is the system?         | CPU, memory, disk, connection pool used, queue length     | The only signal that warns you **before** failure. Disk at 95% today is an outage tomorrow. |
+
+Two lighter variants you'll hear about:
+
+- **RED** (Rate, Errors, Duration) for request-driven microservices.
+- **USE** (Utilization, Saturation, Errors), from Brendan Gregg, for resources like CPU, disk and network.
+
+### The cardinality trap
+
+This is the most expensive mistake people make with metrics.
+
+**Cardinality** is how many unique values a label can have. The trap: every unique **combination** of label values becomes a separate stored time series.
+
+Here's the arithmetic:
+
+```text
+method (5) × status (20) × region (5) × service (30)
+  = 15,000 series                                     fine
+
+… × user_id (1,000,000)
+  = 15,000,000,000 series                             your metrics backend falls over
+```
+
+Adding one label with a million values multiplied the series count by a million. Each series costs memory and storage, so the backend gets slow, then expensive, then it crashes.
+
+| Safe labels (low cardinality)        | Dangerous labels (high cardinality)                              |
+| ------------------------------------ | ---------------------------------------------------------------- |
+| `http.request.method` (~5 values)    | `user_id` (millions)                                             |
+| `http.response.status_code` (~20)    | `order_id`, `request_id` (unbounded)                             |
+| `region` (~5)                        | `email`, `session_id`, IP address                                |
+| `service.name` (~30)                 | URL paths with IDs: `/orders/5521`. Use `/orders/{id}` instead. |
+
+> **Rule:** never put high-cardinality values in metric labels. Put `user_id`, `order_id` and `request_id` in **logs** or **trace attributes**, which are built to handle them.
+
+That rule is the reason three signals exist at all. Each one has a different cost profile, so each piece of data has a right home.
+
+## Traces: The Journey Map
+
+A **trace** is the complete, end-to-end record of **one request** across every service it touched.
+
+### The vocabulary
+
+| Term                    | Meaning                                                                         | Food delivery version              |
+| ----------------------- | ------------------------------------------------------------------------------- | ---------------------------------- |
+| **Trace**               | The whole journey of one request                                                | Your order, from tap to doorstep   |
+| **Trace ID**            | A unique ID shared by every step of that request (32 hex characters)            | The order number                   |
+| **Span**                | One unit of work: a service call, a database query. Has a start, a duration and attributes. | One stop: "at restaurant 7:02–7:30" |
+| **Parent span ID**      | Which span called this one, so spans form a tree                                | "Pickup happened after handoff"    |
+| **Context propagation** | Passing the trace ID from service to service so they join one trace             | Everyone sees the same order number |
+
+### What a trace looks like
+
+```text
+Trace ID: 4bf92f3577b34da6a3ce929d0e0e4736
+
+POST /checkout (frontend)          |██████████████████████████████████| 820 ms
+├─ API Gateway                     |█                                 |   2 ms
+├─ Order Service                   |█                                 |  15 ms
+└─ Payment Service                 | ██████████████████████████████████| 812 ms
+   └─ SELECT payments WHERE ...    |   ████████████████████████████████| 780 ms  ◄ bottleneck
+```
+
+### How the trace ID travels
+
+The standard is the **W3C Trace Context** `traceparent` HTTP header:
+
+```text
+traceparent: 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01
+             │  └──────────── trace ID ────────────┘ └─ parent span ─┘ └ flags (01 = sampled)
+             version
+```
+
+Each service reads the header, creates its own span under that trace ID, and passes the header on to every service it calls. OpenTelemetry does this automatically, as Part 3 shows.
+
+### Why traces shrink time to repair
+
+**MTTR** (Mean Time To Repair) is the average time from when an incident starts to when it's fixed. Break a typical incident into steps:
+
+```text
+Detect ──► Diagnose ──────────────────────────► Fix ──► Verify
+  2 min        40 min (grepping logs,             5 min    3 min
+               guessing, asking around)
+```
+
+Finding the problem is usually the biggest step. Traces don't make you write the fix faster. They shrink the diagnosis, because the slow or failing span is right there on the screen instead of buried in log files across five services.
+
+## Which Signal Answers Which Question?
+
+| The question                                     | Signal      | Why                                     |
+| ------------------------------------------------ | ----------- | --------------------------------------- |
+| What exactly happened to order 5521?             | **Logs**    | Needs high-cardinality detail           |
+| How many orders failed in the last 10 minutes?   | **Metrics** | Needs cheap counting over time          |
+| Which downstream service caused my timeout?      | **Traces**  | Needs the end-to-end path               |
+| Is CPU creeping up over the last week?           | **Metrics** | Needs long-term trends                  |
+| What was the exact error right before the crash? | **Logs**    | Needs the full message and stack trace  |
+
+And all three side by side:
+
+|                 | Logs                | Metrics                       | Traces                      |
+| --------------- | ------------------- | ----------------------------- | --------------------------- |
+| **Is**          | Event records       | Numbers over time             | One request's path          |
+| **Answers**     | Why?                | Is something wrong? How much? | Where?                      |
+| **Cardinality** | High is fine        | **Must stay low**             | High is fine (attributes)   |
+| **Storage cost** | High               | Low                           | Medium to high (usually sampled) |
+| **Best for**    | Debugging, audits   | Alerts, dashboards, trends    | Bottlenecks, dependencies   |
+
+## Linking Them: Alert, Isolate, Diagnose
+
+Here's the path the opening scenario should have taken:
+
+| Step            | Signal  | What happens                                                                         | What you now know       |
+| --------------- | ------- | ------------------------------------------------------------------------------------ | ----------------------- |
+| **1. Alert**    | Metrics | P99 latency crosses the threshold and pages you                                      | **Something** is broken |
+| **2. Isolate**  | Traces  | Open a slow trace. The bottleneck span is a slow database query.                     | **Where** it's broken   |
+| **3. Diagnose** | Logs    | Read the structured logs attached to that span, matched by `trace_id` and `span_id` | **Why** it's broken     |
+
+Two links make this possible:
+
+- **Metrics to traces: exemplars.** An exemplar is a sample `trace_id` attached to a metric data point. You click the spike on the P99 graph and land on a real slow trace from that moment.
+- **Traces to logs: `trace_id` in every log line.** You're looking at a slow span, and you filter logs by its trace ID. Only the lines from that one request come back.
+
+Without those links, you're back to three tabs and copy-pasted timestamps. With them, it's three clicks.
+
+If you take one action from this post, make it this: **put `trace_id` and `span_id` in every log line.** Most OpenTelemetry logging integrations do it for you once tracing is on.
+
+## Where the Field Is in 2026
+
+- **"Three pillars" is a starting model, not the full picture.** The value comes from correlating signals, not running three tools. A fourth signal, **continuous profiling**, is in public alpha in OpenTelemetry.
+- **OpenTelemetry covers all three signals** with one SDK and one wire protocol, **OTLP**. You no longer need Fluentd for logs, a Prometheus client for metrics and a Jaeger client for traces. The Jaeger client libraries are retired in favour of OpenTelemetry SDKs.
+- **Use the OpenTelemetry semantic conventions for field names:** `http.request.method`, `http.response.status_code`, `url.path`. You'll still see the older `http.method` and `http.status_code` in old code. Don't copy them.
+- **`traceparent` is the standard propagation header.** Zipkin's `X-B3-TraceId` and vendor-specific headers are legacy.
+
+## Key Takeaways
+
+- **Metrics** say something is wrong. They're cheap, but they must stay low-cardinality.
+- **Traces** say where. They follow one request across every service.
+- **Logs** say why. Structure them as JSON so you can query them.
+- **The cardinality rule** decides where data lives: IDs go in logs and trace attributes, never in metric labels.
+- **Links make it observability:** `trace_id` in every log line, and exemplars on your metrics.
+
+## What's Next
+
+Producing linked signals used to mean a different agent and library for every vendor, and rewriting it all when you switched.
+
+[Part 3: What Is OpenTelemetry](/blog/what-is-opentelemetry) covers the open standard that ended that: instrument once, then send the data to any backend by changing a config file.
+
+## Sources
+
+- [Google SRE Book: Monitoring Distributed Systems](https://sre.google/sre-book/monitoring-distributed-systems/)
+- [Brendan Gregg: The USE Method](https://www.brendangregg.com/usemethod.html)
+- [W3C Trace Context](https://www.w3.org/TR/trace-context/)
+- [OpenTelemetry: Semantic Conventions](https://opentelemetry.io/docs/specs/semconv/)
+- [OpenTelemetry: Signals](https://opentelemetry.io/docs/concepts/signals/)
