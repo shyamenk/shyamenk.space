@@ -8,6 +8,10 @@ All notable changes to shyamenk.space. Format follows [Keep a Changelog](https:/
 
 - Observability series, three linked posts: "Monitoring vs Observability", "Logs, Metrics and Traces" and "What Is OpenTelemetry", with placeholder covers (#53).
 
+### Changed
+
+- Observability series dates moved to Nov 30, Dec 1 and Dec 2 to match the LinkedIn posts; covers no longer show a "placeholder cover" label (#55).
+
 ## [0.3.0] - 2026-10-19
 
 A site favicon, a consistent type scale across the home page, a vertical Experience timeline with the Web Developer role filled in, tabbed Toolbox, and a new OWASP Top 10:2025 post.
